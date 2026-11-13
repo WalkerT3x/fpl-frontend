@@ -70,20 +70,16 @@ function App() {
       ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
       : '0.0';
 
-    // Determine if the player is Home or Away based on the fixture string (starts with 'H' or 'A')
-    const fixtureStr = player.fixtures[String(currentGw)] || "";
-    const isAway = fixtureStr.startsWith("A ");
-    
-    // FPL uses _1 for home kit, _2 for away kit
-    const kitType = isAway ? "2" : "1"; 
+    // The backend now tells us EXACTLY which kit to load
+    const kitUrl = `https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_${player.kit_id}-110.png`;
 
     return (
-      <div className="flex flex-col items-center w-[76px] md:w-24 group cursor-pointer relative mt-8">
+      <div className="flex flex-col items-center w-[76px] md:w-24 group cursor-pointer relative mt-10">
         
-        {/* Player Shirt Image */}
-        <div className="absolute -top-8 md:-top-12 w-14 h-14 md:w-18 md:h-18 z-10 transition-transform group-hover:-translate-y-1">
+        {/* Player Kit Image */}
+        <div className="absolute -top-10 md:-top-14 w-16 h-16 md:w-20 md:h-20 z-10 transition-transform group-hover:-translate-y-1">
           <img 
-            src={`https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_${player.team_code}_${kitType}-110.png`}
+            src={kitUrl}
             alt={player.team}
             className="w-full h-full object-contain drop-shadow-md"
             onError={(e) => { e.target.src = 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'; }} 
