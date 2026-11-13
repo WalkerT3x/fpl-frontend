@@ -72,7 +72,7 @@ function App() {
     return (
       <div className="flex flex-col items-center w-[76px] md:w-24 group cursor-pointer relative mt-10">
         
-        {/* Player Shirt Image (from backend) */}
+        {/* Player Shirt Image (from JSON database) */}
         <div className="absolute -top-10 md:-top-14 w-16 h-16 md:w-20 md:h-20 z-10 transition-transform group-hover:-translate-y-1">
           <img 
             src={player.shirt_url}
