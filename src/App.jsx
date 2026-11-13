@@ -132,6 +132,46 @@ function App() {
     </div>
   );
 
+  // --- THE VISUAL KIT TESTER ---
+  const teams = [
+    { name: "Arsenal", code: 3 }, { name: "Aston Villa", code: 7 },
+    { name: "Bournemouth", code: 91 }, { name: "Brentford", code: 94 },
+    { name: "Brighton", code: 36 }, { name: "Chelsea", code: 8 },
+    { name: "Crystal Palace", code: 31 }, { name: "Everton", code: 11 },
+    { name: "Fulham", code: 54 }, { name: "Ipswich", code: 40 },
+    { name: "Leicester", code: 13 }, { name: "Liverpool", code: 14 },
+    { name: "Man City", code: 43 }, { name: "Man Utd", code: 1 },
+    { name: "Newcastle", code: 4 }, { name: "Nott'm Forest", code: 17 },
+    { name: "Southampton", code: 20 }, { name: "Spurs", code: 6 },
+    { name: "West Ham", code: 21 }, { name: "Wolves", code: 39 }
+  ];
+
+  const KitTester = () => (
+    <div className="w-full mt-16 bg-[#250028] p-6 rounded-xl border border-[#4a0050]">
+      <h2 className="text-2xl font-black text-white mb-6 text-center">Visual Kit Tester</h2>
+      <div className="flex flex-col gap-4">
+        {teams.map(t => (
+          <div key={t.code} className="flex items-center bg-[#37003c] p-2 rounded shadow border border-[#4a0050]">
+            <div className="w-32 font-bold text-[#00ff87] text-sm md:text-base">{t.name}</div>
+            <div className="flex gap-4 flex-1 justify-around">
+              {[1, 2, 3, 4].map(kitNum => (
+                <div key={kitNum} className="flex flex-col items-center">
+                  <img 
+                    src={`https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_${t.code}_${kitNum}-110.png`}
+                    alt={`${t.name} ${kitNum}`}
+                    className="w-12 h-12 md:w-16 md:h-16 object-contain"
+                    onError={(e) => { e.target.src = 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'; }}
+                  />
+                  <span className="text-xs text-gray-400 mt-1">_{kitNum}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-[#37003c] text-white font-sans pb-10">
       
@@ -179,7 +219,10 @@ function App() {
         {error && <div className="text-red-400 font-bold mb-4 bg-red-900/30 p-3 rounded-lg border border-red-500">{error}</div>}
 
         {activeTab === 'Pick Team' && starting11 && (
-          <PitchView squad={starting11} subs={bench} />
+          <>
+            <PitchView squad={starting11} subs={bench} />
+            <KitTester />
+          </>
         )}
 
         {activeTab === 'Tokens' && chips && (
