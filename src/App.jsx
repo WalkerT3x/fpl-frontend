@@ -13,6 +13,19 @@ function App() {
   const [chips, setChips] = useState(null);
   const [loadingChips, setLoadingChips] = useState(false);
 
+  // State to hold the ACTUAL teams from the FPL API
+  const [leagueTeams, setLeagueTeams] = useState([]);
+
+  useEffect(() => {
+    // Fetch the real teams from the API on load
+    fetch('https://fantasy.premierleague.com/api/bootstrap-static/')
+      .then(res => res.json())
+      .then(data => {
+        setLeagueTeams(data.teams);
+      })
+      .catch(err => console.error("Error fetching teams:", err));
+  }, []);
+
   const fetchTeam = async () => {
     if (!teamId) return;
     setLoading(true);
@@ -72,7 +85,6 @@ function App() {
     return (
       <div className="flex flex-col items-center w-[76px] md:w-24 group cursor-pointer relative mt-10">
         
-        {/* Player Shirt Image (from backend) */}
         <div className="absolute -top-10 md:-top-14 w-16 h-16 md:w-20 md:h-20 z-10 transition-transform group-hover:-translate-y-1">
           <img 
             src={player.shirt_url}
@@ -132,33 +144,32 @@ function App() {
     </div>
   );
 
-  // --- THE EXPANDED VISUAL KIT TESTER ---
-  const teams = [
-    { name: "Arsenal", code: 3 }, { name: "Aston Villa", code: 7 },
-    { name: "Bournemouth", code: 91 }, { name: "Brentford", code: 94 },
-    { name: "Brighton", code: 36 }, { name: "Chelsea", code: 8 },
-    { name: "Crystal Palace", code: 31 }, { name: "Everton", code: 11 },
-    { name: "Fulham", code: 54 }, { name: "Ipswich", code: 40 },
-    { name: "Leicester", code: 13 }, { name: "Liverpool", code: 14 },
-    { name: "Man City", code: 43 }, { name: "Man Utd", code: 1 },
-    { name: "Newcastle", code: 4 }, { name: "Nott'm Forest", code: 17 },
-    { name: "Southampton", code: 20 }, { name: "Spurs", code: 6 },
-    { name: "West Ham", code: 21 }, { name: "Wolves", code: 39 }
-  ];
-
   const KitTester = () => (
     <div className="w-full mt-16 bg-[#250028] p-4 md:p-6 rounded-xl border border-[#4a0050]">
       <h2 className="text-2xl font-black text-[#00ff87] mb-2 text-center uppercase tracking-widest">Visual Kit Tester</h2>
-      <p className="text-center text-gray-300 mb-6 text-sm">Scroll through and find the correct Home and Goalkeeper shirts for each team.</p>
+      <p className="text-center text-gray-300 mb-6 text-sm">Base = Home Kit. _1 = Goalkeeper. _2 = Away. _3 = Third.</p>
       
       <div className="flex flex-col gap-4">
-        {teams.map(t => (
-          <div key={t.code} className="flex flex-col md:flex-row items-center bg-[#37003c] p-3 rounded shadow border border-[#4a0050]">
+        {leagueTeams.map(t => (
+          <div key={t.id} className="flex flex-col md:flex-row items-center bg-[#37003c] p-3 rounded shadow border border-[#4a0050]">
             <div className="w-full md:w-32 font-bold text-[#00ff87] text-sm md:text-base mb-2 md:mb-0 border-b md:border-b-0 md:border-r border-[#4a0050] pb-1 md:pb-0 pr-2">
-              {t.name}
+              {t.name} <span className="text-gray-500 text-xs text-normal">(Code: {t.code})</span>
             </div>
-            <div className="flex flex-wrap md:flex-nowrap gap-2 md:gap-4 flex-1 justify-around w-full">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(kitNum => (
+            <div className="flex flex-wrap md:flex-nowrap gap-2 md:gap-8 flex-1 justify-around w-full">
+              
+              {/* BASE URL (HOME) */}
+              <div className="flex flex-col items-center w-[30px] md:w-12">
+                <img 
+                  src={`https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_${t.code}-110.png`}
+                  alt={`${t.name} Home`}
+                  className="w-8 h-8 md:w-12 md:h-12 object-contain"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+                <span className="text-[10px] md:text-xs text-green-400 mt-1 font-bold">Base</span>
+              </div>
+
+              {/* SUFFIXES (GK, AWAY, THIRD) */}
+              {[1, 2, 3].map(kitNum => (
                 <div key={kitNum} className="flex flex-col items-center w-[30px] md:w-12">
                   <img 
                     src={`https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_${t.code}_${kitNum}-110.png`}
@@ -201,7 +212,7 @@ function App() {
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-4 flex flex-col items-center">
+      <div className="max-w-4xl mx-auto px-4 flex flex-col items-center">
         
         <div className="flex gap-2 w-full max-w-md mb-8 bg-[#250028] p-4 rounded-xl shadow-lg border border-[#4a0050]">
           <input 
