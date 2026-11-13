@@ -11,6 +11,10 @@ function App() {
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
   
+  // New Money States
+  const [bank, setBank] = useState(null);
+  const [teamValue, setTeamValue] = useState(null);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
@@ -21,7 +25,7 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  const [manualTransfers, setManualTransfers] = useState([]); // Empty by default
+  const [manualTransfers, setManualTransfers] = useState([]); 
 
   const fetchTeam = async () => {
     if (!teamId) return;
@@ -49,6 +53,8 @@ function App() {
       setStarting11(data.starting_11);
       setBench(data.bench);
       setCurrentGw(data.current_gw);
+      setBank(data.bank);
+      setTeamValue(data.team_value);
       
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 3000);
@@ -133,6 +139,8 @@ function App() {
             starting11={starting11} 
             manualTransfers={manualTransfers}
             setManualTransfers={setManualTransfers}
+            bank={bank}
+            teamValue={teamValue}
           />
         )}
 
