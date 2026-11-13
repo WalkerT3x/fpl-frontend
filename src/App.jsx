@@ -21,8 +21,7 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  // Manual Transfers State
-  const [manualTransfers, setManualTransfers] = useState([{ out_player: "Neto", in_player: "Ødegaard" }]);
+  const [manualTransfers, setManualTransfers] = useState([]); // Empty by default
 
   const fetchTeam = async () => {
     if (!teamId) return;
