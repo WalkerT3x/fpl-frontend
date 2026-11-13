@@ -38,12 +38,15 @@ function App() {
   };
 
   const PlayerCard = ({ player }) => {
-    const points = player.proj ? parseFloat(player.proj[currentGw] || 0).toFixed(1) : '0.0';
+    // Ensure we are looking for a string key like "11"
+    const points = player.proj && player.proj[String(currentGw)] !== undefined 
+      ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
+      : '0.0';
 
     return (
       <div className="flex flex-col items-center w-[76px] md:w-24 group cursor-pointer relative mt-8">
         
-        {/* FIXED: Using player.code instead of player.id */}
+        {/* Player Image */}
         <div className="absolute -top-10 md:-top-14 w-16 h-16 md:w-20 md:h-20 z-10 transition-transform group-hover:-translate-y-2">
           <img 
             src={`https://resources.premierleague.com/premierleague/photos/players/110x140/p${player.code}.png`}
@@ -53,7 +56,10 @@ function App() {
           />
         </div>
 
+        {/* Card Background */}
         <div className="bg-white text-black w-full pt-6 pb-1 rounded shadow-md border-b-4 border-gray-300 z-0 relative">
+          
+          {/* Points Bubble */}
           <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#37003c] text-white w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center shadow-lg border-2 border-white z-20">
             <span className="font-bold text-xs md:text-sm">{points}</span>
           </div>
@@ -72,6 +78,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#37003c] text-white font-sans pb-10">
+      
+      {/* Navigation Bar */}
       <nav className="bg-[#250028] border-b border-[#4a0050] shadow-xl mb-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 h-16">
           <div className="flex items-center gap-2">
@@ -90,6 +98,8 @@ function App() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 flex flex-col items-center">
+        
+        {/* Input Section */}
         <div className="flex gap-2 w-full max-w-md mb-8 bg-[#250028] p-4 rounded-xl shadow-lg border border-[#4a0050]">
           <input 
             type="number" 
@@ -111,6 +121,8 @@ function App() {
 
         {starting11 && (
           <div className="w-full flex flex-col gap-6 animate-fade-in-up">
+            
+            {/* THE PITCH */}
             <div className="relative overflow-hidden rounded-xl shadow-2xl border-4 border-[#008f2d]">
               <div className="absolute inset-0 bg-gradient-to-b from-[#00a838] to-[#00c943]"></div>
               <div className="absolute inset-4 border-2 border-white/20 rounded pointer-events-none"></div>
@@ -133,12 +145,14 @@ function App() {
               </div>
             </div>
 
+            {/* THE BENCH */}
             <div className="bg-[#250028] rounded-xl p-4 pt-8 shadow-xl border border-[#4a0050]">
               <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-sm">Substitutes</h3>
               <div className="flex justify-center gap-4 md:gap-12">
                 {bench && bench.map((p, i) => <PlayerCard key={i} player={p} />)}
               </div>
             </div>
+
           </div>
         )}
       </div>
