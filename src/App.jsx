@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import HomePage from './pages/HomePage';
 import PickTeamPage from './pages/PickTeamPage';
 import TokensPage from './pages/TokensPage';
@@ -21,6 +21,9 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
+  // Manual Transfers State
+  const [manualTransfers, setManualTransfers] = useState([{ out_player: "Neto", in_player: "Ødegaard" }]);
+
   const fetchTeam = async () => {
     if (!teamId) return;
     setLoading(true);
@@ -34,12 +37,15 @@ function App() {
       const response = await fetch('https://fpl-backend-c25x.onrender.com/api/optimize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ team_id: parseInt(teamId), free_transfers: 1, manual_transfers: [] })
+        body: JSON.stringify({ 
+          team_id: parseInt(teamId), 
+          free_transfers: 1, 
+          manual_transfers: manualTransfers 
+        })
       });
       
       const data = await response.json();
       if (data.error) throw new Error(data.error);
-      if (!response.ok) throw new Error('Failed to optimize team');
       
       setStarting11(data.starting_11);
       setBench(data.bench);
@@ -61,11 +67,18 @@ function App() {
     setChipsError('');
 
     try {
-      const response = await fetch(`https://fpl-backend-c25x.onrender.com/api/chips/${teamId}`);
-      const data = await response.json();
+      const response = await fetch(`https://fpl-backend-c25x.onrender.com/api/chips`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          team_id: parseInt(teamId), 
+          free_transfers: 1, 
+          manual_transfers: manualTransfers 
+        })
+      });
       
+      const data = await response.json();
       if (data.error) throw new Error(data.error);
-      if (!response.ok) throw new Error('Failed to fetch chips');
       
       setChips(data);
     } catch (err) {
@@ -74,12 +87,6 @@ function App() {
       setLoadingChips(false);
     }
   };
-
-  useEffect(() => {
-    if (activeTab === 'Tokens' && teamId && !chips && !loadingChips) {
-      fetchChips();
-    }
-  }, [activeTab]);
 
   return (
     <div className="min-h-screen bg-[#37003c] text-white font-sans pb-10 relative">
@@ -99,10 +106,13 @@ function App() {
             <span className="font-black text-xl tracking-wider">FPL GENIUS</span>
           </div>
           <div className="hidden md:flex gap-6 text-sm font-bold text-gray-300">
-            {['Home', 'Pick Team', 'Points', 'Transfers', 'Tokens'].map(tab => (
+            {['Home', 'Pick Team', 'Tokens'].map(tab => (
               <span 
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => {
+                  setActiveTab(tab);
+                  if (tab === 'Tokens') fetchChips();
+                }}
                 className={`cursor-pointer transition-colors ${activeTab === tab ? 'text-[#00ff87]' : 'hover:text-white'}`}
               >
                 {tab}
@@ -122,6 +132,8 @@ function App() {
             loading={loading} 
             error={error} 
             starting11={starting11} 
+            manualTransfers={manualTransfers}
+            setManualTransfers={setManualTransfers}
           />
         )}
 
