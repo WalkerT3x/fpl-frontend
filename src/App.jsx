@@ -17,11 +17,13 @@ function App() {
   const [leagueTeams, setLeagueTeams] = useState([]);
 
   useEffect(() => {
-    // Fetch the real teams from the API on load
-    fetch('https://fantasy.premierleague.com/api/bootstrap-static/')
+    // Fetch from OUR backend to avoid CORS blocking
+    fetch('https://fpl-backend-c25x.onrender.com/api/teams')
       .then(res => res.json())
       .then(data => {
-        setLeagueTeams(data.teams);
+        if (data && data.teams) {
+          setLeagueTeams(data.teams);
+        }
       })
       .catch(err => console.error("Error fetching teams:", err));
   }, []);
