@@ -37,8 +37,9 @@ function App() {
         body: JSON.stringify({ team_id: parseInt(teamId), free_transfers: 1, manual_transfers: [] })
       });
       
-      if (!response.ok) throw new Error('Failed to optimize team');
       const data = await response.json();
+      if (data.error) throw new Error(data.error);
+      if (!response.ok) throw new Error('Failed to optimize team');
       
       setStarting11(data.starting_11);
       setBench(data.bench);
@@ -61,8 +62,11 @@ function App() {
 
     try {
       const response = await fetch(`https://fpl-backend-c25x.onrender.com/api/chips/${teamId}`);
-      if (!response.ok) throw new Error('Failed to fetch chips');
       const data = await response.json();
+      
+      if (data.error) throw new Error(data.error);
+      if (!response.ok) throw new Error('Failed to fetch chips');
+      
       setChips(data);
     } catch (err) {
       setChipsError(err.message);
@@ -139,24 +143,7 @@ function App() {
             retryFetch={() => fetchChips(true)}
           />
         )}
-
-        {activeTab !== 'Home' && activeTab !== 'Pick Team' && activeTab !== 'Tokens' && (
-          <div className="text-center text-gray-400 mt-20 animate-fade-in-up">
-            <h2 className="text-2xl font-bold mb-2">{activeTab} Page</h2>
-            <p>Coming soon...</p>
-          </div>
-        )}
       </div>
-      
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.5s ease-out forwards;
-        }
-      `}} />
     </div>
   );
 }

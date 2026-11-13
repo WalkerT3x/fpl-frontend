@@ -15,9 +15,9 @@ export default function TokensPage({ chips, currentGw, loadingChips, chipsError,
   if (chipsError) {
     return (
       <div className="text-center mt-32 animate-fade-in-up">
-        <div className="bg-red-900/30 border border-red-500 text-red-400 p-6 rounded-xl inline-block">
-          <p className="font-bold text-lg mb-2">Server timed out calculating chips.</p>
-          <p className="text-sm mb-4">The math is heavy, the free server sometimes gives up.</p>
+        <div className="bg-red-900/30 border border-red-500 text-red-400 p-6 rounded-xl inline-block max-w-2xl">
+          <p className="font-bold text-lg mb-2">Backend Error:</p>
+          <p className="text-sm mb-4 font-mono bg-red-950 p-2 rounded text-left overflow-auto">{chipsError}</p>
           <button onClick={retryFetch} className="bg-[#00ff87] text-[#37003c] font-bold py-2 px-6 rounded-lg hover:scale-105 transition-transform">
             Try Again
           </button>
