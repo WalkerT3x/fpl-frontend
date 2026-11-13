@@ -13,18 +13,21 @@ function App() {
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  
   const [activeTab, setActiveTab] = useState('Home'); 
   const [showPopup, setShowPopup] = useState(false);
   
   const [chips, setChips] = useState(null);
   const [loadingChips, setLoadingChips] = useState(false);
+  const [chipsError, setChipsError] = useState('');
 
   const fetchTeam = async () => {
     if (!teamId) return;
     setLoading(true);
     setError('');
-    setStarting11(null);
-    setBench(null);
+    setChips(null); // Clear old chips so we get fresh ones
+    setChipsError('');
+    
     localStorage.setItem('fplTeamId', teamId);
 
     try {
@@ -52,9 +55,9 @@ function App() {
   };
 
   const fetchChips = async () => {
-    if (!teamId) return;
+    if (!teamId || chips) return;
     setLoadingChips(true);
-    setError('');
+    setChipsError('');
 
     try {
       const response = await fetch(`https://fpl-backend-c25x.onrender.com/api/chips/${teamId}`);
@@ -62,14 +65,14 @@ function App() {
       const data = await response.json();
       setChips(data);
     } catch (err) {
-      setError(err.message);
+      setChipsError(err.message);
     } finally {
       setLoadingChips(false);
     }
   };
 
   useEffect(() => {
-    if (activeTab === 'Tokens' && teamId && !chips) {
+    if (activeTab === 'Tokens' && teamId && !chips && !loadingChips) {
       fetchChips();
     }
   }, [activeTab]);
@@ -132,6 +135,8 @@ function App() {
             chips={chips} 
             currentGw={currentGw} 
             loadingChips={loadingChips} 
+            chipsError={chipsError}
+            retryFetch={() => { setChips(null); setChipsError(''); }}
           />
         )}
 

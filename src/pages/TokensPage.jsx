@@ -1,8 +1,29 @@
 import PitchView from '../components/PitchView';
 
-export default function TokensPage({ chips, currentGw, loadingChips }) {
+export default function TokensPage({ chips, currentGw, loadingChips, chipsError, retryFetch }) {
   if (loadingChips) {
-    return <div className="text-center text-gray-400 mt-32 animate-pulse text-xl font-bold">Analyzing Chip Strategy...</div>;
+    return (
+      <div className="flex flex-col items-center mt-32">
+        <div className="text-center text-[#00ff87] animate-pulse text-xl font-bold mb-2">
+          Running 9-week mathematical simulation...
+        </div>
+        <div className="text-gray-400 text-sm">This takes about 15 seconds on the free server.</div>
+      </div>
+    );
+  }
+
+  if (chipsError) {
+    return (
+      <div className="text-center mt-32 animate-fade-in-up">
+        <div className="bg-red-900/30 border border-red-500 text-red-400 p-6 rounded-xl inline-block">
+          <p className="font-bold text-lg mb-2">Server timed out calculating chips.</p>
+          <p className="text-sm mb-4">The math is heavy, the free server sometimes gives up.</p>
+          <button onClick={retryFetch} className="bg-[#00ff87] text-[#37003c] font-bold py-2 px-6 rounded-lg hover:scale-105 transition-transform">
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (!chips) {
@@ -39,8 +60,8 @@ export default function TokensPage({ chips, currentGw, loadingChips }) {
 
       <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
         <h2 className="text-xl font-black text-[#00ff87] mb-2 text-center uppercase tracking-widest">Free Hit Draft</h2>
-        <p className="text-center text-sm text-gray-400 mb-6">The mathematically perfect 11 for this week.</p>
-        <PitchView squad={chips.free_hit_team.starting_11} subs={chips.free_hit_team.bench} currentGw={currentGw} />
+        <p className="text-center text-sm text-gray-400 mb-6">The mathematically perfect 11 for your Free Hit week.</p>
+        <PitchView squad={chips.free_hit_team.starting_11} subs={chips.free_hit_team.bench} currentGw={chips.chip_advice.free_hit.gw} />
       </div>
     </div>
   );
