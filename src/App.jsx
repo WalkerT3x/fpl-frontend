@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
-import KitTester from './KitTester'; // <-- Importing the new file
+import HomePage from './pages/HomePage';
+import PickTeamPage from './pages/PickTeamPage';
+import TokensPage from './pages/TokensPage';
 
 function App() {
   const savedId = localStorage.getItem('fplTeamId') || '';
   const [teamId, setTeamId] = useState(savedId);
+  
   const [starting11, setStarting11] = useState(null);
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState('Home'); 
+  const [showPopup, setShowPopup] = useState(false);
   
-  const [activeTab, setActiveTab] = useState('Pick Team');
   const [chips, setChips] = useState(null);
   const [loadingChips, setLoadingChips] = useState(false);
 
@@ -35,6 +40,10 @@ function App() {
       setStarting11(data.starting_11);
       setBench(data.bench);
       setCurrentGw(data.current_gw);
+      
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 3000);
+      
     } catch (err) {
       setError(err.message);
     } finally {
@@ -65,86 +74,25 @@ function App() {
     }
   }, [activeTab]);
 
-  const PlayerCard = ({ player }) => {
-    const points = player.proj && player.proj[String(currentGw)] !== undefined 
-      ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
-      : '0.0';
-
-    return (
-      <div className="flex flex-col items-center w-[76px] md:w-24 group cursor-pointer relative mt-10">
-        
-        <div className="absolute -top-10 md:-top-14 w-16 h-16 md:w-20 md:h-20 z-10 transition-transform group-hover:-translate-y-1">
-          <img 
-            src={player.shirt_url}
-            alt={player.team}
-            className="w-full h-full object-contain drop-shadow-md"
-            onError={(e) => { e.target.src = 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'; }} 
-          />
-        </div>
-
-        <div className="bg-white text-black w-full pt-6 pb-1 rounded shadow-md border-b-4 border-gray-300 relative">
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#37003c] text-white w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center shadow-lg border-2 border-white z-50">
-            <span className="font-bold text-xs md:text-sm">{points}</span>
-          </div>
-
-          <div className="font-bold text-[11px] md:text-sm truncate px-1 leading-tight text-center">{player.name}</div>
-          <div className="text-[9px] md:text-xs text-gray-500 font-bold text-center">{player.position}</div>
-        </div>
-      </div>
-    );
-  };
-
-  const getPlayers = (arr, pos) => {
-    if (!arr) return [];
-    return arr.filter(p => p.position === pos);
-  };
-
-  const PitchView = ({ squad, subs }) => (
-    <div className="w-full flex flex-col gap-6 animate-fade-in-up">
-      <div className="relative overflow-hidden rounded-xl shadow-2xl border-4 border-[#008f2d]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#00a838] to-[#00c943]"></div>
-        <div className="absolute inset-4 border-2 border-white/20 rounded pointer-events-none"></div>
-        <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-white/20 pointer-events-none"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 border-2 border-white/20 rounded-full pointer-events-none"></div>
-
-        <div className="relative z-10 flex flex-col gap-6 md:gap-10 py-12 px-2">
-          <div className="flex justify-center gap-2 md:gap-10">
-            {getPlayers(squad, 'FWD').map((p, i) => <PlayerCard key={i} player={p} />)}
-          </div>
-          <div className="flex justify-center gap-2 md:gap-8">
-            {getPlayers(squad, 'MID').map((p, i) => <PlayerCard key={i} player={p} />)}
-          </div>
-          <div className="flex justify-center gap-2 md:gap-8">
-            {getPlayers(squad, 'DEF').map((p, i) => <PlayerCard key={i} player={p} />)}
-          </div>
-          <div className="flex justify-center">
-            {getPlayers(squad, 'GK').map((p, i) => <PlayerCard key={i} player={p} />)}
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-[#250028] rounded-xl p-4 pt-8 shadow-xl border border-[#4a0050]">
-        <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-sm">Substitutes</h3>
-        <div className="flex justify-center gap-4 md:gap-12">
-          {subs && subs.map((p, i) => <PlayerCard key={i} player={p} />)}
-        </div>
-      </div>
-    </div>
-  );
-
   return (
-    <div className="min-h-screen bg-[#37003c] text-white font-sans pb-10">
+    <div className="min-h-screen bg-[#37003c] text-white font-sans pb-10 relative">
       
-      <nav className="bg-[#250028] border-b border-[#4a0050] shadow-xl mb-6">
+      {showPopup && (
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-[#00ff87] text-[#37003c] px-8 py-3 rounded-full font-black text-lg shadow-2xl z-[100] animate-bounce">
+          ✅ Team Loaded Successfully!
+        </div>
+      )}
+
+      <nav className="bg-[#250028] border-b border-[#4a0050] shadow-xl mb-8 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 h-16">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('Home')}>
             <div className="w-8 h-8 bg-[#00ff87] rounded-full flex items-center justify-center">
               <span className="text-[#37003c] font-black text-xl">G</span>
             </div>
             <span className="font-black text-xl tracking-wider">FPL GENIUS</span>
           </div>
           <div className="hidden md:flex gap-6 text-sm font-bold text-gray-300">
-            {['Pick Team', 'Points', 'Transfers', 'Tokens'].map(tab => (
+            {['Home', 'Pick Team', 'Points', 'Transfers', 'Tokens'].map(tab => (
               <span 
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -159,71 +107,36 @@ function App() {
 
       <div className="max-w-4xl mx-auto px-4 flex flex-col items-center">
         
-        <div className="flex gap-2 w-full max-w-md mb-8 bg-[#250028] p-4 rounded-xl shadow-lg border border-[#4a0050]">
-          <input 
-            type="number" 
-            placeholder="Enter Team ID" 
-            className="flex-1 p-3 rounded-lg text-black bg-white outline-none focus:ring-2 focus:ring-[#00ff87] font-bold"
-            value={teamId}
-            onChange={(e) => setTeamId(e.target.value)}
+        {activeTab === 'Home' && (
+          <HomePage 
+            teamId={teamId} 
+            setTeamId={setTeamId} 
+            fetchTeam={fetchTeam} 
+            loading={loading} 
+            error={error} 
+            starting11={starting11} 
           />
-          <button 
-            onClick={activeTab === 'Tokens' ? fetchChips : fetchTeam}
-            className="bg-[#00ff87] hover:bg-green-400 text-[#37003c] font-black py-3 px-6 rounded-lg transition-transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
-            disabled={loading || loadingChips}
-          >
-            {loading || loadingChips ? '...' : 'Optimize'}
-          </button>
-        </div>
+        )}
 
-        {error && <div className="text-red-400 font-bold mb-4 bg-red-900/30 p-3 rounded-lg border border-red-500">{error}</div>}
-
-        {/* Rendering the separate component here */}
         {activeTab === 'Pick Team' && (
-          <>
-            {starting11 && <PitchView squad={starting11} subs={bench} />}
-            <KitTester />
-          </>
+          <PickTeamPage 
+            starting11={starting11} 
+            bench={bench} 
+            currentGw={currentGw} 
+            setActiveTab={setActiveTab} 
+          />
         )}
 
-        {activeTab === 'Tokens' && chips && (
-          <div className="w-full flex flex-col gap-8 animate-fade-in-up">
-            <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
-              <h2 className="text-2xl font-black text-[#00ff87] mb-4 text-center">Chip Strategy</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
-                  <h3 className="font-bold text-yellow-400">Bench Boost</h3>
-                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.bench_boost.gw}</strong></p>
-                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.bench_boost.reason}</p>
-                </div>
-                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
-                  <h3 className="font-bold text-yellow-400">Triple Captain</h3>
-                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.triple_captain.gw}</strong></p>
-                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.triple_captain.reason}</p>
-                </div>
-                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
-                  <h3 className="font-bold text-yellow-400">Free Hit</h3>
-                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.free_hit.gw}</strong></p>
-                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.free_hit.reason}</p>
-                </div>
-                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
-                  <h3 className="font-bold text-yellow-400">Wildcard</h3>
-                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.wildcard.gw}</strong></p>
-                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.wildcard.reason}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
-              <h2 className="text-xl font-black text-[#00ff87] mb-2 text-center uppercase tracking-widest">Free Hit Draft</h2>
-              <p className="text-center text-sm text-gray-400 mb-6">The mathematically perfect 11 for this week.</p>
-              <PitchView squad={chips.free_hit_team.starting_11} subs={chips.free_hit_team.bench} />
-            </div>
-          </div>
+        {activeTab === 'Tokens' && (
+          <TokensPage 
+            chips={chips} 
+            currentGw={currentGw} 
+            loadingChips={loadingChips} 
+          />
         )}
 
-        {activeTab !== 'Pick Team' && activeTab !== 'Tokens' && (
-          <div className="text-center text-gray-400 mt-20">
+        {activeTab !== 'Home' && activeTab !== 'Pick Team' && activeTab !== 'Tokens' && (
+          <div className="text-center text-gray-400 mt-20 animate-fade-in-up">
             <h2 className="text-2xl font-bold mb-2">{activeTab} Page</h2>
             <p>Coming soon...</p>
           </div>
