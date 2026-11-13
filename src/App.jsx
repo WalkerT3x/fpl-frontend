@@ -2,17 +2,13 @@ import { useState, useEffect } from 'react';
 
 function App() {
   const savedId = localStorage.getItem('fplTeamId') || '';
-  
   const [teamId, setTeamId] = useState(savedId);
   const [starting11, setStarting11] = useState(null);
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
   const [activeTab, setActiveTab] = useState('Pick Team');
-  const [chips, setChips] = useState(null);
-  const [loadingChips, setLoadingChips] = useState(false);
 
   const fetchTeam = async () => {
     if (!teamId) return;
@@ -42,55 +38,25 @@ function App() {
     }
   };
 
-  const fetchChips = async () => {
-    if (!teamId) return;
-    setLoadingChips(true);
-    setError('');
-
-    try {
-      const response = await fetch(`https://fpl-backend-c25x.onrender.com/api/chips/${teamId}`);
-      if (!response.ok) throw new Error('Failed to fetch chips');
-      const data = await response.json();
-      setChips(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoadingChips(false);
-    }
-  };
-
-  useEffect(() => {
-    if (activeTab === 'Tokens' && teamId && !chips) {
-      fetchChips();
-    }
-  }, [activeTab]);
-
   const PlayerCard = ({ player }) => {
     const points = player.proj && player.proj[String(currentGw)] !== undefined 
       ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
       : '0.0';
 
-    // USING THE REAL TEAM CODE (1 for Home, 2 for Away)
-    const kitType = player.is_home ? "1" : "2";
-    const kitUrl = `https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_${player.team_code}_${kitType}-110.png`;
-
     return (
       <div className="flex flex-col items-center w-[76px] md:w-24 group cursor-pointer relative mt-10">
         
-        {/* Player Kit Image */}
+        {/* Player Shirt Image (URL provided by backend) */}
         <div className="absolute -top-10 md:-top-14 w-16 h-16 md:w-20 md:h-20 z-10 transition-transform group-hover:-translate-y-1">
           <img 
-            src={kitUrl}
+            src={player.shirt_url}
             alt={player.team}
             className="w-full h-full object-contain drop-shadow-md"
             onError={(e) => { e.target.src = 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'; }} 
           />
         </div>
 
-        {/* Card Background */}
         <div className="bg-white text-black w-full pt-6 pb-1 rounded shadow-md border-b-4 border-gray-300 relative">
-          
-          {/* Points Bubble */}
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#37003c] text-white w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center shadow-lg border-2 border-white z-50">
             <span className="font-bold text-xs md:text-sm">{points}</span>
           </div>
@@ -176,11 +142,11 @@ function App() {
             onChange={(e) => setTeamId(e.target.value)}
           />
           <button 
-            onClick={activeTab === 'Tokens' ? fetchChips : fetchTeam}
+            onClick={fetchTeam}
             className="bg-[#00ff87] hover:bg-green-400 text-[#37003c] font-black py-3 px-6 rounded-lg transition-transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
-            disabled={loading || loadingChips}
+            disabled={loading}
           >
-            {loading || loadingChips ? '...' : 'Optimize'}
+            {loading ? '...' : 'Optimize'}
           </button>
         </div>
 
@@ -190,43 +156,7 @@ function App() {
           <PitchView squad={starting11} subs={bench} />
         )}
 
-        {activeTab === 'Tokens' && chips && (
-          <div className="w-full flex flex-col gap-8 animate-fade-in-up">
-            <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
-              <h2 className="text-2xl font-black text-[#00ff87] mb-4 text-center">Chip Strategy</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
-                  <h3 className="font-bold text-yellow-400">Bench Boost</h3>
-                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.bench_boost.gw}</strong></p>
-                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.bench_boost.reason}</p>
-                </div>
-                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
-                  <h3 className="font-bold text-yellow-400">Triple Captain</h3>
-                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.triple_captain.gw}</strong></p>
-                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.triple_captain.reason}</p>
-                </div>
-                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
-                  <h3 className="font-bold text-yellow-400">Free Hit</h3>
-                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.free_hit.gw}</strong></p>
-                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.free_hit.reason}</p>
-                </div>
-                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
-                  <h3 className="font-bold text-yellow-400">Wildcard</h3>
-                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.wildcard.gw}</strong></p>
-                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.wildcard.reason}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
-              <h2 className="text-xl font-black text-[#00ff87] mb-2 text-center uppercase tracking-widest">Free Hit Draft</h2>
-              <p className="text-center text-sm text-gray-400 mb-6">The mathematically perfect 11 for this week.</p>
-              <PitchView squad={chips.free_hit_team.starting_11} subs={chips.free_hit_team.bench} />
-            </div>
-          </div>
-        )}
-
-        {activeTab !== 'Pick Team' && activeTab !== 'Tokens' && (
+        {activeTab !== 'Pick Team' && (
           <div className="text-center text-gray-400 mt-20">
             <h2 className="text-2xl font-bold mb-2">{activeTab} Page</h2>
             <p>Coming soon...</p>
