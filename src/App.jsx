@@ -8,7 +8,10 @@ function App() {
   const [currentGw, setCurrentGw] = useState(11);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  
   const [activeTab, setActiveTab] = useState('Pick Team');
+  const [chips, setChips] = useState(null);
+  const [loadingChips, setLoadingChips] = useState(false);
 
   const fetchTeam = async () => {
     if (!teamId) return;
@@ -38,6 +41,29 @@ function App() {
     }
   };
 
+  const fetchChips = async () => {
+    if (!teamId) return;
+    setLoadingChips(true);
+    setError('');
+
+    try {
+      const response = await fetch(`https://fpl-backend-c25x.onrender.com/api/chips/${teamId}`);
+      if (!response.ok) throw new Error('Failed to fetch chips');
+      const data = await response.json();
+      setChips(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoadingChips(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'Tokens' && teamId && !chips) {
+      fetchChips();
+    }
+  }, [activeTab]);
+
   const PlayerCard = ({ player }) => {
     const points = player.proj && player.proj[String(currentGw)] !== undefined 
       ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
@@ -46,7 +72,7 @@ function App() {
     return (
       <div className="flex flex-col items-center w-[76px] md:w-24 group cursor-pointer relative mt-10">
         
-        {/* Player Shirt Image (URL from backend) */}
+        {/* Player Shirt Image (from backend) */}
         <div className="absolute -top-10 md:-top-14 w-16 h-16 md:w-20 md:h-20 z-10 transition-transform group-hover:-translate-y-1">
           <img 
             src={player.shirt_url}
@@ -115,4 +141,102 @@ function App() {
             <div className="w-8 h-8 bg-[#00ff87] rounded-full flex items-center justify-center">
               <span className="text-[#37003c] font-black text-xl">G</span>
             </div>
-            <span className="font-black text-xl tracking-wider">FPL GENI
+            <span className="font-black text-xl tracking-wider">FPL GENIUS</span>
+          </div>
+          <div className="hidden md:flex gap-6 text-sm font-bold text-gray-300">
+            {['Pick Team', 'Points', 'Transfers', 'Tokens'].map(tab => (
+              <span 
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`cursor-pointer transition-colors ${activeTab === tab ? 'text-[#00ff87]' : 'hover:text-white'}`}
+              >
+                {tab}
+              </span>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-4xl mx-auto px-4 flex flex-col items-center">
+        
+        <div className="flex gap-2 w-full max-w-md mb-8 bg-[#250028] p-4 rounded-xl shadow-lg border border-[#4a0050]">
+          <input 
+            type="number" 
+            placeholder="Enter Team ID" 
+            className="flex-1 p-3 rounded-lg text-black bg-white outline-none focus:ring-2 focus:ring-[#00ff87] font-bold"
+            value={teamId}
+            onChange={(e) => setTeamId(e.target.value)}
+          />
+          <button 
+            onClick={activeTab === 'Tokens' ? fetchChips : fetchTeam}
+            className="bg-[#00ff87] hover:bg-green-400 text-[#37003c] font-black py-3 px-6 rounded-lg transition-transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+            disabled={loading || loadingChips}
+          >
+            {loading || loadingChips ? '...' : 'Optimize'}
+          </button>
+        </div>
+
+        {error && <div className="text-red-400 font-bold mb-4 bg-red-900/30 p-3 rounded-lg border border-red-500">{error}</div>}
+
+        {activeTab === 'Pick Team' && starting11 && (
+          <PitchView squad={starting11} subs={bench} />
+        )}
+
+        {activeTab === 'Tokens' && chips && (
+          <div className="w-full flex flex-col gap-8 animate-fade-in-up">
+            <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
+              <h2 className="text-2xl font-black text-[#00ff87] mb-4 text-center">Chip Strategy</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
+                  <h3 className="font-bold text-yellow-400">Bench Boost</h3>
+                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.bench_boost.gw}</strong></p>
+                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.bench_boost.reason}</p>
+                </div>
+                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
+                  <h3 className="font-bold text-yellow-400">Triple Captain</h3>
+                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.triple_captain.gw}</strong></p>
+                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.triple_captain.reason}</p>
+                </div>
+                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
+                  <h3 className="font-bold text-yellow-400">Free Hit</h3>
+                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.free_hit.gw}</strong></p>
+                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.free_hit.reason}</p>
+                </div>
+                <div className="bg-[#37003c] p-4 rounded border border-[#4a0050]">
+                  <h3 className="font-bold text-yellow-400">Wildcard</h3>
+                  <p className="text-sm text-gray-300">Target: <strong className="text-white">GW {chips.chip_advice.wildcard.gw}</strong></p>
+                  <p className="text-xs text-gray-400 mt-1">{chips.chip_advice.wildcard.reason}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
+              <h2 className="text-xl font-black text-[#00ff87] mb-2 text-center uppercase tracking-widest">Free Hit Draft</h2>
+              <p className="text-center text-sm text-gray-400 mb-6">The mathematically perfect 11 for this week.</p>
+              <PitchView squad={chips.free_hit_team.starting_11} subs={chips.free_hit_team.bench} />
+            </div>
+          </div>
+        )}
+
+        {activeTab !== 'Pick Team' && activeTab !== 'Tokens' && (
+          <div className="text-center text-gray-400 mt-20">
+            <h2 className="text-2xl font-bold mb-2">{activeTab} Page</h2>
+            <p>Coming soon...</p>
+          </div>
+        )}
+      </div>
+      
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+          animation: fadeInUp 0.5s ease-out forwards;
+        }
+      `}} />
+    </div>
+  );
+}
+
+export default App;
