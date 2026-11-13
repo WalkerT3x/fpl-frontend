@@ -70,8 +70,9 @@ function App() {
       ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
       : '0.0';
 
-    // The backend now tells us EXACTLY which kit to load
-    const kitUrl = `https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_${player.kit_id}-110.png`;
+    // USING THE REAL TEAM CODE (1 for Home, 2 for Away)
+    const kitType = player.is_home ? "1" : "2";
+    const kitUrl = `https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_${player.team_code}_${kitType}-110.png`;
 
     return (
       <div className="flex flex-col items-center w-[76px] md:w-24 group cursor-pointer relative mt-10">
