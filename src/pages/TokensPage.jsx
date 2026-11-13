@@ -36,7 +36,11 @@ export default function TokensPage({ chips, currentGw, loadingChips, chipsError,
     <div className={`p-4 rounded border ${advice.used ? 'bg-[#1a001c] border-red-900/50 opacity-60' : 'bg-[#37003c] border-[#4a0050] shadow-lg'}`}>
       <div className="flex justify-between items-center mb-1">
         <h3 className="font-bold text-yellow-400">{title}</h3>
-        {advice.used && <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded shadow">USED</span>}
+        {advice.used && (
+          <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded shadow">
+            USED {advice.used_gw ? `GW${advice.used_gw}` : ''}
+          </span>
+        )}
       </div>
       <p className="text-sm text-gray-300">Target: <strong className="text-white text-lg">GW {advice.gw}</strong></p>
       <p className="text-xs text-gray-400 mt-1">{advice.reason}</p>
