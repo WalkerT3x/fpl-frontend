@@ -25,7 +25,7 @@ function App() {
     if (!teamId) return;
     setLoading(true);
     setError('');
-    setChips(null); // Clear old chips so we get fresh ones
+    setChips(null);
     setChipsError('');
     
     localStorage.setItem('fplTeamId', teamId);
@@ -54,8 +54,8 @@ function App() {
     }
   };
 
-  const fetchChips = async () => {
-    if (!teamId || chips) return;
+  const fetchChips = async (force = false) => {
+    if (!teamId || (chips && !force)) return;
     setLoadingChips(true);
     setChipsError('');
 
@@ -136,7 +136,7 @@ function App() {
             currentGw={currentGw} 
             loadingChips={loadingChips} 
             chipsError={chipsError}
-            retryFetch={() => { setChips(null); setChipsError(''); }}
+            retryFetch={() => fetchChips(true)}
           />
         )}
 
