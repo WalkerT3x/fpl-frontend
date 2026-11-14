@@ -1,7 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-// Helper to strip accents for search matching
-const unaccent = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const unaccent = (str) => {
+  return str
+    .replace(/Ø/g, 'O').replace(/ø/g, 'o')
+    .replace(/Æ/g, 'AE').replace(/æ/g, 'ae')
+    .replace(/Å/g, 'A').replace(/å/g, 'a')
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
 
 function pairByPosition(outList = [], inList = []) {
   const pairs = [];
@@ -15,6 +20,63 @@ function pairByPosition(outList = [], inList = []) {
     if (match) pairs.push({ out: p, in: match });
   });
   return pairs;
+}
+
+function SearchableSelect({ value, onChange, options, placeholder }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState(value || '');
+  const wrapperRef = useRef(null);
+
+  useEffect(() => { setSearch(value || ''); }, [value]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
+        if (!value) setSearch('');
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [value]);
+
+  const filtered = options.filter(opt =>
+    unaccent(opt).toLowerCase().includes(unaccent(search).toLowerCase())
+  );
+
+  return (
+    <div className="relative flex-1" ref={wrapperRef}>
+      <input
+        type="text"
+        className="w-full p-2 rounded bg-white text-black text-xs md:text-sm outline-none font-bold"
+        placeholder={placeholder}
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setIsOpen(true);
+          if (e.target.value === '') onChange('');
+        }}
+        onFocus={() => setIsOpen(true)}
+      />
+      {isOpen && filtered.length > 0 && (
+        <ul className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg max-h-48 overflow-y-auto">
+          {filtered.slice(0, 50).map((opt, idx) => (
+            <li
+              key={idx}
+              className="px-3 py-2 text-black text-xs md:text-sm font-bold hover:bg-gray-200 cursor-pointer"
+              onClick={() => {
+                onChange(opt);
+                setSearch(opt);
+                setIsOpen(false);
+              }}
+            >
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
 
 export default function TransferPlannerPage({ 
@@ -95,6 +157,10 @@ export default function TransferPlannerPage({
     setManualTransfers(manualTransfers.filter((_, i) => i !== index));
   };
 
+  const clearAllTransfers = () => {
+    setManualTransfers([]);
+  };
+
   const groupedHistory = transfers.reduce((acc, t) => {
     if (!acc[t.gw]) acc[t.gw] = [];
     acc[t.gw].push(t);
@@ -131,35 +197,41 @@ export default function TransferPlannerPage({
 
           {manualTransfers.map((t, i) => (
             <div key={i} className="flex gap-2 mb-2 items-center">
-              <input 
-                type="text" 
-                list="playerNames"
-                placeholder={playersLoading ? "Loading players..." : "Player OUT"}
-                className="flex-1 p-2 rounded bg-white text-black text-xs md:text-sm outline-none font-bold"
-                value={t.out_player}
-                onChange={(e) => handleTransferChange(i, 'out_player', e.target.value)}
+              <SearchableSelect 
+                value={t.out_player} 
+                onChange={(val) => handleTransferChange(i, 'out_player', val)} 
+                options={allPlayers} 
+                placeholder={playersLoading ? "Loading players..." : "Player OUT"} 
               />
               <span className="text-[#00ff87] font-bold text-sm">➡️</span>
-              <input 
-                type="text" 
-                list="playerNames"
-                placeholder={playersLoading ? "Loading players..." : "Player IN"}
-                className="flex-1 p-2 rounded bg-white text-black text-xs md:text-sm outline-none font-bold"
-                value={t.in_player}
-                onChange={(e) => handleTransferChange(i, 'in_player', e.target.value)}
+              <SearchableSelect 
+                value={t.in_player} 
+                onChange={(val) => handleTransferChange(i, 'in_player', val)} 
+                options={allPlayers} 
+                placeholder={playersLoading ? "Loading players..." : "Player IN"} 
               />
               <button onClick={() => removeTransfer(i)} className="text-red-500 font-bold px-1 hover:text-red-400 text-sm">✕</button>
             </div>
           ))}
           
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-4 gap-4">
-            <button 
-              onClick={addTransfer} 
-              disabled={manualTransfers.length >= 5}
-              className="text-xs bg-[#00ff87] text-[#37003c] font-black px-3 py-1.5 rounded hover:bg-green-400 transition-colors disabled:opacity-50"
-            >
-              + Add Transfer
-            </button>
+            <div className="flex gap-2 w-full md:w-auto">
+              <button 
+                onClick={addTransfer} 
+                disabled={manualTransfers.length >= 5}
+                className="text-xs bg-[#00ff87] text-[#37003c] font-black px-3 py-1.5 rounded hover:bg-green-400 transition-colors disabled:opacity-50"
+              >
+                + Add Transfer
+              </button>
+              {manualTransfers.length > 0 && (
+                <button 
+                  onClick={clearAllTransfers}
+                  className="text-xs bg-red-500 text-white font-black px-3 py-1.5 rounded hover:bg-red-600 transition-colors"
+                >
+                  Clear All
+                </button>
+              )}
+            </div>
 
             {manualTransfers.length > 0 && (
               <button 
@@ -171,12 +243,6 @@ export default function TransferPlannerPage({
               </button>
             )}
           </div>
-          
-          <datalist id="playerNames">
-            {allPlayers.map((name, index) => (
-              <option key={index} value={unaccent(name)}>{name}</option>
-            ))}
-          </datalist>
         </div>
       </div>
 
