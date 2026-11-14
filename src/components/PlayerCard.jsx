@@ -13,10 +13,10 @@ export default function PlayerCard({
   const fixtureText = fixtureRaw ? fixtureRaw.replace("H ", "").replace("A ", "") + (fixtureRaw.startsWith("H") ? " (H)" : " (A)") : "";
 
   return (
-    <div className="flex flex-col items-center w-[76px] md:w-[94px] group cursor-pointer relative mt-2">
+    <div className="flex flex-col items-center w-[70px] md:w-[86px] group cursor-pointer relative mt-2">
       
       {/* CARD CONTAINER */}
-      <div className="w-full bg-[#150f18]/95 rounded-t-lg border border-white/20 border-b-0 relative flex flex-col items-center pt-1 pb-0 transition-transform group-hover:-translate-y-1 shadow-2xl">
+      <div className="w-full bg-[#120016]/80 backdrop-blur-md rounded-t-md border border-white/20 border-b-0 relative flex flex-col items-center pt-1 pb-0 transition-transform group-hover:-translate-y-1 shadow-2xl">
         
         {/* TOP LEFT ICONS (C / VC) - Small */}
         <div className="absolute top-1 left-1 z-20 flex flex-col gap-1">
@@ -38,7 +38,7 @@ export default function PlayerCard({
         </div>
 
         {/* Shirt - Massive */}
-        <div className="w-16 h-16 md:w-20 md:h-20 z-10 mt-4 mb-0.5">
+        <div className="w-14 h-14 md:w-20 md:h-20 z-10 mt-4 mb-0.5">
           <img 
             src={player.shirt_url}
             alt={player.team}
