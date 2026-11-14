@@ -16,67 +16,50 @@ export default function PitchView({
   return (
     <div className="w-full flex flex-col gap-10 animate-fade-in-up mt-4">
       
-      {/* 
-        THE 3D PITCH 
-        We use a h-[750px] container. The pitch is a div clipped into a trapezoid using clip-path.
-        This creates the perspective effect without distorting the player cards.
-      */}
-      <div className="relative w-full max-w-4xl mx-auto h-[750px] md:h-[850px] bg-[#37003c] overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/10">
+      {/* THE PITCH */}
+      <div className="relative w-full max-w-4xl mx-auto rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-2 border-[#008f2d] bg-[#189c3a] overflow-hidden py-8 px-2 min-h-[700px] flex flex-col justify-between">
         
-        {/* The Green Trapezoid Pitch */}
-        <div className="absolute inset-0 bg-[#0e8c31] [clip-path:polygon(15%_0,85%_0,100%_100%,0%_100%)]">
-          
-          {/* Grass Stripes */}
-          <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_60px,rgba(0,0,0,0.1)_60px,rgba(0,0,0,0.1)_120px)] mix-blend-multiply pointer-events-none"></div>
-          
-          {/* Vignette / Shadow for depth */}
-          <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.6)] pointer-events-none"></div>
+        {/* Grass Stripes */}
+        <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_60px,rgba(0,0,0,0.08)_60px,rgba(0,0,0,0.08)_120px)] pointer-events-none"></div>
+        
+        {/* Vignette / Shadow */}
+        <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)] pointer-events-none"></div>
 
-          {/* --- PITCH MARKINGS --- */}
-          
-          {/* Outer boundary */}
-          <div className="absolute top-4 left-[15%] right-[15%] bottom-4 border-2 border-white/40 pointer-events-none [clip-path:polygon(2%_0,98%_0,100%_100%,0%_100%)]"></div>
-          
-          {/* Top Goal Net */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-6 md:w-64 md:h-8 bg-[#1c3d23] border-b-2 border-l-2 border-r-2 border-white/50 pointer-events-none bg-[linear-gradient(90deg,transparent_49%,rgba(255,255,255,0.3)_49%,rgba(255,255,255,0.3)_51%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(255,255,255,0.3)_49%,rgba(255,255,255,0.3)_51%,transparent_51%)] bg-[length:8px_8px]"></div>
+        {/* --- PITCH MARKINGS --- */}
+        {/* Outer boundary */}
+        <div className="absolute inset-3 border-2 border-white/30 pointer-events-none rounded-sm"></div>
+        
+        {/* Top Goal Net */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-10 md:w-64 md:h-12 border-b-2 border-l-2 border-r-2 border-white/50 bg-[linear-gradient(90deg,transparent_49%,rgba(255,255,255,0.2)_49%,rgba(255,255,255,0.2)_51%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(255,255,255,0.2)_49%,rgba(255,255,255,0.2)_51%,transparent_51%)] bg-[length:10px_10px] pointer-events-none"></div>
 
-          {/* Top Penalty Box */}
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 w-2/3 md:w-1/2 h-[22%] border-b-2 border-l-2 border-r-2 border-white/40 pointer-events-none"></div>
-          
-          {/* Top Goal Area (6-yard box) */}
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 w-1/3 md:w-1/4 h-[10%] border-b-2 border-l-2 border-r-2 border-white/40 pointer-events-none"></div>
-          
-          {/* Top D-Arc */}
-          <div className="absolute top-[26%] left-1/2 -translate-x-1/2 w-32 md:w-48 h-16 md:h-24 border-b-2 border-l-2 border-r-2 border-white/40 rounded-b-full pointer-events-none"></div>
+        {/* Top Penalty Box */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-3/4 md:w-1/2 h-36 md:h-44 border-b-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+        {/* Top 6-Yard Box */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-1/2 md:w-1/3 h-16 md:h-20 border-b-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+        {/* Top D-Arc */}
+        <div className="absolute top-[150px] md:top-[182px] left-1/2 -translate-x-1/2 w-32 md:w-40 h-10 md:h-12 border-b-2 border-l-2 border-r-2 border-white/30 rounded-b-full pointer-events-none"></div>
 
-          {/* Halfway Line */}
-          <div className="absolute top-1/2 left-[15%] right-[15%] h-0.5 bg-white/40 pointer-events-none"></div>
-          
-          {/* Center Circle */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64 border-2 border-white/40 rounded-full pointer-events-none flex items-center justify-center">
-            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-          </div>
-
-          {/* Bottom Penalty Box */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-2/3 md:w-1/2 h-[22%] border-t-2 border-l-2 border-r-2 border-white/40 pointer-events-none"></div>
-          
-          {/* Bottom Goal Area (6-yard box) */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-1/3 md:w-1/4 h-[10%] border-t-2 border-l-2 border-r-2 border-white/40 pointer-events-none"></div>
-          
-          {/* Bottom D-Arc */}
-          <div className="absolute bottom-[26%] left-1/2 -translate-x-1/2 w-32 md:w-48 h-16 md:h-24 border-t-2 border-l-2 border-r-2 border-white/40 rounded-t-full pointer-events-none"></div>
-
-          {/* Bottom Goal Net */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-6 md:w-64 md:h-8 bg-[#1c3d23] border-t-2 border-l-2 border-r-2 border-white/50 pointer-events-none bg-[linear-gradient(90deg,transparent_49%,rgba(255,255,255,0.3)_49%,rgba(255,255,255,0.3)_51%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(255,255,255,0.3)_49%,rgba(255,255,255,0.3)_51%,transparent_51%)] bg-[length:8px_8px]"></div>
-
+        {/* Halfway Line */}
+        <div className="absolute top-1/2 left-3 right-3 h-0.5 bg-white/30 pointer-events-none -translate-y-1/2"></div>
+        
+        {/* Center Circle */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 md:w-52 md:h-52 border-2 border-white/30 rounded-full pointer-events-none flex items-center justify-center">
+          <div className="w-2 h-2 bg-white/50 rounded-full"></div>
         </div>
 
-        {/* --- PLAYERS CONTAINER --- */}
-        {/* We use absolute positioning to place the rows, and scale them slightly to simulate depth */}
-        <div className="absolute inset-0 z-10 pointer-events-none">
+        {/* Bottom Penalty Box */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-3/4 md:w-1/2 h-36 md:h-44 border-t-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+        {/* Bottom 6-Yard Box */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-1/2 md:w-1/3 h-16 md:h-20 border-t-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+        {/* Bottom D-Arc */}
+        <div className="absolute bottom-[150px] md:bottom-[182px] left-1/2 -translate-x-1/2 w-32 md:w-40 h-10 md:h-12 border-t-2 border-l-2 border-r-2 border-white/30 rounded-t-full pointer-events-none"></div>
+
+
+        {/* --- PLAYERS (Using Flex spacing) --- */}
+        <div className="relative z-10 flex flex-col justify-between h-full w-full">
           
           {/* GK Row */}
-          <div className="absolute top-[8%] left-0 w-full flex justify-center gap-4 scale-75 pointer-events-auto">
+          <div className="flex justify-center gap-4 relative z-10 mb-2 mt-2">
             {getPlayers(squad, 'GK').map((p, i) => (
               <PlayerCard 
                 key={i} 
@@ -89,7 +72,7 @@ export default function PitchView({
           </div>
 
           {/* DEF Row */}
-          <div className="absolute top-[28%] left-0 w-full flex justify-center gap-2 md:gap-8 scale-90 pointer-events-auto">
+          <div className="flex justify-center gap-2 md:gap-8 relative z-10 mb-2">
             {getPlayers(squad, 'DEF').map((p, i) => (
               <PlayerCard 
                 key={i} 
@@ -102,7 +85,7 @@ export default function PitchView({
           </div>
 
           {/* MID Row */}
-          <div className="absolute top-[52%] left-0 w-full flex justify-center gap-2 md:gap-10 scale-100 pointer-events-auto">
+          <div className="flex justify-center gap-2 md:gap-8 relative z-10 mb-2">
             {getPlayers(squad, 'MID').map((p, i) => (
               <PlayerCard 
                 key={i} 
@@ -115,7 +98,7 @@ export default function PitchView({
           </div>
 
           {/* FWD Row */}
-          <div className="absolute top-[76%] left-0 w-full flex justify-center gap-2 md:gap-12 scale-105 pointer-events-auto">
+          <div className="flex justify-center gap-2 md:gap-10 relative z-10 mb-2">
             {getPlayers(squad, 'FWD').map((p, i) => (
               <PlayerCard 
                 key={i} 
@@ -126,7 +109,7 @@ export default function PitchView({
               />
             ))}
           </div>
-
+          
         </div>
       </div>
 
