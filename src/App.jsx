@@ -7,6 +7,13 @@ import ChipStrategyPage from './pages/ChipStrategyPage';
 function App() {
   const savedId = localStorage.getItem('fplTeamId') || '';
   const [teamId, setTeamId] = useState(savedId);
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  // Keep track of previously used Team IDs
+  const [teamHistory, setTeamHistory] = useState(() => {
+    const saved = localStorage.getItem('fplTeamHistory');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   // Squad State
   const [starting11, setStarting11] = useState(null);
@@ -80,6 +87,17 @@ function App() {
       setTeamValue(data.team_value);
       setCaptain(data.captain || '');
       setVice(data.vice || '');
+      
+      // UNLOCK THE APP
+      setHasLoaded(true);
+
+      // Save to history if it's a new ID
+      if (teamId && !teamHistory.includes(teamId)) {
+        const newHistory = [...teamHistory, teamId];
+        setTeamHistory(newHistory);
+        localStorage.setItem('fplTeamHistory', JSON.stringify(newHistory));
+      }
+
       triggerPopup("✅ Team Loaded Successfully!");
     } catch (err) {
       setError(err.message);
@@ -201,7 +219,7 @@ function App() {
                 key={tab}
                 onClick={() => {
                   setActiveTab(tab);
-                  if (tab === 'Chip Strategy' && starting11) fetchChips();
+                  if (tab === 'Chip Strategy' && hasLoaded) fetchChips();
                 }}
                 className={`cursor-pointer transition-colors ${activeTab === tab ? 'text-[#00ff87]' : 'hover:text-white'}`}
               >
@@ -222,10 +240,25 @@ function App() {
             loading={loading} 
             error={error} 
             starting11={starting11} 
+            teamHistory={teamHistory}
           />
         )}
 
-        {activeTab === 'My Squad' && (
+        {/* LOCKOUT SCREEN: If they haven't loaded a team, block the other tabs */}
+        {activeTab !== 'Dashboard' && !hasLoaded && (
+          <div className="text-center mt-32 animate-fade-in-up">
+            <p className="text-xl text-gray-300 mb-4">No team loaded yet.</p>
+            <button 
+              onClick={() => setActiveTab('Dashboard')} 
+              className="bg-[#00ff87] text-[#37003c] font-bold py-2 px-6 rounded-lg hover:scale-105 transition-transform"
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        )}
+
+        {/* ONLY RENDER THESE IF hasLoaded IS TRUE */}
+        {hasLoaded && activeTab === 'My Squad' && (
           <MySquadPage 
             starting11={starting11} 
             bench={bench} 
@@ -236,7 +269,7 @@ function App() {
           />
         )}
 
-        {activeTab === 'Transfer Planner' && (
+        {hasLoaded && activeTab === 'Transfer Planner' && (
           <TransferPlannerPage 
             teamId={teamId} 
             starting11={starting11}
@@ -255,7 +288,7 @@ function App() {
           />
         )}
 
-        {activeTab === 'Chip Strategy' && (
+        {hasLoaded && activeTab === 'Chip Strategy' && (
           <ChipStrategyPage 
             chips={chips} 
             starting11={starting11}

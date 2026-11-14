@@ -4,7 +4,8 @@ export default function DashboardPage({
   fetchTeam, 
   loading, 
   error, 
-  starting11 
+  starting11,
+  teamHistory = []
 }) {
   return (
     <div className="flex flex-col items-center justify-center mt-32 animate-fade-in-up w-full max-w-md mx-auto">
@@ -12,6 +13,19 @@ export default function DashboardPage({
       <div className="bg-[#250028] p-8 rounded-xl shadow-2xl border border-[#4a0050] w-full text-center mb-6">
         <h2 className="text-2xl font-black mb-6 text-white">Load Your Team</h2>
         
+        {teamHistory.length > 0 && (
+          <select 
+            className="w-full p-3 mb-4 rounded-lg text-black bg-gray-200 outline-none font-bold text-md cursor-pointer"
+            onChange={(e) => setTeamId(e.target.value)}
+            value={teamId || ""}
+          >
+            <option value="" disabled>Select a previous Team ID...</option>
+            {teamHistory.map(id => (
+              <option key={id} value={id}>{id}</option>
+            ))}
+          </select>
+        )}
+
         <input 
           type="number" 
           placeholder="Enter Team ID" 
