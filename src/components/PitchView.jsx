@@ -16,8 +16,8 @@ export default function PitchView({
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center animate-fade-in-up mt-4">
       
-      {/* STARTING 11 PITCH CONTAINER */}
-      <div className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/3] max-h-[800px] rounded-t-2xl overflow-hidden shadow-2xl border-2 border-b-0 border-white/20 bg-[#189c3a]">
+      {/* SEPARATE PITCH CONTAINER (Only Starting 11) */}
+      <div className="relative w-full aspect-[4/5] sm:aspect-[4/5] md:aspect-[16/10] rounded-t-2xl overflow-hidden shadow-2xl bg-[#189c3a]">
         
         {/* THE PITCH IMAGE */}
         <img 
@@ -30,14 +30,14 @@ export default function PitchView({
         <div className="absolute inset-0 z-20 pointer-events-none">
           
           {/* GK Row */}
-          <div className="absolute top-[12%] w-full flex justify-center gap-2 pointer-events-auto">
+          <div className="absolute top-[10%] w-full flex justify-center gap-2 pointer-events-auto">
             {getPlayers(squad, 'GK').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
           {/* DEF Row */}
-          <div className="absolute top-[33%] w-full flex justify-center gap-1 md:gap-4 pointer-events-auto">
+          <div className="absolute top-[32%] w-full flex justify-center gap-1 md:gap-4 pointer-events-auto">
             {getPlayers(squad, 'DEF').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
@@ -51,7 +51,7 @@ export default function PitchView({
           </div>
 
           {/* FWD Row */}
-          <div className="absolute top-[75%] w-full flex justify-center gap-1 md:gap-8 pointer-events-auto">
+          <div className="absolute top-[76%] w-full flex justify-center gap-1 md:gap-8 pointer-events-auto">
             {getPlayers(squad, 'FWD').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
@@ -61,7 +61,7 @@ export default function PitchView({
       </div>
 
       {/* SEPARATE BENCH CONTAINER */}
-      <div className="w-full bg-[#120016]/90 backdrop-blur-xl rounded-b-2xl border-2 border-t-0 border-white/20 p-4 pb-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+      <div className="w-full bg-[#120016]/95 rounded-b-2xl border-t border-white/10 p-4 pb-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
         <h3 className="text-center text-[#00ff87] font-black mb-4 uppercase tracking-widest text-xs md:text-sm drop-shadow-md">
           Substitutes
         </h3>

@@ -71,36 +71,30 @@ export default function ChipStrategyPage({ chips, starting11, currentGw, loading
         </div>
       </div>
 
-      {/* WILDCARD DRAFT TEAM */}
+      {/* WILDCARD DRAFT TEAM (Removed the extra padded box to match My Squad layout) */}
       {!chips.chip_advice.wildcard.used && chips.wildcard_team && chips.wildcard_team.starting_11.length > 0 && (
-        <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
-          <h2 className="text-xl font-black text-[#00ff87] mb-2 text-center uppercase tracking-widest">Wildcard Draft</h2>
-          <p className="text-center text-sm text-gray-400 mb-6">
-            The optimal 15-man squad for Gameweek {chips.chip_advice.wildcard.gw}.
-          </p>
+        <div className="w-full">
+          <h2 className="text-xl font-black text-[#00ff87] mb-4 text-center uppercase tracking-widest">Wildcard Draft</h2>
           <PitchView 
             squad={chips.wildcard_team.starting_11} 
             subs={chips.wildcard_team.bench} 
             currentGw={chips.chip_advice.wildcard.gw} 
-            captain={chips.wildcard_team.captain} // <-- ADDED
-            vice={chips.wildcard_team.vice} // <-- ADDED
+            captain={chips.wildcard_team.captain}
+            vice={chips.wildcard_team.vice}
           />
         </div>
       )}
 
-      {/* FREE HIT DRAFT TEAM */}
+      {/* FREE HIT DRAFT TEAM (Removed the extra padded box to match My Squad layout) */}
       {!chips.chip_advice.free_hit.used && chips.free_hit_team && chips.free_hit_team.starting_11.length > 0 && (
-        <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
-          <h2 className="text-xl font-black text-[#00ff87] mb-2 text-center uppercase tracking-widest">Free Hit Draft</h2>
-          <p className="text-center text-sm text-gray-400 mb-6">
-            The mathematically perfect 11 for Gameweek {chips.chip_advice.free_hit.gw}.
-          </p>
+        <div className="w-full">
+          <h2 className="text-xl font-black text-[#00ff87] mb-4 text-center uppercase tracking-widest">Free Hit Draft</h2>
           <PitchView 
             squad={chips.free_hit_team.starting_11} 
             subs={chips.free_hit_team.bench} 
             currentGw={chips.chip_advice.free_hit.gw} 
-            captain={chips.free_hit_team.captain} // <-- ADDED
-            vice={chips.free_hit_team.vice} // <-- ADDED
+            captain={chips.free_hit_team.captain}
+            vice={chips.free_hit_team.vice}
           />
         </div>
       )}

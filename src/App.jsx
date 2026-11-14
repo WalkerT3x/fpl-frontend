@@ -16,7 +16,6 @@ function App() {
   const [hasLoaded, setHasLoaded] = useState(() => localStorage.getItem('fplHasLoaded') === 'true');
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('fplActiveTab') || 'My Squad');
   const [isRestoring, setIsRestoring] = useState(() => localStorage.getItem('fplHasLoaded') === 'true');
-  
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [teamHistory, setTeamHistory] = useState(() => {
@@ -27,7 +26,9 @@ function App() {
   const [starting11, setStarting11] = useState(null);
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
-  const [deadline, setDeadline] = useState('');
+  const [gwName, setGwName] = useState('Gameweek 11');
+  const [deadline, setDeadline] = useState(null);
+  
   const [bank, setBank] = useState(null);
   const [teamValue, setTeamValue] = useState(null);
   const [captain, setCaptain] = useState('');
@@ -65,7 +66,7 @@ function App() {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     localStorage.setItem('fplActiveTab', tab);
-    setIsMobileMenuOpen(false); 
+    setIsMobileMenuOpen(false);
   };
 
   const triggerPopup = (msg) => {
@@ -102,7 +103,8 @@ function App() {
       setStarting11(data.starting_11);
       setBench(data.bench);
       setCurrentGw(data.current_gw);
-      setDeadline(data.deadline || '');
+      setGwName(data.gw_name);
+      setDeadline(data.deadline);
       setBank(data.bank);
       setTeamValue(data.team_value);
       setCaptain(data.captain || '');
@@ -161,7 +163,6 @@ function App() {
       setBank(data.bank);
       setCaptain(data.captain || '');
       setVice(data.vice || '');
-      setDeadline(data.deadline || '');
       
       setTransferAdvice(null);
       setBankAfter(null);
@@ -275,7 +276,6 @@ function App() {
             <span className="font-black text-xl tracking-wider text-white hidden sm:block">FPL <span className="text-[#00ff87]">ASSISTANT</span></span>
           </div>
           
-          {/* DESKTOP NAV */}
           <div className="hidden md:flex gap-6 text-sm font-bold items-center">
             {['My Squad', 'Transfer Planner', 'Chip Strategy'].map(tab => (
               <span 
@@ -298,7 +298,6 @@ function App() {
             </button>
           </div>
 
-          {/* MOBILE MENU BUTTON */}
           <div className="md:hidden flex items-center">
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -316,7 +315,6 @@ function App() {
 
         </div>
 
-        {/* MOBILE DROPDOWN MENU */}
         {isMobileMenuOpen && (
           <div className="md:hidden bg-[#120016]/95 backdrop-blur-xl border-b border-white/10">
             <div className="flex flex-col px-4 py-4 gap-4">
@@ -350,9 +348,8 @@ function App() {
             starting11={starting11} 
             bench={bench} 
             currentGw={currentGw} 
+            gwName={gwName}
             deadline={deadline}
-            chips={chips}
-            fetchChips={fetchChips}
             captain={captain} 
             vice={vice} 
             setActiveTab={handleTabChange} 
