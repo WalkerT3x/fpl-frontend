@@ -65,18 +65,17 @@ export default function DashboardPage({
 
             <div className="w-full h-px bg-white/10 mb-8"></div>
 
-            {/* UNIFIED INPUT SECTION */}
+            {/* UNIFIED INPUT SECTION (Save Button inside the box, styled like Load Team) */}
             <div className="mb-8">
               <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">
                 Add Team ID
               </label>
               
-              {/* Single pill container for input + button */}
-              <div className="flex bg-[#120016]/80 border border-white/10 rounded-xl overflow-hidden focus-within:border-[#00ff87] focus-within:shadow-[0_0_15px_rgba(0,255,135,0.3)] transition-all">
+              <div className="flex bg-[#120016]/80 border border-white/10 rounded-xl p-2 focus-within:border-[#00ff87] focus-within:shadow-[0_0_15px_rgba(0,255,135,0.3)] transition-all items-center">
                 <input 
                   type="number" 
                   placeholder="e.g. 1112720" 
-                  className="flex-1 bg-transparent text-white p-4 outline-none font-black text-lg placeholder-gray-600"
+                  className="flex-1 bg-transparent text-white px-3 outline-none font-black text-lg placeholder-gray-600"
                   value={newTeamId}
                   onChange={(e) => setNewTeamId(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleSaveTeam(); }}
@@ -84,7 +83,7 @@ export default function DashboardPage({
                 <button 
                   onClick={handleSaveTeam}
                   disabled={!newTeamId}
-                  className="bg-[#00ff87]/10 text-[#00ff87] font-black tracking-wider uppercase text-sm px-6 border-l border-white/10 hover:bg-[#00ff87]/20 active:bg-[#00ff87]/30 transition-colors disabled:opacity-30 disabled:hover:bg-[#00ff87]/10"
+                  className="bg-[#00ff87]/10 border border-[#00ff87] text-[#00ff87] font-black tracking-wider uppercase text-xs px-6 py-2.5 rounded-lg shadow-[0_0_10px_rgba(0,255,135,0.3)] hover:bg-[#00ff87]/20 hover:shadow-[0_0_15px_rgba(0,255,135,0.5)] active:scale-95 transition-all disabled:opacity-30 disabled:shadow-none disabled:hover:bg-[#00ff87]/10"
                 >
                   Save
                 </button>
