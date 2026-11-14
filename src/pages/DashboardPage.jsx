@@ -74,7 +74,7 @@ export default function DashboardPage({
                 <input 
                   type="number" 
                   placeholder="e.g. 1112720" 
-                  className="flex-1 p-4 rounded-xl text-white bg-[#0d0010]/60 border border-white/10 outline-none focus:border-[#00ff87] focus:shadow-[0_0_15px_rgba(0,255,135,0.3)] font-black text-lg placeholder-gray-600 transition-all shadow-inner"
+                  className="flex-1 p-4 rounded-xl text-white bg-[#120016]/80 border border-white/10 outline-none focus:border-[#00ff87] focus:shadow-[0_0_15px_rgba(0,255,135,0.3)] font-black text-lg placeholder-gray-600 transition-all shadow-inner"
                   value={newTeamId}
                   onChange={(e) => setNewTeamId(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleSaveTeam(); }}
@@ -95,7 +95,7 @@ export default function DashboardPage({
                 Saved Teams
               </label>
               
-              <div className="bg-[#120016]/80 rounded-2xl border border-white/5 overflow-hidden">
+              <div className="bg-[#120016]/80 rounded-2xl border border-white/10 overflow-hidden">
                 {teamHistory.length === 0 ? (
                   <div className="text-center text-gray-500 py-8 text-sm font-medium">
                     No teams saved yet.
@@ -109,15 +109,14 @@ export default function DashboardPage({
                       >
                         
                         <div className="flex items-center gap-4">
-                          {/* UPDATED NEON OUTLINE ID BADGE */}
-                          <div className="w-11 h-11 rounded-xl bg-[#00ff87]/10 border-2 border-[#00ff87] flex items-center justify-center shadow-[0_0_15px_rgba(0,255,135,0.4),inset_0_0_10px_rgba(0,255,135,0.2)]">
-                            <span className="text-[#00ff87] text-[10px] font-black tracking-widest drop-shadow-[0_0_3px_rgba(0,255,135,0.8)]">ID</span>
+                          {/* SMALLER NEON PURPLE ID BADGE */}
+                          <div className="w-9 h-9 rounded-xl bg-[#d946ef]/10 border border-[#d946ef] flex items-center justify-center shadow-[0_0_10px_rgba(217,70,239,0.3),inset_0_0_8px_rgba(217,70,239,0.2)]">
+                            <span className="text-[#d946ef] text-[9px] font-black tracking-widest drop-shadow-[0_0_3px_rgba(217,70,239,0.8)]">ID</span>
                           </div>
                           <span className="font-black text-xl text-white tracking-wide">{id}</span>
                         </div>
                         
                         <div className="flex items-center gap-3">
-                          {/* DULL RED REMOVE TEXT */}
                           <button 
                             onClick={() => handleRemoveTeam(id)}
                             className="text-[#ff4a4a]/60 hover:text-[#ff4a4a] text-xs font-bold px-2 py-2 transition-colors uppercase tracking-wider"
@@ -125,7 +124,6 @@ export default function DashboardPage({
                             Remove
                           </button>
                           
-                          {/* NEON OUTLINE LOAD BUTTON */}
                           <button 
                             onClick={() => fetchTeam(id)}
                             disabled={loading}
