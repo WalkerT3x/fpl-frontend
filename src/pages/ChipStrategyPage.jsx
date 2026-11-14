@@ -1,7 +1,11 @@
 import PitchView from '../components/PitchView';
 
-export default function ChipStrategyPage({ chips, currentGw, loadingChips, chipsError, retryFetch }) {
+export default function ChipStrategyPage({ chips, starting11, currentGw, loadingChips, chipsError, retryFetch }) {
   
+  if (!starting11) {
+    return <div className="text-center text-gray-400 mt-32 text-xl font-bold">Load a team on the Dashboard to see chip strategy.</div>;
+  }
+
   if (loadingChips) {
     return (
       <div className="flex flex-col items-center mt-32">
@@ -28,7 +32,13 @@ export default function ChipStrategyPage({ chips, currentGw, loadingChips, chips
   }
 
   if (!chips) {
-    return <div className="text-center text-gray-400 mt-32 text-xl font-bold">Load a team on the Dashboard to see chip strategy.</div>;
+    return (
+      <div className="text-center mt-32 animate-fade-in-up">
+        <button onClick={retryFetch} className="bg-[#00ff87] text-[#37003c] font-bold py-2 px-6 rounded-lg hover:scale-105 transition-transform">
+          Run Chip Strategy
+        </button>
+      </div>
+    );
   }
 
   const ChipCard = ({ title, advice }) => (
@@ -51,7 +61,6 @@ export default function ChipStrategyPage({ chips, currentGw, loadingChips, chips
   return (
     <div className="w-full flex flex-col gap-8 animate-fade-in-up">
       
-      {/* CHIP STRATEGY CARDS */}
       <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
         <h2 className="text-2xl font-black text-[#00ff87] mb-4 text-center">Chip Strategy</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -62,7 +71,6 @@ export default function ChipStrategyPage({ chips, currentGw, loadingChips, chips
         </div>
       </div>
 
-      {/* FREE HIT DRAFT TEAM */}
       {!chips.chip_advice.free_hit.used && chips.free_hit_team && chips.free_hit_team.starting_11.length > 0 && (
         <div className="bg-[#250028] rounded-xl p-6 shadow-xl border border-[#4a0050]">
           <h2 className="text-xl font-black text-[#00ff87] mb-2 text-center uppercase tracking-widest">Free Hit Draft</h2>

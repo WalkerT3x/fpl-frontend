@@ -80,7 +80,8 @@ function SearchableSelect({ value, onChange, options, placeholder }) {
 }
 
 export default function TransferPlannerPage({ 
-  teamId, 
+  teamId,
+  starting11,
   manualTransfers, 
   setManualTransfers, 
   applyManualTransfers,
@@ -100,11 +101,9 @@ export default function TransferPlannerPage({
   const [allPlayers, setAllPlayers] = useState([]);
   const [playersLoading, setPlayersLoading] = useState(true);
 
-  // Form State for the Mid-Week inputs
   const [formOut, setFormOut] = useState('');
   const [formIn, setFormIn] = useState('');
 
-  // Fetch player list
   useEffect(() => {
     let cancelled = false;
     const load = (attempt = 0) => {
@@ -129,9 +128,8 @@ export default function TransferPlannerPage({
     return () => { cancelled = true; };
   }, []);
 
-  // Fetch transfer history
   useEffect(() => {
-    if (!teamId) return;
+    if (!teamId || !starting11) return;
     setHistoryLoading(true);
     setHistoryError('');
     fetch(`https://fpl-backend-c25x.onrender.com/api/transfers/${teamId}`)
@@ -143,22 +141,19 @@ export default function TransferPlannerPage({
       })
       .catch(err => setHistoryError(err.message))
       .finally(() => setHistoryLoading(false));
-  }, [teamId]);
+  }, [teamId, starting11]);
 
   const handleApply = () => {
     if (!formOut || !formIn) return;
     
-    // Add to the manual transfers list
     const newTransfer = { out_player: formOut, in_player: formIn };
     const updatedTransfers = [...manualTransfers, newTransfer];
     
     setManualTransfers(updatedTransfers);
     
-    // Clear the form
     setFormOut('');
     setFormIn('');
     
-    // Immediately trigger the backend calculation to update the squad
     applyManualTransfers(updatedTransfers);
   };
 
@@ -174,7 +169,7 @@ export default function TransferPlannerPage({
     return acc;
   }, {});
 
-  if (!teamId) {
+  if (!teamId || !starting11) {
     return <div className="text-center text-gray-400 mt-32 text-xl font-bold">Load a team on the Dashboard to see transfers.</div>;
   }
 
@@ -194,7 +189,6 @@ export default function TransferPlannerPage({
         
         <div className="bg-[#37003c] p-4 rounded-lg border border-[#4a0050]">
           
-          {/* Inputs */}
           <div className="flex flex-col md:flex-row gap-2 items-center mb-4">
             <SearchableSelect 
               value={formOut} 
@@ -218,7 +212,6 @@ export default function TransferPlannerPage({
             </button>
           </div>
 
-          {/* Applied Transfers List */}
           {manualTransfers.length > 0 && (
             <div className="bg-[#250028] rounded-lg border border-[#4a0050] overflow-hidden mt-4">
               <div className="bg-[#250028] px-3 py-1.5 border-b border-[#4a0050]">
@@ -279,7 +272,6 @@ export default function TransferPlannerPage({
 
         {transferAdvice ? (
           <>
-            {/* Bank Tracker */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-[#37003c] p-3 rounded-lg border border-[#4a0050] text-center">
                 <span className="text-[10px] uppercase tracking-wider text-gray-400 block">Current Bank</span>
@@ -329,7 +321,6 @@ export default function TransferPlannerPage({
               )}
             </div>
 
-            {/* 5-Week Dream Team */}
             {dreamPairs.length > 0 && (
               <div className="bg-[#37003c] rounded-lg border border-[#4a0050] overflow-hidden mt-4">
                 <div className="bg-[#250028] px-3 py-1.5 border-b border-[#4a0050]">

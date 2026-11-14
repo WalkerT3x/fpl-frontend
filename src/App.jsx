@@ -32,7 +32,7 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  // Transfer State (Uses V2 key to clear out old broken local storage)
+  // Transfer State
   const [manualTransfers, setManualTransfers] = useState(() => {
     const saved = localStorage.getItem('fplManualTransfersV2');
     return saved ? JSON.parse(saved) : [];
@@ -41,7 +41,6 @@ function App() {
   const [transferAdvice, setTransferAdvice] = useState(null);
   const [bankAfter, setBankAfter] = useState(null);
 
-  // Save manual transfers to local storage
   useEffect(() => {
     localStorage.setItem('fplManualTransfersV2', JSON.stringify(manualTransfers));
   }, [manualTransfers]);
@@ -52,7 +51,6 @@ function App() {
     setTimeout(() => setShowPopup(false), 3000);
   };
 
-  // Base Loader
   const fetchTeam = async () => {
     if (!teamId) return;
     setLoading(true);
@@ -90,7 +88,6 @@ function App() {
     }
   };
 
-  // Triggered by Mid-Week Planner "Apply to My Squad"
   const applyManualTransfers = async (transfersToApply) => {
     if (!teamId) return;
     setLoading(true);
@@ -103,20 +100,18 @@ function App() {
         body: JSON.stringify({ 
           team_id: parseInt(teamId), 
           free_transfers: freeTransfers, 
-          manual_transfers: transfersToApply
+          manual_transfers: transfersToApply 
         })
       });
       const data = await response.json();
       if (data.error) throw new Error(data.error);
       
-      // Update the squad on the My Squad page
       setStarting11(data.starting_11);
       setBench(data.bench);
       setBank(data.bank);
       setCaptain(data.captain || '');
       setVice(data.vice || '');
       
-      // Clear old transfer advice so they don't see outdated math
       setTransferAdvice(null);
       setBankAfter(null);
       
@@ -128,7 +123,6 @@ function App() {
     }
   };
 
-  // Triggered by Transfer Planner "Run AI Transfer Math"
   const fetchTransfers = async () => {
     if (!teamId) return;
     setLoadingTransfers(true);
@@ -207,7 +201,7 @@ function App() {
                 key={tab}
                 onClick={() => {
                   setActiveTab(tab);
-                  if (tab === 'Chip Strategy') fetchChips();
+                  if (tab === 'Chip Strategy' && starting11) fetchChips();
                 }}
                 className={`cursor-pointer transition-colors ${activeTab === tab ? 'text-[#00ff87]' : 'hover:text-white'}`}
               >
@@ -245,6 +239,7 @@ function App() {
         {activeTab === 'Transfer Planner' && (
           <TransferPlannerPage 
             teamId={teamId} 
+            starting11={starting11}
             manualTransfers={manualTransfers}
             setManualTransfers={setManualTransfers}
             applyManualTransfers={applyManualTransfers}
@@ -263,6 +258,7 @@ function App() {
         {activeTab === 'Chip Strategy' && (
           <ChipStrategyPage 
             chips={chips} 
+            starting11={starting11}
             currentGw={currentGw} 
             loadingChips={loadingChips} 
             chipsError={chipsError}
