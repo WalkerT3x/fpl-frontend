@@ -28,28 +28,28 @@ export default function PitchView({
         <div className="absolute inset-0 z-20 pointer-events-none">
           
           {/* GK Row */}
-          <div className="absolute top-[10%] w-full flex justify-evenly items-center px-4 md:px-12 pointer-events-auto">
+          <div className="absolute top-[10%] w-full flex justify-evenly items-center pointer-events-auto">
             {getPlayers(squad, 'GK').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
           {/* DEF Row */}
-          <div className="absolute top-[30%] w-full flex justify-evenly items-center px-2 md:px-6 pointer-events-auto">
+          <div className="absolute top-[30%] w-full flex justify-evenly items-center pointer-events-auto">
             {getPlayers(squad, 'DEF').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
           {/* MID Row */}
-          <div className="absolute top-[52%] w-full flex justify-evenly items-center px-2 md:px-6 pointer-events-auto">
+          <div className="absolute top-[52%] w-full flex justify-evenly items-center pointer-events-auto">
             {getPlayers(squad, 'MID').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
           {/* FWD Row */}
-          <div className="absolute top-[74%] w-full flex justify-evenly items-center px-4 md:px-10 pointer-events-auto">
+          <div className="absolute top-[74%] w-full flex justify-evenly items-center pointer-events-auto">
             {getPlayers(squad, 'FWD').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
@@ -58,10 +58,10 @@ export default function PitchView({
         </div>
       </div>
 
-      {/* 2. THE BENCH (True Frosted Glassmorphism) */}
-      <div className="relative w-full mt-6 bg-white/5 backdrop-blur-2xl rounded-2xl p-6 md:p-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 overflow-hidden">
+      {/* 2. THE BENCH (True Frosted Glassmorphism, matching pitch width exactly) */}
+      <div className="relative w-full mt-6 bg-white/5 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 overflow-hidden">
         
-        {/* GLOWING HUES - Increased to 50% opacity to shine through the glass */}
+        {/* GLOWING HUES */}
         <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
         <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
 
