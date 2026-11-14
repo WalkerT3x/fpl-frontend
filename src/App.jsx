@@ -4,7 +4,7 @@ import MySquadPage from './pages/MySquadPage';
 import TransferPlannerPage from './pages/TransferPlannerPage';
 import ChipStrategyPage from './pages/ChipStrategyPage';
 
-const APP_VERSION = "v1.0.3"; 
+const APP_VERSION = "v1.0.5"; 
 
 function App() {
   if (localStorage.getItem('fplAppVersion') !== APP_VERSION) {
@@ -129,7 +129,7 @@ function App() {
   const handleLogout = () => {
     setHasLoaded(false);
     setStarting11(null);
-    handleTabChange('My Squad'); // Reset the tab for next time they log in
+    handleTabChange('My Squad'); 
     localStorage.setItem('fplHasLoaded', 'false');
   };
 
@@ -252,21 +252,21 @@ function App() {
     <div className="min-h-screen bg-[#37003c] text-white font-sans pb-10 relative">
       
       {showPopup && (
-        <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-[#00ff87] text-[#37003c] px-8 py-3 rounded-full font-black text-lg shadow-2xl z-[100] animate-bounce whitespace-nowrap">
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-[#00ff87] text-[#37003c] px-8 py-3 rounded-full font-black text-lg shadow-[0_0_20px_rgba(0,255,135,0.5)] z-[100] animate-bounce whitespace-nowrap">
           {popupMessage}
         </div>
       )}
 
-      <nav className="bg-[#250028] border-b border-[#4a0050] shadow-xl mb-8 sticky top-0 z-50">
+      <nav className="bg-[#120016]/80 backdrop-blur-xl border-b border-white/10 shadow-2xl mb-8 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 h-16">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#00ff87] rounded-full flex items-center justify-center">
-              <span className="text-[#37003c] font-black text-xl">G</span>
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleTabChange('My Squad')}>
+            <div className="w-8 h-8 bg-[#00ff87] rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(0,255,135,0.4)]">
+              <span className="text-[#37003c] font-black text-xl">A</span>
             </div>
-            <span className="font-black text-xl tracking-wider">FPL GENIUS</span>
+            <span className="font-black text-xl tracking-wider text-white">FPL <span className="text-[#00ff87]">ASSISTANT</span></span>
           </div>
           
-          <div className="hidden md:flex gap-6 text-sm font-bold text-gray-300 items-center">
+          <div className="hidden md:flex gap-6 text-sm font-bold items-center">
             {['My Squad', 'Transfer Planner', 'Chip Strategy'].map(tab => (
               <span 
                 key={tab}
@@ -274,16 +274,15 @@ function App() {
                   handleTabChange(tab);
                   if (tab === 'Chip Strategy') fetchChips();
                 }}
-                className={`cursor-pointer transition-colors ${activeTab === tab ? 'text-[#00ff87]' : 'hover:text-white'}`}
+                className={`cursor-pointer transition-colors uppercase tracking-widest text-xs ${activeTab === tab ? 'text-[#00ff87] drop-shadow-[0_0_5px_rgba(0,255,135,0.5)]' : 'text-gray-400 hover:text-white'}`}
               >
                 {tab}
               </span>
             ))}
 
-            {/* LOGOUT BUTTON */}
             <button 
               onClick={handleLogout}
-              className="ml-4 bg-red-900/40 text-red-400 border border-red-900/50 px-3 py-1.5 rounded hover:bg-red-900/60 transition-colors"
+              className="ml-4 text-[#ff4a4a]/80 hover:text-[#ff4a4a] uppercase tracking-wider text-xs font-bold px-4 py-2 rounded-lg border border-[#ff4a4a]/30 hover:bg-[#ff4a4a]/10 transition-colors"
             >
               Switch Team
             </button>

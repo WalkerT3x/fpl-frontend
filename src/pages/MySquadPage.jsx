@@ -22,7 +22,6 @@ export default function MySquadPage({
     );
   }
 
-  // Ensure bench order: GK first, then outfield subs by projection
   const benchGK = (bench || []).filter(p => p.position === 'GK');
   const benchOut = (bench || [])
     .filter(p => p.position !== 'GK')
@@ -30,19 +29,22 @@ export default function MySquadPage({
   const orderedBench = [...benchGK, ...benchOut];
 
   return (
-    <div className="w-full flex flex-col items-center animate-fade-in-up">
-      <div className="bg-[#00ff87] text-[#37003c] px-6 py-2 rounded-full font-black uppercase tracking-widest mb-4 shadow-lg">
+    <div className="w-full flex flex-col items-center animate-fade-in-up mt-4">
+      
+      {/* HEADER PILL */}
+      <div className="border border-[#00ff87] bg-[#00ff87]/10 text-[#00ff87] px-6 py-2 rounded-full font-black uppercase tracking-widest mb-6 shadow-[0_0_15px_rgba(0,255,135,0.3)]">
         Optimal XI — Gameweek {currentGw}
       </div>
 
-      <div className="flex items-center gap-6 mb-6 text-sm">
-        <div className="bg-[#250028] border border-[#4a0050] rounded-lg px-3 py-1.5">
-          <span className="text-[10px] uppercase tracking-wider text-gray-400 block">Captain</span>
-          <span className="font-black text-[#00ff87]">{captain || '—'}</span>
+      {/* CAPTAIN / VC BOXES */}
+      <div className="flex items-center gap-4 mb-8">
+        <div className="bg-[#120016]/80 border border-white/10 rounded-xl px-5 py-2 text-center shadow-lg">
+          <span className="text-[10px] uppercase tracking-widest text-gray-400 block mb-0.5">Captain</span>
+          <span className="font-black text-white tracking-wide">{captain || '—'}</span>
         </div>
-        <div className="bg-[#250028] border border-[#4a0050] rounded-lg px-3 py-1.5">
-          <span className="text-[10px] uppercase tracking-wider text-gray-400 block">Vice Captain</span>
-          <span className="font-black text-[#00ff87]">{vice || '—'}</span>
+        <div className="bg-[#120016]/80 border border-white/10 rounded-xl px-5 py-2 text-center shadow-lg">
+          <span className="text-[10px] uppercase tracking-widest text-gray-400 block mb-0.5">Vice Captain</span>
+          <span className="font-black text-white tracking-wide">{vice || '—'}</span>
         </div>
       </div>
 
