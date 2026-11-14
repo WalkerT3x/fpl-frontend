@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import plLogo from '../assets/pl-logo.png';
 
 export default function DashboardPage({ 
   teamHistory, 
@@ -38,13 +37,13 @@ export default function DashboardPage({
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 animate-fade-in-up">
         
         {/* LOGOS & HEADER */}
-        <div className="text-center mb-8 flex flex-col items-center">
+        <div className="text-center mb-10 flex flex-col items-center">
           
-          {/* The Official Logo - Filtered to be pure white */}
+          {/* The Premier League Lion - Loaded via CDN and filtered to white */}
           <img 
-            src={plLogo} 
-            alt="Premier League" 
-            className="w-48 h-auto mb-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+            src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" 
+            alt="Premier League Lion" 
+            className="w-24 md:w-32 h-auto mb-4 drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]"
             style={{ filter: 'brightness(0) invert(1)' }} 
           />
 
