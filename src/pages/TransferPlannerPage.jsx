@@ -188,9 +188,9 @@ export default function TransferPlannerPage({
           <h2 className="text-lg font-black text-[#00ff87] mb-2 uppercase tracking-widest">1. Mid-Week Transfers</h2>
           <p className="text-xs text-gray-300 mb-6">If you made transfers this week that the FPL API hasn't updated yet, add them here and apply them.</p>
           
-          <div className="bg-[#120016]/60 p-4 rounded-xl border border-white/10">
-            
-            <div className="flex flex-col md:flex-row gap-3 items-center mb-6 relative z-20">
+          <div className="flex flex-col gap-4">
+            {/* INPUTS (Flattened) */}
+            <div className="flex flex-col md:flex-row gap-3 items-center relative z-20">
               <SearchableSelect 
                 value={formOut} 
                 onChange={setFormOut} 
@@ -214,27 +214,22 @@ export default function TransferPlannerPage({
               </button>
             </div>
 
+            {/* APPLIED LIST (Flattened) */}
             {manualTransfers.length > 0 && (
-              <div className="bg-[#120016]/80 rounded-xl border border-white/10 overflow-hidden">
-                <div className="bg-black/40 px-4 py-2 border-b border-white/10">
-                  <span className="text-[#00ff87] font-black text-xs uppercase tracking-wider">
-                    Applied Transfers
-                  </span>
-                </div>
-                <div className="flex flex-col divide-y divide-white/5">
-                  {manualTransfers.map((t, i) => (
-                    <div key={i} className="flex items-center justify-between px-4 py-3 text-xs md:text-sm gap-2">
-                      <div className="flex items-center gap-2 w-5/12 justify-end">
-                        <span className="text-red-400 font-bold truncate">{t.out_player}</span>
-                      </div>
-                      <div className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</div>
-                      <div className="flex items-center justify-between w-5/12 gap-2">
-                        <span className="text-green-400 font-bold truncate">{t.in_player}</span>
-                        <button onClick={() => handleRemove(i)} className="text-red-500 hover:text-red-400 font-bold px-1 shrink-0">✕</button>
-                      </div>
+              <div className="flex flex-col mt-4 border-t border-white/10 pt-4 gap-2">
+                <span className="text-[#00ff87] font-black text-xs uppercase tracking-wider mb-1">Applied Transfers</span>
+                {manualTransfers.map((t, i) => (
+                  <div key={i} className="flex items-center justify-between py-2 text-xs md:text-sm gap-2">
+                    <div className="flex items-center gap-2 w-5/12 justify-end">
+                      <span className="text-red-400 font-bold truncate">{t.out_player}</span>
                     </div>
-                  ))}
-                </div>
+                    <div className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</div>
+                    <div className="flex items-center justify-between w-5/12 gap-2">
+                      <span className="text-green-400 font-bold truncate">{t.in_player}</span>
+                      <button onClick={() => handleRemove(i)} className="text-red-500 hover:text-red-400 font-bold px-1 shrink-0">✕</button>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
