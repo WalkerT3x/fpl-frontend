@@ -109,17 +109,18 @@ export default function DashboardPage({
                       >
                         
                         <div className="flex items-center gap-4">
-                          {/* NEON OUTLINE ID BADGE */}
-                          <div className="w-10 h-10 rounded-xl bg-transparent border border-[#00ff87] flex items-center justify-center shadow-[0_0_10px_rgba(0,255,135,0.3),inset_0_0_8px_rgba(0,255,135,0.2)]">
-                            <span className="text-[#00ff87] text-xs font-black tracking-wider drop-shadow-[0_0_3px_rgba(0,255,135,0.8)]">ID</span>
+                          {/* UPDATED NEON OUTLINE ID BADGE */}
+                          <div className="w-11 h-11 rounded-xl bg-[#00ff87]/10 border-2 border-[#00ff87] flex items-center justify-center shadow-[0_0_15px_rgba(0,255,135,0.4),inset_0_0_10px_rgba(0,255,135,0.2)]">
+                            <span className="text-[#00ff87] text-[10px] font-black tracking-widest drop-shadow-[0_0_3px_rgba(0,255,135,0.8)]">ID</span>
                           </div>
                           <span className="font-black text-xl text-white tracking-wide">{id}</span>
                         </div>
                         
                         <div className="flex items-center gap-3">
+                          {/* DULL RED REMOVE TEXT */}
                           <button 
                             onClick={() => handleRemoveTeam(id)}
-                            className="text-gray-500 hover:text-red-400 text-xs font-bold px-2 py-2 transition-colors uppercase tracking-wider"
+                            className="text-[#ff4a4a]/60 hover:text-[#ff4a4a] text-xs font-bold px-2 py-2 transition-colors uppercase tracking-wider"
                           >
                             Remove
                           </button>
