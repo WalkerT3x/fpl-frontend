@@ -1,82 +1,72 @@
-import PlayerCard from './PlayerCard';
-
-export default function PitchView({ 
-  squad, 
-  subs, 
+export default function PlayerCard({ 
+  player, 
   currentGw, 
-  captain, 
-  vice, 
-  benchLabels 
+  isCaptain = false, 
+  isVice = false, 
+  benchLabel = null
 }) {
-  const getPlayers = (arr, pos) => {
-    if (!Array.isArray(arr)) return [];
-    return arr.filter(p => p && p.position === pos);
-  };
+  if (!player) return null;
+
+  const points = player.proj && player.proj[String(currentGw)] !== undefined 
+    ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
+    : '0.0';
+    
+  const fixtureRaw = player.fixtures && player.fixtures[String(currentGw)] ? String(player.fixtures[String(currentGw)]) : "";
+  const fixtureText = fixtureRaw ? fixtureRaw.replace("H ", "").replace("A ", "") + (fixtureRaw.startsWith("H") ? " (H)" : " (A)") : "";
 
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col items-center animate-fade-in-up mt-4">
+    <div className="flex flex-col items-center w-[70px] sm:w-[85px] md:w-[105px] group cursor-pointer relative">
       
-      {/* PITCH CONTAINER */}
-      <div className="relative w-full rounded-t-2xl overflow-hidden shadow-2xl border border-white/20 border-b-0">
+      {/* CARD CONTAINER */}
+      <div className="w-full bg-[#150f18]/95 rounded-t-md border border-white/10 border-b-0 relative flex flex-col items-center pt-1 pb-0 transition-transform group-hover:-translate-y-1 shadow-lg">
         
-        {/* THE CROPPED PITCH IMAGE */}
-        <img 
-          src="/pitch.png" 
-          alt="FPL Pitch" 
-          className="w-full h-auto block pointer-events-none"
-        />
+        {/* TOP LEFT ICONS (C / VC) */}
+        <div className="absolute top-1 left-1 z-20 flex flex-col gap-1">
+          {isCaptain && (
+            <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-[#ffd700] text-black flex items-center justify-center font-black text-[8px] md:text-xs shadow-[0_0_8px_rgba(255,215,0,0.6)] border border-white">
+              C
+            </div>
+          )}
+          {isVice && !isCaptain && (
+            <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-gray-300 text-black flex items-center justify-center font-black text-[7px] md:text-[10px] shadow-[0_0_8px_rgba(209,213,219,0.6)] border border-white">
+              VC
+            </div>
+          )}
+        </div>
 
-        {/* PLAYERS OVERLAY */}
-        <div className="absolute inset-0 z-20 pointer-events-none">
-          
-          {/* GK Row */}
-          <div className="absolute top-[8%] w-full flex justify-center gap-2 pointer-events-auto">
-            {getPlayers(squad, 'GK').map((p, i) => (
-              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
-            ))}
-          </div>
+        {/* TOP RIGHT POINTS */}
+        <div className="absolute top-1 right-1 z-20 bg-[#37003c] text-white w-5 h-5 md:w-7 md:h-7 rounded-full flex items-center justify-center shadow-lg border border-white/50">
+          <span className="font-bold text-[8px] md:text-[11px]">{points}</span>
+        </div>
 
-          {/* DEF Row */}
-          <div className="absolute top-[28%] w-full flex justify-center gap-1 md:gap-4 pointer-events-auto">
-            {getPlayers(squad, 'DEF').map((p, i) => (
-              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
-            ))}
-          </div>
+        {/* Shirt */}
+        <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-20 md:h-20 z-10 mt-3 md:mt-4 mb-1">
+          <img 
+            src={player.shirt_url || 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'}
+            alt={player.team || 'Team'}
+            className="w-full h-full object-contain drop-shadow-xl"
+            onError={(e) => { e.target.src = 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'; }} 
+          />
+        </div>
 
-          {/* MID Row */}
-          <div className="absolute top-[50%] w-full flex justify-center gap-1 md:gap-6 pointer-events-auto">
-            {getPlayers(squad, 'MID').map((p, i) => (
-              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
-            ))}
-          </div>
+      </div>
 
-          {/* FWD Row */}
-          <div className="absolute top-[72%] w-full flex justify-center gap-1 md:gap-8 pointer-events-auto">
-            {getPlayers(squad, 'FWD').map((p, i) => (
-              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
-            ))}
-          </div>
-
+      {/* WHITE BOTTOM BOX */}
+      <div className="bg-white text-black w-full rounded-b-md shadow-md flex flex-col items-center py-0.5 z-20 relative">
+        <div className="font-black text-[9px] md:text-xs truncate px-1 leading-tight text-center w-full mt-1">
+          {player.name || 'Player'}
+        </div>
+        <div className="text-[7px] md:text-[9px] text-gray-500 font-bold text-center uppercase tracking-wide mb-1">
+          {fixtureText}
         </div>
       </div>
 
-      {/* THE BENCH - Custom Glass Box below the pitch */}
-      <div className="w-full bg-[#120016]/90 backdrop-blur-xl rounded-b-2xl border border-white/20 border-t-0 p-6 shadow-2xl flex flex-col items-center">
-        <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-xs md:text-sm drop-shadow-[0_0_10px_rgba(0,255,135,0.4)]">
-          Substitutes
-        </h3>
-        <div className="flex justify-center gap-2 md:gap-8">
-          {Array.isArray(subs) && subs.map((p, i) => (
-            <PlayerCard 
-              key={i} 
-              player={p} 
-              currentGw={currentGw}
-              benchLabel={benchLabels && benchLabels[i] ? benchLabels[i] : undefined}
-            />
-          ))}
+      {/* BENCH LABEL */}
+      {benchLabel && (
+        <div className="absolute -bottom-2 -right-2 z-30 px-1 md:px-1.5 py-0.5 rounded bg-[#37003c] text-[#00ff87] font-black text-[7px] md:text-[9px] shadow-lg border border-[#00ff87]">
+          {benchLabel}
         </div>
-      </div>
-      
+      )}
     </div>
   );
 }
