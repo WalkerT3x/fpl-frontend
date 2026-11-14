@@ -65,7 +65,7 @@ export default function DashboardPage({
 
             <div className="w-full h-px bg-white/10 mb-8"></div>
 
-            {/* UNIFIED INPUT SECTION (Save Button inside the box, styled like Load Team) */}
+            {/* UNIFIED INPUT SECTION */}
             <div className="mb-8">
               <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">
                 Add Team ID
@@ -75,7 +75,8 @@ export default function DashboardPage({
                 <input 
                   type="number" 
                   placeholder="e.g. 1112720" 
-                  className="flex-1 bg-transparent text-white px-3 outline-none font-black text-lg placeholder-gray-600"
+                  // Added Tailwind classes to hide the number spinners
+                  className="flex-1 bg-transparent text-white px-3 outline-none font-black text-lg placeholder-gray-600 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   value={newTeamId}
                   onChange={(e) => setNewTeamId(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleSaveTeam(); }}
@@ -110,9 +111,9 @@ export default function DashboardPage({
                       >
                         
                         <div className="flex items-center gap-3">
-                          {/* SMALLER NEON PURPLE ID BADGE */}
-                          <div className="w-8 h-8 rounded-lg bg-[#d946ef]/10 border border-[#d946ef] flex items-center justify-center shadow-[0_0_10px_rgba(217,70,239,0.3)]">
-                            <span className="text-[#d946ef] text-[9px] font-black tracking-widest drop-shadow-[0_0_3px_rgba(217,70,239,0.8)]">ID</span>
+                          {/* TINY NEON PURPLE ID BADGE */}
+                          <div className="w-6 h-6 rounded flex items-center justify-center border border-[#d946ef] shadow-[0_0_8px_rgba(217,70,239,0.4)]">
+                            <span className="text-[#d946ef] text-[8px] font-black tracking-widest drop-shadow-[0_0_2px_rgba(217,70,239,0.8)]">ID</span>
                           </div>
                           <span className="font-black text-lg text-white tracking-wide">{id}</span>
                         </div>
