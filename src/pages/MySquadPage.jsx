@@ -8,6 +8,7 @@ export default function MySquadPage({
   deadline,
   captain, 
   vice, 
+  chips,
   setActiveTab 
 }) {
   if (!starting11) {
@@ -30,7 +31,6 @@ export default function MySquadPage({
     .sort((a, b) => (b.GWProjection || 0) - (a.GWProjection || 0));
   const orderedBench = [...benchGK, ...benchOut];
 
-  // Format the deadline nicely (e.g., "Sat 21 Nov, 11:00")
   const formatDeadline = (isoString) => {
     if (!isoString) return null;
     const date = new Date(isoString);
@@ -39,27 +39,35 @@ export default function MySquadPage({
     }).format(date);
   };
 
+  // Helper to render chip status
+  const renderChip = (label, used) => (
+    <div className={`flex flex-col items-center justify-center p-2 rounded-lg border ${used ? 'bg-[#120016]/40 border-white/5 opacity-50' : 'bg-[#00ff87]/10 border-[#00ff87]/50 shadow-[0_0_10px_rgba(0,255,135,0.2)]'}`}>
+      <span className={`text-[9px] md:text-[10px] font-black uppercase tracking-wider ${used ? 'text-gray-500' : 'text-[#00ff87]'}`}>{label}</span>
+      <span className={`text-[8px] md:text-[10px] font-bold ${used ? 'text-gray-600' : 'text-white'}`}>{used ? 'Used' : 'Available'}</span>
+    </div>
+  );
+
   return (
     <div className="w-full flex flex-col items-center animate-fade-in-up mt-4">
       
       {/* HEADER: GW & DEADLINE */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-2">
-          {gwName} <span className="text-gray-400 mx-2">•</span> 
+      <div className="text-center mb-6">
+        <h1 className="text-xl md:text-3xl font-black text-white tracking-tight mb-2 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-3">
+          <span>{gwName}</span>
+          <span className="hidden md:block text-gray-500">•</span>
           <span className="text-[#00ff87]">Deadline: {formatDeadline(deadline) || 'TBD'}</span>
         </h1>
       </div>
 
-      <div className="flex items-center gap-4 mb-8">
-        <div className="bg-[#120016]/80 border border-white/10 rounded-xl px-5 py-2 text-center shadow-lg">
-          <span className="text-[10px] uppercase tracking-widest text-gray-400 block mb-0.5">Captain</span>
-          <span className="font-black text-white tracking-wide">{captain || '—'}</span>
+      {/* CHIP STATUS ROW */}
+      {chips && chips.chip_advice && (
+        <div className="flex gap-2 md:gap-4 mb-6 w-full max-w-lg">
+          {renderChip('Bench Boost', chips.chip_advice.bench_boost.used)}
+          {renderChip('Triple Capt', chips.chip_advice.triple_captain.used)}
+          {renderChip('Wildcard', chips.chip_advice.wildcard.used)}
+          {renderChip('Free Hit', chips.chip_advice.free_hit.used)}
         </div>
-        <div className="bg-[#120016]/80 border border-white/10 rounded-xl px-5 py-2 text-center shadow-lg">
-          <span className="text-[10px] uppercase tracking-widest text-gray-400 block mb-0.5">Vice Captain</span>
-          <span className="font-black text-white tracking-wide">{vice || '—'}</span>
-        </div>
-      </div>
+      )}
 
       <PitchView 
         squad={starting11} 

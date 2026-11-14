@@ -4,7 +4,7 @@ import MySquadPage from './pages/MySquadPage';
 import TransferPlannerPage from './pages/TransferPlannerPage';
 import ChipStrategyPage from './pages/ChipStrategyPage';
 
-const APP_VERSION = "v1.0.7"; 
+const APP_VERSION = "v1.0.8"; 
 
 function App() {
   if (localStorage.getItem('fplAppVersion') !== APP_VERSION) {
@@ -115,6 +115,9 @@ function App() {
       localStorage.setItem('fplHasLoaded', 'true');
       localStorage.setItem('fplTeamId', idToLoad);
       
+      // Fetch chips in the background for the My Squad page
+      fetchChips(true, idToLoad);
+
       if (!isRestore) {
         handleTabChange('My Squad');
         triggerPopup("✅ Team Loaded Successfully!");
@@ -204,8 +207,9 @@ function App() {
     }
   };
 
-  const fetchChips = async (force = false) => {
-    if (!teamId || (chips && !force)) return;
+  const fetchChips = async (force = false, overrideTeamId = null) => {
+    const idToUse = overrideTeamId || teamId;
+    if (!idToUse || (chips && !force)) return;
     setLoadingChips(true);
     setChipsError('');
 
@@ -214,7 +218,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          team_id: parseInt(teamId), 
+          team_id: parseInt(idToUse), 
           free_transfers: freeTransfers, 
           manual_transfers: manualTransfers 
         })
@@ -352,6 +356,7 @@ function App() {
             deadline={deadline}
             captain={captain} 
             vice={vice} 
+            chips={chips}
             setActiveTab={handleTabChange} 
           />
         )}
