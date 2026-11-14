@@ -19,8 +19,8 @@ export default function PitchView({
       {/* SINGLE WRAPPER */}
       <div className="w-full flex flex-col items-center">
         
-        {/* 1. THE PITCH */}
-        <div className="relative w-full">
+        {/* 1. THE PITCH (Wrapped in a rounded container to clip white corners) */}
+        <div className="relative w-full rounded-t-2xl overflow-hidden shadow-2xl">
           <img 
             src="/pitch.png" 
             alt="FPL Pitch" 
@@ -61,7 +61,7 @@ export default function PitchView({
           </div>
         </div>
 
-        {/* 2. THE BENCH (Matched to w-full to equal the pitch width) */}
+        {/* 2. THE BENCH */}
         <div className="relative w-full mt-2 bg-white/5 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 overflow-hidden z-30">
           
           {/* GLOWING HUES */}
