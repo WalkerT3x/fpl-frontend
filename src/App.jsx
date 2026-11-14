@@ -32,7 +32,7 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  // Transfer State (Loaded from LocalStorage so it doesn't disappear on refresh)
+  // Transfer State
   const [manualTransfers, setManualTransfers] = useState(() => {
     const saved = localStorage.getItem('fplManualTransfers');
     return saved ? JSON.parse(saved) : [];
@@ -41,9 +41,14 @@ function App() {
   const [transferAdvice, setTransferAdvice] = useState(null);
   const [bankAfter, setBankAfter] = useState(null);
 
-  // Save manual transfers to local storage whenever they change
+  // Save manual transfers to local storage ONLY if they are fully filled out
   useEffect(() => {
-    localStorage.setItem('fplManualTransfers', JSON.stringify(manualTransfers));
+    const completeTransfers = manualTransfers.filter(t => t.out_player.trim() !== "" && t.in_player.trim() !== "");
+    if (completeTransfers.length > 0) {
+      localStorage.setItem('fplManualTransfers', JSON.stringify(completeTransfers));
+    } else {
+      localStorage.removeItem('fplManualTransfers');
+    }
   }, [manualTransfers]);
 
   const triggerPopup = (msg) => {
