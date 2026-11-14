@@ -58,12 +58,12 @@ export default function PitchView({
         </div>
       </div>
 
-      {/* 2. THE BENCH (Ultra Glassmorphism) */}
-      <div className="relative w-full mt-6 bg-black/40 backdrop-blur-2xl rounded-2xl p-6 md:p-8 shadow-[0_0_40px_rgba(0,0,0,0.6)] border border-white/20 overflow-hidden">
+      {/* 2. THE BENCH (True Frosted Glassmorphism) */}
+      <div className="relative w-full mt-6 bg-white/5 backdrop-blur-2xl rounded-2xl p-6 md:p-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 overflow-hidden">
         
-        {/* GLOWING HUES - Brightened to shine through the glass */}
-        <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-40 pointer-events-none"></div>
-        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-40 pointer-events-none"></div>
+        {/* GLOWING HUES - Increased to 50% opacity to shine through the glass */}
+        <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
+        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
 
         <div className="relative z-10 flex flex-col items-center">
           <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-xs md:text-sm drop-shadow-[0_0_10px_rgba(0,255,135,0.4)]">
