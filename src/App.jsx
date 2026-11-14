@@ -11,7 +11,6 @@ function App() {
   const [starting11, setStarting11] = useState(null);
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
-  
   const [bank, setBank] = useState(null);
   const [teamValue, setTeamValue] = useState(null);
   
@@ -25,8 +24,10 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  // State moved here so it's accessible by TransfersPage
+  // New States for Transfers
   const [manualTransfers, setManualTransfers] = useState([]); 
+  const [freeTransfers, setFreeTransfers] = useState(1);
+  const [transferAdvice, setTransferAdvice] = useState(null);
 
   const fetchTeam = async () => {
     if (!teamId) return;
@@ -43,7 +44,7 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           team_id: parseInt(teamId), 
-          free_transfers: 1, 
+          free_transfers: freeTransfers, 
           manual_transfers: manualTransfers 
         })
       });
@@ -56,6 +57,7 @@ function App() {
       setCurrentGw(data.current_gw);
       setBank(data.bank);
       setTeamValue(data.team_value);
+      setTransferAdvice(data.transfer_advice);
       
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 3000);
@@ -78,7 +80,7 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           team_id: parseInt(teamId), 
-          free_transfers: 1, 
+          free_transfers: freeTransfers, 
           manual_transfers: manualTransfers 
         })
       });
@@ -160,6 +162,9 @@ function App() {
             fetchTeam={fetchTeam}
             loading={loading}
             error={error}
+            freeTransfers={freeTransfers}
+            setFreeTransfers={setFreeTransfers}
+            transferAdvice={transferAdvice}
           />
         )}
 
