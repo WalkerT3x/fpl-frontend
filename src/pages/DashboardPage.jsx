@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import plLogo from '../assets/pl-logo.png';
 
 export default function DashboardPage({ 
   teamHistory, 
@@ -26,7 +27,7 @@ export default function DashboardPage({
   return (
     <div className="min-h-screen w-full relative flex flex-col items-center justify-center overflow-hidden bg-[#37003c]">
       
-      {/* BACKGROUND GRAPHICS - Mimicking the FPL Banner */}
+      {/* BACKGROUND GRAPHICS */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#37003c] via-[#2a0030] to-[#004d2a] opacity-90"></div>
         <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#00ff87] rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
@@ -38,14 +39,17 @@ export default function DashboardPage({
         
         {/* LOGOS & HEADER */}
         <div className="text-center mb-10 flex flex-col items-center">
+          
+          {/* The Official Logo */}
           <img 
-            src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" 
+            src={plLogo} 
             alt="Premier League" 
-            className="w-20 h-20 mb-4 drop-shadow-2xl"
-            onError={(e) => { e.target.style.display = 'none'; }}
+            className="w-64 h-auto mb-2 drop-shadow-2xl"
           />
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-2 italic">
-            FPL <span className="text-[#00ff87]">GENIUS</span>
+
+          {/* Subtitle */}
+          <h1 className="text-3xl md:text-4xl font-black text-white tracking-widest mb-1 italic">
+            <span className="text-[#00ff87]">GENIUS</span>
           </h1>
           <p className="text-gray-300 font-medium tracking-wide text-sm md:text-base">
             The ultimate AI mathematical optimizer.
