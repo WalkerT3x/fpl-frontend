@@ -61,8 +61,8 @@ export default function PitchView({
           </div>
         </div>
 
-        {/* 2. THE BENCH (Slightly narrower, pulled up with negative margin) */}
-        <div className="relative w-[88%] md:w-[90%] -mt-4 bg-white/5 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 overflow-hidden z-30">
+        {/* 2. THE BENCH (Matched to w-full to equal the pitch width) */}
+        <div className="relative w-full mt-2 bg-white/5 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 overflow-hidden z-30">
           
           {/* GLOWING HUES */}
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
