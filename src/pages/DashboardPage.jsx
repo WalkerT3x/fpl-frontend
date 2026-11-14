@@ -33,32 +33,33 @@ export default function DashboardPage({
         <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#04f5ff] rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
       </div>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN CONTENT - SINGLE BOX */}
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 animate-fade-in-up">
         
-        {/* NEW BRANDING CONTAINER */}
-        <div className="bg-black/40 backdrop-blur-md rounded-3xl p-6 md:p-8 text-center mb-6 border border-white/10 shadow-2xl">
-          {/* The Premier League Logo */}
-          <img 
-            src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" 
-            alt="Premier League" 
-            referrerPolicy="no-referrer"
-            className="w-16 h-auto mx-auto mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]"
-            onError={(e) => { e.target.style.display = 'none'; }}
-          />
-
-          {/* Your exact text */}
-          <h1 className="text-4xl font-black text-white tracking-tight mb-2">
-            FPL Assistant
-          </h1>
-          <p className="text-[#00ff87] font-bold tracking-wide text-sm md:text-base">
-            Take your team to the next level.
-          </p>
-        </div>
-
-        {/* THE LOGIN GLASS CARD */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20">
+        <div className="bg-black/50 backdrop-blur-xl rounded-3xl p-8 md:p-10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] border border-white/10">
           
+          {/* BRANDING HEADER */}
+          <div className="text-center mb-8 flex flex-col items-center">
+            {/* Premier League Logo */}
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" 
+              alt="Premier League" 
+              referrerPolicy="no-referrer"
+              className="w-16 h-auto mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]"
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
+
+            <h1 className="text-3xl font-black text-white tracking-tight mb-2">
+              FPL Assistant
+            </h1>
+            <p className="text-[#00ff87] font-bold tracking-wide text-sm md:text-base">
+              Take your team to the next level.
+            </p>
+          </div>
+
+          {/* DIVIDER */}
+          <div className="w-full h-px bg-white/10 mb-8"></div>
+
           {/* INPUT SECTION */}
           <div className="mb-6">
             <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
@@ -88,9 +89,9 @@ export default function DashboardPage({
             <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
               Saved Teams
             </label>
-            <div className="bg-black/20 rounded-xl border border-white/10 overflow-hidden">
+            <div className="bg-black/30 rounded-xl border border-white/5 overflow-hidden">
               {teamHistory.length === 0 ? (
-                <div className="text-center text-gray-400 py-8 text-sm italic">
+                <div className="text-center text-gray-400 py-6 text-sm italic">
                   No teams saved yet. Enter an ID above.
                 </div>
               ) : (
@@ -127,7 +128,7 @@ export default function DashboardPage({
           </div>
 
           {error && (
-            <div className="mt-4 text-red-300 font-bold bg-red-900/50 backdrop-blur-sm p-3 rounded-lg border border-red-500/50 text-center text-sm animate-shake">
+            <div className="mt-4 text-red-300 font-bold bg-red-900/50 p-3 rounded-lg border border-red-500/50 text-center text-sm">
               {error}
             </div>
           )}
