@@ -111,7 +111,14 @@ export default function TransferPlannerPage({
 
       {/* SECTION 1: MID-WEEK TRANSFERS */}
       <div className="bg-[#250028] rounded-xl p-6 shadow-2xl border border-[#4a0050]">
-        <h2 className="text-lg font-black text-[#00ff87] mb-2 uppercase tracking-widest">1. Mid-Week Transfers</h2>
+        <h2 className="text-lg font-black text-[#00ff87] mb-2 uppercase tracking-widest flex items-center justify-between">
+          <span>1. Mid-Week Transfers</span>
+          {manualTransfers.length > 0 && (
+             <span className="text-[10px] bg-[#00ff87] text-[#37003c] px-2 py-0.5 rounded font-black uppercase tracking-wider">
+               Active
+             </span>
+          )}
+        </h2>
         <p className="text-xs text-gray-400 mb-4">If you made transfers this week that the FPL API hasn't updated yet, add them here and apply them.</p>
         
         <div className="bg-[#37003c] p-4 rounded-lg border border-[#4a0050]">
@@ -254,7 +261,7 @@ export default function TransferPlannerPage({
               )}
             </div>
 
-            {/* 5-Week Dream Team (UPDATED UI) */}
+            {/* 5-Week Dream Team */}
             {dreamPairs.length > 0 && (
               <div className="bg-[#37003c] rounded-lg border border-[#4a0050] overflow-hidden mt-4">
                 <div className="bg-[#250028] px-3 py-1.5 border-b border-[#4a0050]">

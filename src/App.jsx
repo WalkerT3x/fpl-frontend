@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DashboardPage from './pages/DashboardPage';
 import MySquadPage from './pages/MySquadPage';
 import TransferPlannerPage from './pages/TransferPlannerPage';
@@ -32,11 +32,19 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  // Transfer State
-  const [manualTransfers, setManualTransfers] = useState([]);
+  // Transfer State (Loaded from LocalStorage so it doesn't disappear on refresh)
+  const [manualTransfers, setManualTransfers] = useState(() => {
+    const saved = localStorage.getItem('fplManualTransfers');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [freeTransfers, setFreeTransfers] = useState(1);
   const [transferAdvice, setTransferAdvice] = useState(null);
   const [bankAfter, setBankAfter] = useState(null);
+
+  // Save manual transfers to local storage whenever they change
+  useEffect(() => {
+    localStorage.setItem('fplManualTransfers', JSON.stringify(manualTransfers));
+  }, [manualTransfers]);
 
   const triggerPopup = (msg) => {
     setPopupMessage(msg);
