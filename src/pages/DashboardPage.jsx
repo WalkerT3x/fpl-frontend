@@ -31,22 +31,20 @@ export default function DashboardPage({
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#37003c] via-[#2a0030] to-[#004d2a] opacity-90"></div>
       </div>
 
-      {/* MAIN CONTENT - SINGLE BOX */}
+      {/* MAIN CONTENT */}
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 animate-fade-in-up">
         
-        {/* THE GLASS CARD WITH BRIGHT INNER GLOWS */}
+        {/* THE GLASS CARD */}
         <div className="relative bg-black/40 backdrop-blur-xl rounded-3xl p-8 md:p-10 shadow-[0_0_40px_rgba(0,0,0,0.8)] border-2 border-white/20 overflow-hidden">
           
-          {/* BRIGHT INNER GLOWING HUES (Brought back) */}
+          {/* INNER GLOWING HUES */}
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
           <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
 
-          {/* CONTENT WRAPPER (Keeps content above the glows) */}
           <div className="relative z-10">
             
             {/* BRANDING HEADER */}
             <div className="text-center mb-8 flex flex-col items-center">
-              {/* Premier League Logo - MASSIVE */}
               <img 
                 src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" 
                 alt="Premier League" 
@@ -56,30 +54,27 @@ export default function DashboardPage({
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
 
-              {/* Title: FPL in White, Assistant in Green */}
               <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-3">
-                <span className="text-white">FPL</span> <span className="text-[#00ff87]">Assistant</span>
+                <span className="text-white">FPL</span> <span className="text-[#00ff87] drop-shadow-[0_0_15px_rgba(0,255,135,0.5)]">Assistant</span>
               </h1>
               
-              {/* Subtitle: White text */}
-              <p className="text-white font-medium tracking-wide text-sm md:text-base drop-shadow-md">
+              <p className="text-gray-300 font-medium tracking-wide text-sm md:text-base drop-shadow-md">
                 Take your team to the next level.
               </p>
             </div>
 
-            {/* DIVIDER */}
             <div className="w-full h-px bg-white/10 mb-8"></div>
 
-            {/* INPUT SECTION */}
-            <div className="mb-6">
-              <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+            {/* MODERN INPUT SECTION */}
+            <div className="mb-8">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">
                 Add Team ID
               </label>
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <input 
                   type="number" 
                   placeholder="e.g. 1112720" 
-                  className="flex-1 p-3 rounded-xl text-black bg-white/90 outline-none focus:ring-4 focus:ring-[#00ff87]/50 font-black text-lg placeholder-gray-400 transition-all shadow-inner"
+                  className="flex-1 p-4 rounded-xl text-white bg-white/5 border border-white/10 outline-none focus:ring-2 focus:ring-[#00ff87] focus:border-transparent font-black text-lg placeholder-gray-500 transition-all shadow-inner"
                   value={newTeamId}
                   onChange={(e) => setNewTeamId(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleSaveTeam(); }}
@@ -87,45 +82,50 @@ export default function DashboardPage({
                 <button 
                   onClick={handleSaveTeam}
                   disabled={!newTeamId}
-                  className="bg-[#00ff87] text-[#37003c] font-black px-6 rounded-xl hover:bg-green-400 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 shadow-lg"
+                  className="bg-[#00ff87] text-[#37003c] font-black px-8 rounded-xl hover:bg-green-400 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_15px_rgba(0,255,135,0.4)]"
                 >
                   Save
                 </button>
               </div>
             </div>
 
-            {/* SAVED TEAMS LIST */}
+            {/* MODERN SAVED TEAMS LIST */}
             <div>
-              <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">
                 Saved Teams
               </label>
-              <div className="bg-black/30 rounded-xl border border-white/10 overflow-hidden">
+              
+              <div className="bg-[#1a001f]/60 rounded-2xl border border-white/10 overflow-hidden backdrop-blur-md">
                 {teamHistory.length === 0 ? (
-                  <div className="text-center text-gray-400 py-6 text-sm italic">
-                    No teams saved yet. Enter an ID above.
+                  <div className="text-center text-gray-500 py-8 text-sm font-medium">
+                    No teams saved yet.
                   </div>
                 ) : (
-                  <div className="flex flex-col divide-y divide-white/10">
-                    {teamHistory.map((id) => (
-                      <div key={id} className="flex items-center justify-between p-3 hover:bg-white/5 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-[#00ff87]/20 flex items-center justify-center">
-                            <span className="text-[#00ff87] text-xs font-black">ID</span>
+                  <div className="flex flex-col">
+                    {teamHistory.map((id, index) => (
+                      <div 
+                        key={id} 
+                        className={`flex items-center justify-between p-4 hover:bg-white/5 transition-colors ${index !== teamHistory.length - 1 ? 'border-b border-white/5' : ''}`}
+                      >
+                        
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-[#00ff87]/10 border border-[#00ff87]/20 flex items-center justify-center shadow-[0_0_10px_rgba(0,255,135,0.1)]">
+                            <span className="text-[#00ff87] text-xs font-black tracking-wider">ID</span>
                           </div>
-                          <span className="font-black text-lg text-white">{id}</span>
+                          <span className="font-black text-xl text-white tracking-wide">{id}</span>
                         </div>
                         
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
                           <button 
                             onClick={() => handleRemoveTeam(id)}
-                            className="text-red-400 hover:text-red-300 text-xs font-bold px-2 py-1 transition-colors"
+                            className="text-gray-400 hover:text-red-400 text-xs font-bold px-2 py-2 transition-colors"
                           >
                             Remove
                           </button>
                           <button 
                             onClick={() => fetchTeam(id)}
                             disabled={loading}
-                            className="bg-[#00ff87] text-[#37003c] font-black text-sm px-5 py-2 rounded-lg hover:bg-green-400 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 shadow-md"
+                            className="bg-[#00ff87] text-[#37003c] font-black text-sm px-5 py-2.5 rounded-lg hover:bg-green-400 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 shadow-[0_0_10px_rgba(0,255,135,0.3)]"
                           >
                             {loading ? 'Loading...' : 'Load Team'}
                           </button>
@@ -138,7 +138,7 @@ export default function DashboardPage({
             </div>
 
             {error && (
-              <div className="mt-4 text-red-300 font-bold bg-red-900/50 p-3 rounded-lg border border-red-500/50 text-center text-sm">
+              <div className="mt-6 text-red-300 font-bold bg-red-900/30 p-4 rounded-xl border border-red-500/30 text-center text-sm backdrop-blur-md">
                 {error}
               </div>
             )}
