@@ -4,23 +4,18 @@ import MySquadPage from './pages/MySquadPage';
 import TransferPlannerPage from './pages/TransferPlannerPage';
 import ChipStrategyPage from './pages/ChipStrategyPage';
 
-// BUMP THIS VERSION WHENEVER YOU PUSH A MAJOR UPDATE
-// It will force all users to clear their cache and re-enter their team
-const APP_VERSION = "v1.0.1"; 
+const APP_VERSION = "v1.0.3"; 
 
 function App() {
-  // --- VERSION CONTROL CHECK ---
   if (localStorage.getItem('fplAppVersion') !== APP_VERSION) {
     localStorage.clear();
     localStorage.setItem('fplAppVersion', APP_VERSION);
   }
 
-  // --- STATE INITIALIZATION FROM LOCAL STORAGE ---
   const [teamId, setTeamId] = useState(() => localStorage.getItem('fplTeamId') || '');
   const [hasLoaded, setHasLoaded] = useState(() => localStorage.getItem('fplHasLoaded') === 'true');
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('fplActiveTab') || 'My Squad');
   
-  // If the page refreshed and we were loaded, we need to fetch the data again
   const [isRestoring, setIsRestoring] = useState(() => localStorage.getItem('fplHasLoaded') === 'true');
 
   const [teamHistory, setTeamHistory] = useState(() => {
@@ -28,7 +23,6 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Squad State
   const [starting11, setStarting11] = useState(null);
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
@@ -37,21 +31,17 @@ function App() {
   const [captain, setCaptain] = useState('');
   const [vice, setVice] = useState('');
 
-  // Loading & Error States
   const [loading, setLoading] = useState(false);
   const [loadingTransfers, setLoadingTransfers] = useState(false);
   const [error, setError] = useState('');
 
-  // Popup
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
 
-  // Chips State
   const [chips, setChips] = useState(null);
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  // Transfer State
   const [manualTransfers, setManualTransfers] = useState(() => {
     const saved = localStorage.getItem('fplManualTransfersV2');
     return saved ? JSON.parse(saved) : [];
@@ -60,12 +50,10 @@ function App() {
   const [transferAdvice, setTransferAdvice] = useState(null);
   const [bankAfter, setBankAfter] = useState(null);
 
-  // Save manual transfers to local storage
   useEffect(() => {
     localStorage.setItem('fplManualTransfersV2', JSON.stringify(manualTransfers));
   }, [manualTransfers]);
 
-  // Restore Session on Refresh
   useEffect(() => {
     if (isRestoring && teamId) {
       fetchTeam(teamId, true);
@@ -85,13 +73,10 @@ function App() {
 
   const fetchTeam = async (idToLoad, isRestore = false) => {
     if (!idToLoad) return;
+    setLoading(true);
+    setError('');
     
-    if (isRestore) {
-      setLoading(true);
-      setError('');
-    } else {
-      setLoading(true);
-      setError('');
+    if (!isRestore) {
       setChips(null);
       setChipsError('');
       setTransferAdvice(null);
@@ -104,7 +89,8 @@ function App() {
         body: JSON.stringify({ 
           team_id: parseInt(idToLoad), 
           free_transfers: freeTransfers, 
-          manual_transfers: manualTransfers 
+          manual_transfers: manualTransfers,
+          run_math: false 
         })
       });
       const data = await response.json();
@@ -123,7 +109,6 @@ function App() {
       localStorage.setItem('fplHasLoaded', 'true');
       localStorage.setItem('fplTeamId', idToLoad);
       
-      // If it's a fresh load (not a refresh), send them to My Squad
       if (!isRestore) {
         handleTabChange('My Squad');
         triggerPopup("✅ Team Loaded Successfully!");
@@ -131,7 +116,6 @@ function App() {
       
     } catch (err) {
       setError(err.message);
-      // If restoring fails (e.g. server asleep), kick them back to the gateway
       if (isRestore) {
         setHasLoaded(false);
         localStorage.setItem('fplHasLoaded', 'false');
@@ -145,6 +129,7 @@ function App() {
   const handleLogout = () => {
     setHasLoaded(false);
     setStarting11(null);
+    handleTabChange('My Squad'); // Reset the tab for next time they log in
     localStorage.setItem('fplHasLoaded', 'false');
   };
 
@@ -160,7 +145,8 @@ function App() {
         body: JSON.stringify({ 
           team_id: parseInt(teamId), 
           free_transfers: freeTransfers, 
-          manual_transfers: transfersToApply 
+          manual_transfers: transfersToApply,
+          run_math: false 
         })
       });
       const data = await response.json();
@@ -195,7 +181,8 @@ function App() {
         body: JSON.stringify({ 
           team_id: parseInt(teamId), 
           free_transfers: freeTransfers, 
-          manual_transfers: manualTransfers 
+          manual_transfers: manualTransfers,
+          run_math: true 
         })
       });
       const data = await response.json();
@@ -238,19 +225,15 @@ function App() {
     }
   };
 
-  // --- RENDER LOGIC ---
-
-  // 1. If we are restoring a session on refresh, show a loading screen
   if (isRestoring) {
     return (
       <div className="min-h-screen bg-[#37003c] text-white flex flex-col justify-center items-center">
         <div className="text-[#00ff87] font-black text-2xl animate-pulse mb-2">Restoring Session...</div>
-        <p className="text-gray-400 text-sm">Waking up the AI Brain.</p>
+        <p className="text-gray-400 text-sm">Fetching your squad.</p>
       </div>
     );
   }
 
-  // 2. If no team is loaded, show ONLY the Gateway screen
   if (!hasLoaded) {
     return (
       <div className="min-h-screen bg-[#37003c] text-white font-sans flex flex-col justify-center items-center">
@@ -265,7 +248,6 @@ function App() {
     );
   }
 
-  // 3. Loaded App State
   return (
     <div className="min-h-screen bg-[#37003c] text-white font-sans pb-10 relative">
       
@@ -283,8 +265,9 @@ function App() {
             </div>
             <span className="font-black text-xl tracking-wider">FPL GENIUS</span>
           </div>
-          <div className="hidden md:flex gap-6 text-sm font-bold text-gray-300">
-            {['My Squad', 'Transfer Planner', 'Chip Strategy', 'Change Team'].map(tab => (
+          
+          <div className="hidden md:flex gap-6 text-sm font-bold text-gray-300 items-center">
+            {['My Squad', 'Transfer Planner', 'Chip Strategy'].map(tab => (
               <span 
                 key={tab}
                 onClick={() => {
@@ -296,6 +279,14 @@ function App() {
                 {tab}
               </span>
             ))}
+
+            {/* LOGOUT BUTTON */}
+            <button 
+              onClick={handleLogout}
+              className="ml-4 bg-red-900/40 text-red-400 border border-red-900/50 px-3 py-1.5 rounded hover:bg-red-900/60 transition-colors"
+            >
+              Switch Team
+            </button>
           </div>
         </div>
       </nav>
@@ -341,23 +332,6 @@ function App() {
             chipsError={chipsError}
             retryFetch={() => fetchChips(true)}
           />
-        )}
-
-        {activeTab === 'Change Team' && (
-          <div className="w-full">
-            <div className="flex justify-end mb-4">
-              <button onClick={handleLogout} className="text-red-400 hover:text-red-300 font-bold text-sm bg-red-900/20 px-4 py-2 rounded border border-red-900/50">
-                Log Out of Current Team
-              </button>
-            </div>
-            <DashboardPage 
-              teamHistory={teamHistory}
-              setTeamHistory={setTeamHistory}
-              fetchTeam={fetchTeam}
-              loading={loading} 
-              error={error} 
-            />
-          </div>
         )}
       </div>
     </div>
