@@ -36,12 +36,12 @@ export default function DashboardPage({
       {/* MAIN CONTENT - SINGLE BOX */}
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 animate-fade-in-up">
         
-        {/* THE GLASS CARD WITH INNER GLOWS AND BOLDER BORDER */}
-        <div className="relative bg-[#0d0010]/80 backdrop-blur-2xl rounded-3xl p-8 md:p-10 shadow-[0_0_40px_rgba(0,0,0,0.8)] border-2 border-white/20 overflow-hidden">
+        {/* THE SOLID DARK CARD */}
+        <div className="relative bg-[#0f0012]/95 backdrop-blur-xl rounded-3xl p-8 md:p-10 shadow-[0_0_40px_rgba(0,0,0,0.8)] border-2 border-white/20 overflow-hidden">
           
-          {/* INNER GLOWING HUES */}
-          <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-20 pointer-events-none"></div>
-          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-30 pointer-events-none"></div>
+          {/* VERY SUBTLE INNER GLOWS */}
+          <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-10 pointer-events-none"></div>
+          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-15 pointer-events-none"></div>
 
           {/* CONTENT WRAPPER (Keeps content above the glows) */}
           <div className="relative z-10">
@@ -101,7 +101,7 @@ export default function DashboardPage({
               <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
                 Saved Teams
               </label>
-              <div className="bg-black/40 rounded-xl border border-white/10 overflow-hidden">
+              <div className="bg-black/50 rounded-xl border border-white/10 overflow-hidden">
                 {teamHistory.length === 0 ? (
                   <div className="text-center text-gray-400 py-6 text-sm italic">
                     No teams saved yet. Enter an ID above.
