@@ -1,88 +1,70 @@
-import PlayerCard from './PlayerCard';
-
-export default function PitchView({ 
-  squad, 
-  subs, 
+export default function PlayerCard({ 
+  player, 
   currentGw, 
-  captain, 
-  vice, 
-  benchLabels 
+  isCaptain = false, 
+  isVice = false, 
+  benchLabel = null 
 }) {
-  const getPlayers = (arr, pos) => {
-    if (!arr) return [];
-    return arr.filter(p => p.position === pos);
-  };
+  const points = player.proj && player.proj[String(currentGw)] !== undefined 
+    ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
+    : '0.0';
+    
+  const fixtureRaw = player.fixtures && player.fixtures[String(currentGw)] ? player.fixtures[String(currentGw)] : "";
+  const fixtureText = fixtureRaw ? fixtureRaw.replace("H ", "").replace("A ", "") + (fixtureRaw.startsWith("H") ? " (H)" : " (A)") : "";
 
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col items-center animate-fade-in-up mt-4">
+    <div className="flex flex-col items-center w-[60px] sm:w-[72px] md:w-[88px] group cursor-pointer relative">
       
-      {/* PITCH CONTAINER */}
-      <div className="relative w-full rounded-t-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10">
+      {/* CARD CONTAINER */}
+      <div className="w-full bg-[#150f18]/95 rounded-t-md border border-white/10 border-b-0 relative flex flex-col items-center pt-1 pb-0 transition-transform group-hover:-translate-y-1 shadow-lg">
         
-        {/* THE PITCH IMAGE */}
-        <img 
-          src="/pitch.png" 
-          alt="FPL Pitch" 
-          className="w-full h-auto block pointer-events-none"
-          onError={(e) => { 
-            // Fallback if image isn't found
-            e.target.style.display = 'none'; 
-            e.target.parentElement.style.height = '800px';
-            e.target.parentElement.style.backgroundColor = '#189c3a';
-          }}
-        />
+        {/* TOP LEFT ICONS (C / VC) */}
+        <div className="absolute top-1 left-1 z-20 flex flex-col gap-1">
+          {isCaptain && (
+            <div className="w-3 h-3 md:w-5 md:h-5 rounded-full bg-[#ffd700] text-black flex items-center justify-center font-black text-[6px] md:text-[10px] shadow-[0_0_8px_rgba(255,215,0,0.6)] border border-white">
+              C
+            </div>
+          )}
+          {isVice && !isCaptain && (
+            <div className="w-3 h-3 md:w-5 md:h-5 rounded-full bg-gray-300 text-black flex items-center justify-center font-black text-[5px] md:text-[8px] shadow-[0_0_8px_rgba(209,213,219,0.6)] border border-white">
+              VC
+            </div>
+          )}
+        </div>
 
-        {/* PLAYERS OVERLAY (Absolute positioning mapped to the image) */}
-        <div className="absolute inset-0 z-20 pointer-events-none">
-          
-          {/* GK Row */}
-          <div className="absolute top-[18%] w-full flex justify-center gap-2 md:gap-4 pointer-events-auto">
-            {getPlayers(squad, 'GK').map((p, i) => (
-              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
-            ))}
-          </div>
+        {/* TOP RIGHT POINTS */}
+        <div className="absolute top-1 right-1 z-20 bg-[#37003c] text-white w-4 h-4 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg border border-white/50">
+          <span className="font-bold text-[6px] md:text-[9px]">{points}</span>
+        </div>
 
-          {/* DEF Row */}
-          <div className="absolute top-[36%] w-full flex justify-center gap-1 md:gap-6 pointer-events-auto">
-            {getPlayers(squad, 'DEF').map((p, i) => (
-              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
-            ))}
-          </div>
+        {/* Shirt */}
+        <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 z-10 mt-2 md:mt-3 mb-1">
+          <img 
+            src={player.shirt_url}
+            alt={player.team}
+            className="w-full h-full object-contain drop-shadow-xl"
+            onError={(e) => { e.target.src = 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'; }} 
+          />
+        </div>
 
-          {/* MID Row */}
-          <div className="absolute top-[56%] w-full flex justify-center gap-1 md:gap-8 pointer-events-auto">
-            {getPlayers(squad, 'MID').map((p, i) => (
-              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
-            ))}
-          </div>
+      </div>
 
-          {/* FWD Row */}
-          <div className="absolute top-[76%] w-full flex justify-center gap-1 md:gap-10 pointer-events-auto">
-            {getPlayers(squad, 'FWD').map((p, i) => (
-              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
-            ))}
-          </div>
-
+      {/* WHITE BOTTOM BOX */}
+      <div className="bg-white text-black w-full rounded-b-md shadow-md flex flex-col items-center py-0.5 z-20 relative">
+        <div className="font-black text-[8px] md:text-[10px] truncate px-1 leading-tight text-center w-full mt-0.5">
+          {player.name}
+        </div>
+        <div className="text-[6px] md:text-[8px] text-gray-500 font-bold text-center uppercase tracking-wide mb-0.5">
+          {fixtureText}
         </div>
       </div>
 
-      {/* THE BENCH (Clean layout below the pitch) */}
-      <div className="w-full bg-[#120016]/80 backdrop-blur-md rounded-b-2xl border border-white/10 border-t-0 p-4 md:p-6 shadow-xl">
-        <h3 className="text-center text-white font-black mb-4 uppercase tracking-widest text-xs md:text-sm">
-          Substitutes
-        </h3>
-        <div className="flex justify-center gap-2 md:gap-8">
-          {subs && subs.map((p, i) => (
-            <PlayerCard 
-              key={i} 
-              player={p} 
-              currentGw={currentGw}
-              benchLabel={benchLabels ? benchLabels[i] : undefined}
-            />
-          ))}
+      {/* BENCH LABEL */}
+      {benchLabel && (
+        <div className="absolute -bottom-2 -right-2 z-30 px-1 md:px-1.5 py-0.5 rounded bg-[#37003c] text-[#00ff87] font-black text-[6px] md:text-[8px] shadow-lg border border-[#00ff87]">
+          {benchLabel}
         </div>
-      </div>
-      
+      )}
     </div>
   );
 }
