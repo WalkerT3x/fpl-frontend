@@ -32,23 +32,18 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  // Transfer State
+  // Transfer State (Uses V2 key to clear out old broken local storage)
   const [manualTransfers, setManualTransfers] = useState(() => {
-    const saved = localStorage.getItem('fplManualTransfers');
+    const saved = localStorage.getItem('fplManualTransfersV2');
     return saved ? JSON.parse(saved) : [];
   });
   const [freeTransfers, setFreeTransfers] = useState(1);
   const [transferAdvice, setTransferAdvice] = useState(null);
   const [bankAfter, setBankAfter] = useState(null);
 
-  // Save manual transfers to local storage ONLY if they are fully filled out
+  // Save manual transfers to local storage
   useEffect(() => {
-    const completeTransfers = manualTransfers.filter(t => t.out_player.trim() !== "" && t.in_player.trim() !== "");
-    if (completeTransfers.length > 0) {
-      localStorage.setItem('fplManualTransfers', JSON.stringify(completeTransfers));
-    } else {
-      localStorage.removeItem('fplManualTransfers');
-    }
+    localStorage.setItem('fplManualTransfersV2', JSON.stringify(manualTransfers));
   }, [manualTransfers]);
 
   const triggerPopup = (msg) => {
@@ -96,7 +91,7 @@ function App() {
   };
 
   // Triggered by Mid-Week Planner "Apply to My Squad"
-  const applyManualTransfers = async () => {
+  const applyManualTransfers = async (transfersToApply) => {
     if (!teamId) return;
     setLoading(true);
     setError('');
@@ -108,7 +103,7 @@ function App() {
         body: JSON.stringify({ 
           team_id: parseInt(teamId), 
           free_transfers: freeTransfers, 
-          manual_transfers: manualTransfers 
+          manual_transfers: transfersToApply
         })
       });
       const data = await response.json();

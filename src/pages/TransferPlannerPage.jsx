@@ -100,6 +100,10 @@ export default function TransferPlannerPage({
   const [allPlayers, setAllPlayers] = useState([]);
   const [playersLoading, setPlayersLoading] = useState(true);
 
+  // Form State for the Mid-Week inputs
+  const [formOut, setFormOut] = useState('');
+  const [formIn, setFormIn] = useState('');
+
   // Fetch player list
   useEffect(() => {
     let cancelled = false;
@@ -141,24 +145,27 @@ export default function TransferPlannerPage({
       .finally(() => setHistoryLoading(false));
   }, [teamId]);
 
-  const handleTransferChange = (index, field, value) => {
-    const newTransfers = [...manualTransfers];
-    newTransfers[index][field] = value;
-    setManualTransfers(newTransfers);
+  const handleApply = () => {
+    if (!formOut || !formIn) return;
+    
+    // Add to the manual transfers list
+    const newTransfer = { out_player: formOut, in_player: formIn };
+    const updatedTransfers = [...manualTransfers, newTransfer];
+    
+    setManualTransfers(updatedTransfers);
+    
+    // Clear the form
+    setFormOut('');
+    setFormIn('');
+    
+    // Immediately trigger the backend calculation to update the squad
+    applyManualTransfers(updatedTransfers);
   };
 
-  const addTransfer = () => {
-    if (manualTransfers.length < 5) {
-      setManualTransfers([...manualTransfers, { out_player: "", in_player: "" }]);
-    }
-  };
-
-  const removeTransfer = (index) => {
-    setManualTransfers(manualTransfers.filter((_, i) => i !== index));
-  };
-
-  const clearAllTransfers = () => {
-    setManualTransfers([]);
+  const handleRemove = (index) => {
+    const updatedTransfers = manualTransfers.filter((_, i) => i !== index);
+    setManualTransfers(updatedTransfers);
+    applyManualTransfers(updatedTransfers);
   };
 
   const groupedHistory = transfers.reduce((acc, t) => {
@@ -182,67 +189,59 @@ export default function TransferPlannerPage({
       <div className="bg-[#250028] rounded-xl p-6 shadow-2xl border border-[#4a0050]">
         <h2 className="text-lg font-black text-[#00ff87] mb-2 uppercase tracking-widest flex items-center justify-between">
           <span>1. Mid-Week Transfers</span>
-          {manualTransfers.length > 0 && (
-             <span className="text-[10px] bg-[#00ff87] text-[#37003c] px-2 py-0.5 rounded font-black uppercase tracking-wider">
-               Active
-             </span>
-          )}
         </h2>
         <p className="text-xs text-gray-400 mb-4">If you made transfers this week that the FPL API hasn't updated yet, add them here and apply them.</p>
         
         <div className="bg-[#37003c] p-4 rounded-lg border border-[#4a0050]">
-          {manualTransfers.length === 0 && (
-            <p className="text-xs text-gray-400 mb-3 italic text-center py-2">No manual transfers added.</p>
-          )}
-
-          {manualTransfers.map((t, i) => (
-            <div key={i} className="flex gap-2 mb-2 items-center">
-              <SearchableSelect 
-                value={t.out_player} 
-                onChange={(val) => handleTransferChange(i, 'out_player', val)} 
-                options={allPlayers} 
-                placeholder={playersLoading ? "Loading players..." : "Player OUT"} 
-              />
-              <span className="text-[#00ff87] font-bold text-sm">➡️</span>
-              <SearchableSelect 
-                value={t.in_player} 
-                onChange={(val) => handleTransferChange(i, 'in_player', val)} 
-                options={allPlayers} 
-                placeholder={playersLoading ? "Loading players..." : "Player IN"} 
-              />
-              <button onClick={() => removeTransfer(i)} className="text-red-500 font-bold px-1 hover:text-red-400 text-sm">✕</button>
-            </div>
-          ))}
           
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-4 gap-4">
-            <div className="flex gap-2 w-full md:w-auto">
-              <button 
-                onClick={addTransfer} 
-                disabled={manualTransfers.length >= 5}
-                className="text-xs bg-[#00ff87] text-[#37003c] font-black px-3 py-1.5 rounded hover:bg-green-400 transition-colors disabled:opacity-50"
-              >
-                + Add Transfer
-              </button>
-              {manualTransfers.length > 0 && (
-                <button 
-                  onClick={clearAllTransfers}
-                  className="text-xs bg-red-500 text-white font-black px-3 py-1.5 rounded hover:bg-red-600 transition-colors"
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
-
-            {manualTransfers.length > 0 && (
-              <button 
-                onClick={applyManualTransfers}
-                disabled={loadingManual}
-                className="w-full md:w-auto text-sm bg-white text-[#37003c] font-black px-6 py-2 rounded hover:bg-gray-200 transition-transform disabled:opacity-50"
-              >
-                {loadingManual ? 'Applying to Squad...' : 'Apply to My Squad'}
-              </button>
-            )}
+          {/* Inputs */}
+          <div className="flex flex-col md:flex-row gap-2 items-center mb-4">
+            <SearchableSelect 
+              value={formOut} 
+              onChange={setFormOut} 
+              options={allPlayers} 
+              placeholder={playersLoading ? "Loading players..." : "Transfer OUT"} 
+            />
+            <span className="text-[#00ff87] font-bold text-sm">➡️</span>
+            <SearchableSelect 
+              value={formIn} 
+              onChange={setFormIn} 
+              options={allPlayers} 
+              placeholder={playersLoading ? "Loading players..." : "Transfer IN"} 
+            />
+            <button 
+              onClick={handleApply}
+              disabled={!formOut || !formIn || loadingManual}
+              className="w-full md:w-auto mt-2 md:mt-0 text-sm bg-white text-[#37003c] font-black px-6 py-2 rounded hover:bg-gray-200 transition-transform disabled:opacity-50"
+            >
+              {loadingManual ? 'Applying...' : 'Apply to My Squad'}
+            </button>
           </div>
+
+          {/* Applied Transfers List */}
+          {manualTransfers.length > 0 && (
+            <div className="bg-[#250028] rounded-lg border border-[#4a0050] overflow-hidden mt-4">
+              <div className="bg-[#250028] px-3 py-1.5 border-b border-[#4a0050]">
+                <span className="text-[#00ff87] font-black text-xs uppercase tracking-wider">
+                  Applied Mid-Week Transfers
+                </span>
+              </div>
+              <div className="flex flex-col divide-y divide-[#4a0050]">
+                {manualTransfers.map((t, i) => (
+                  <div key={i} className="flex items-center justify-between px-3 py-2 text-xs">
+                    <div className="flex items-center gap-2 w-1/3 justify-end">
+                      <span className="text-red-400 font-bold truncate">{t.out_player}</span>
+                    </div>
+                    <div className="text-[#00ff87] font-bold px-2 text-[10px]">➡️</div>
+                    <div className="flex items-center justify-between w-1/3 gap-2">
+                      <span className="text-green-400 font-bold truncate">{t.in_player}</span>
+                      <button onClick={() => handleRemove(i)} className="text-red-500 hover:text-red-400 font-bold px-2">✕</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
