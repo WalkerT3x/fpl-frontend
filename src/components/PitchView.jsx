@@ -16,11 +16,10 @@ export default function PitchView({
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center animate-fade-in-up mt-4">
       
-      {/* SINGLE WRAPPER */}
       <div className="w-full flex flex-col items-center">
         
-        {/* 1. THE PITCH (Wrapped in a rounded container to clip white corners) */}
-        <div className="relative w-full rounded-t-2xl overflow-hidden shadow-2xl">
+        {/* 1. THE PITCH (Rounded 3xl on all corners to clip white edges) */}
+        <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 z-20">
           <img 
             src="/pitch.png" 
             alt="FPL Pitch" 
@@ -28,7 +27,7 @@ export default function PitchView({
           />
 
           {/* PLAYERS OVERLAY */}
-          <div className="absolute inset-0 z-20 pointer-events-none">
+          <div className="absolute inset-0 z-30 pointer-events-none">
             
             {/* GK Row */}
             <div className="absolute top-[10%] w-full flex justify-evenly items-center pointer-events-auto">
@@ -61,8 +60,8 @@ export default function PitchView({
           </div>
         </div>
 
-        {/* 2. THE BENCH */}
-        <div className="relative w-full mt-2 bg-white/5 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 overflow-hidden z-30">
+        {/* 2. THE BENCH (Matches the 3xl corner radius and separated by mt-4) */}
+        <div className="relative w-full mt-4 bg-white/5 backdrop-blur-2xl rounded-3xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 overflow-hidden z-20">
           
           {/* GLOWING HUES */}
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
