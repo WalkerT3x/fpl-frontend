@@ -1,10 +1,10 @@
-export default function HomePage({ 
+export default function DashboardPage({ 
   teamId, 
   setTeamId, 
   fetchTeam, 
   loading, 
   error, 
-  starting11
+  starting11 
 }) {
   return (
     <div className="flex flex-col items-center justify-center mt-32 animate-fade-in-up w-full max-w-md mx-auto">

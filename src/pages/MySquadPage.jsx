@@ -1,6 +1,6 @@
 import PitchView from '../components/PitchView';
 
-export default function PickTeamPage({ 
+export default function MySquadPage({ 
   starting11, 
   bench, 
   currentGw, 
@@ -13,10 +13,10 @@ export default function PickTeamPage({
       <div className="text-center mt-20 animate-fade-in-up">
         <p className="text-xl text-gray-300 mb-4">No team loaded yet.</p>
         <button
-          onClick={() => setActiveTab('Home')}
+          onClick={() => setActiveTab('Dashboard')}
           className="bg-[#00ff87] text-[#37003c] font-bold py-2 px-6 rounded-lg hover:scale-105 transition-transform"
         >
-          Go to Home
+          Go to Dashboard
         </button>
       </div>
     );
