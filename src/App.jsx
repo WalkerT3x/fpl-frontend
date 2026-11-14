@@ -4,7 +4,7 @@ import MySquadPage from './pages/MySquadPage';
 import TransferPlannerPage from './pages/TransferPlannerPage';
 import ChipStrategyPage from './pages/ChipStrategyPage';
 
-const APP_VERSION = "v1.0.5"; 
+const APP_VERSION = "v1.0.6"; 
 
 function App() {
   if (localStorage.getItem('fplAppVersion') !== APP_VERSION) {
@@ -15,8 +15,9 @@ function App() {
   const [teamId, setTeamId] = useState(() => localStorage.getItem('fplTeamId') || '');
   const [hasLoaded, setHasLoaded] = useState(() => localStorage.getItem('fplHasLoaded') === 'true');
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('fplActiveTab') || 'My Squad');
-  
   const [isRestoring, setIsRestoring] = useState(() => localStorage.getItem('fplHasLoaded') === 'true');
+  
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [teamHistory, setTeamHistory] = useState(() => {
     const saved = localStorage.getItem('fplTeamHistory');
@@ -63,6 +64,7 @@ function App() {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     localStorage.setItem('fplActiveTab', tab);
+    setIsMobileMenuOpen(false); // Close mobile menu on selection
   };
 
   const triggerPopup = (msg) => {
@@ -227,7 +229,7 @@ function App() {
 
   if (isRestoring) {
     return (
-      <div className="min-h-screen bg-[#37003c] text-white flex flex-col justify-center items-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#37003c] via-[#2a0030] to-[#004d2a] text-white flex flex-col justify-center items-center">
         <div className="text-[#00ff87] font-black text-2xl animate-pulse mb-2">Restoring Session...</div>
         <p className="text-gray-400 text-sm">Fetching your squad.</p>
       </div>
@@ -236,7 +238,7 @@ function App() {
 
   if (!hasLoaded) {
     return (
-      <div className="min-h-screen bg-[#37003c] text-white font-sans flex flex-col justify-center items-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#37003c] via-[#2a0030] to-[#004d2a] text-white font-sans flex flex-col justify-center items-center relative overflow-hidden">
         <DashboardPage 
           teamHistory={teamHistory}
           setTeamHistory={setTeamHistory}
@@ -249,7 +251,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#37003c] text-white font-sans pb-10 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#37003c] via-[#2a0030] to-[#004d2a] text-white font-sans pb-10 relative">
       
       {showPopup && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-[#00ff87] text-[#37003c] px-8 py-3 rounded-full font-black text-lg shadow-[0_0_20px_rgba(0,255,135,0.5)] z-[100] animate-bounce whitespace-nowrap">
@@ -259,13 +261,18 @@ function App() {
 
       <nav className="bg-[#120016]/80 backdrop-blur-xl border-b border-white/10 shadow-2xl mb-8 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 h-16">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleTabChange('My Squad')}>
-            <div className="w-8 h-8 bg-[#00ff87] rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(0,255,135,0.4)]">
-              <span className="text-[#37003c] font-black text-xl">A</span>
-            </div>
-            <span className="font-black text-xl tracking-wider text-white">FPL <span className="text-[#00ff87]">ASSISTANT</span></span>
+          
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleTabChange('My Squad')}>
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" 
+              alt="PL" 
+              className="w-8 h-8 drop-shadow-md"
+              style={{ filter: 'brightness(0) invert(1)' }} 
+            />
+            <span className="font-black text-xl tracking-wider text-white hidden sm:block">FPL <span className="text-[#00ff87]">ASSISTANT</span></span>
           </div>
           
+          {/* DESKTOP NAV */}
           <div className="hidden md:flex gap-6 text-sm font-bold items-center">
             {['My Squad', 'Transfer Planner', 'Chip Strategy'].map(tab => (
               <span 
@@ -287,7 +294,50 @@ function App() {
               Switch Team
             </button>
           </div>
+
+          {/* MOBILE MENU BUTTON */}
+          <div className="md:hidden flex items-center">
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-white hover:text-[#00ff87] transition-colors focus:outline-none p-2"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+
         </div>
+
+        {/* MOBILE DROPDOWN MENU */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-[#120016]/95 backdrop-blur-xl border-b border-white/10">
+            <div className="flex flex-col px-4 py-4 gap-4">
+              {['My Squad', 'Transfer Planner', 'Chip Strategy'].map(tab => (
+                <span 
+                  key={tab}
+                  onClick={() => {
+                    handleTabChange(tab);
+                    if (tab === 'Chip Strategy') fetchChips();
+                  }}
+                  className={`cursor-pointer transition-colors uppercase tracking-widest text-sm font-bold ${activeTab === tab ? 'text-[#00ff87]' : 'text-gray-400'}`}
+                >
+                  {tab}
+                </span>
+              ))}
+              <button 
+                onClick={handleLogout}
+                className="mt-2 text-left text-[#ff4a4a]/80 uppercase tracking-wider text-sm font-bold py-2 rounded-lg"
+              >
+                Switch Team
+              </button>
+            </div>
+          </div>
+        )}
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 flex flex-col items-center">

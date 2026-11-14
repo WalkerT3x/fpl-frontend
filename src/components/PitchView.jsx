@@ -17,14 +17,34 @@ export default function PitchView({
     <div className="w-full flex flex-col gap-8 animate-fade-in-up">
       
       {/* THE PITCH */}
-      <div className="relative overflow-hidden rounded-3xl shadow-2xl border border-white/20 bg-gradient-to-b from-[#00a838] to-[#00c943]">
+      <div className="relative overflow-hidden rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-white/20 bg-[#28a745]">
+        
+        {/* Pitch Texture */}
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/grass.png')] opacity-30 mix-blend-multiply pointer-events-none"></div>
         
         {/* Pitch Markings */}
-        <div className="absolute inset-4 border border-white/20 rounded-2xl pointer-events-none"></div>
-        <div className="absolute top-1/2 left-4 right-4 h-px bg-white/20 pointer-events-none"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 border border-white/20 rounded-full pointer-events-none"></div>
+        {/* Outer boundary */}
+        <div className="absolute inset-2 md:inset-4 border-2 border-white/30 pointer-events-none rounded-sm"></div>
+        
+        {/* Halfway line */}
+        <div className="absolute top-1/2 left-2 right-2 md:left-4 md:right-4 h-0.5 bg-white/30 pointer-events-none"></div>
+        
+        {/* Center Circle */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 border-2 border-white/30 rounded-full pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white/50 rounded-full pointer-events-none"></div>
 
-        <div className="relative z-10 flex flex-col gap-6 md:gap-10 py-12 px-2">
+        {/* Top Penalty Box */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 md:top-4 w-1/2 md:w-1/3 h-24 md:h-32 border-b-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+        {/* Top 6-Yard Box */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 md:top-4 w-1/4 md:w-1/6 h-10 md:h-14 border-b-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+
+        {/* Bottom Penalty Box */}
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-4 w-1/2 md:w-1/3 h-24 md:h-32 border-t-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+        {/* Bottom 6-Yard Box */}
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-4 w-1/4 md:w-1/6 h-10 md:h-14 border-t-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+
+
+        <div className="relative z-10 flex flex-col gap-8 md:gap-12 py-10 px-2">
           <div className="flex justify-center gap-2 md:gap-10">
             {getPlayers(squad, 'FWD').map((p, i) => (
               <PlayerCard 
@@ -73,11 +93,12 @@ export default function PitchView({
       </div>
 
       {/* THE BENCH */}
-      <div className="bg-black/40 backdrop-blur-xl rounded-3xl p-6 pt-8 shadow-2xl border border-white/10">
+      <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-4 pt-8 shadow-2xl border border-white/10 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00ff87] to-transparent opacity-50"></div>
         <h3 className="text-center text-[#00ff87] font-black mb-8 uppercase tracking-widest text-sm drop-shadow-[0_0_10px_rgba(0,255,135,0.5)]">
           Substitutes
         </h3>
-        <div className="flex justify-center gap-2 md:gap-12">
+        <div className="flex justify-center gap-2 md:gap-10">
           {subs && subs.map((p, i) => (
             <PlayerCard 
               key={i} 
