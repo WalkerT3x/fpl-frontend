@@ -5,13 +5,11 @@ export default function PlayerCard({
   isVice = false, 
   benchLabel = null 
 }) {
-  if (!player) return null;
-
   const points = player.proj && player.proj[String(currentGw)] !== undefined 
     ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
     : '0.0';
     
-  const fixtureRaw = player.fixtures && player.fixtures[String(currentGw)] ? String(player.fixtures[String(currentGw)]) : "";
+  const fixtureRaw = player.fixtures && player.fixtures[String(currentGw)] ? player.fixtures[String(currentGw)] : "";
   const fixtureText = fixtureRaw ? fixtureRaw.replace("H ", "").replace("A ", "") + (fixtureRaw.startsWith("H") ? " (H)" : " (A)") : "";
 
   return (
@@ -42,8 +40,8 @@ export default function PlayerCard({
         {/* Shirt */}
         <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 z-10 mt-2 md:mt-3 mb-1">
           <img 
-            src={player.shirt_url || 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'}
-            alt={player.team || 'Team'}
+            src={player.shirt_url}
+            alt={player.team}
             className="w-full h-full object-contain drop-shadow-xl"
             onError={(e) => { e.target.src = 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'; }} 
           />
@@ -54,7 +52,7 @@ export default function PlayerCard({
       {/* WHITE BOTTOM BOX */}
       <div className="bg-white text-black w-full rounded-b-md shadow-md flex flex-col items-center py-0.5 z-20 relative">
         <div className="font-black text-[8px] md:text-[10px] truncate px-1 leading-tight text-center w-full mt-0.5">
-          {player.name || 'Player'}
+          {player.name}
         </div>
         <div className="text-[6px] md:text-[8px] text-gray-500 font-bold text-center uppercase tracking-wide mb-0.5">
           {fixtureText}
