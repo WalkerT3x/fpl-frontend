@@ -57,14 +57,15 @@ export default function PitchView({
             ))}
           </div>
 
-          {/* THE BENCH - Adjusted to bottom-[12%] to sit inside the box */}
-          <div className="absolute bottom-[12%] w-full flex justify-center gap-2 md:gap-8 pointer-events-auto">
+          {/* THE BENCH - Brought down to bottom-[5%], passes isBench=true */}
+          <div className="absolute bottom-[5%] w-full flex justify-center gap-2 md:gap-6 pointer-events-auto">
             {Array.isArray(subs) && subs.map((p, i) => (
               <PlayerCard 
                 key={i} 
                 player={p} 
                 currentGw={currentGw}
                 benchLabel={benchLabels && benchLabels[i] ? benchLabels[i] : undefined}
+                isBench={true}
               />
             ))}
           </div>
