@@ -16,7 +16,7 @@ export default function PitchView({
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center animate-fade-in-up mt-4">
       
-      {/* 1. THE PITCH (No container, no borders, no background) */}
+      {/* 1. THE PITCH (No container, no borders) */}
       <div className="relative w-full">
         <img 
           src="/pitch.png" 
@@ -58,12 +58,12 @@ export default function PitchView({
         </div>
       </div>
 
-      {/* 2. THE BENCH (Independent rounded box with neon hues, placed below the pitch) */}
-      <div className="relative w-full mt-6 bg-[#120016]/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 shadow-[0_0_40px_rgba(0,0,0,0.8)] border border-white/10 overflow-hidden">
+      {/* 2. THE BENCH (Ultra Glassmorphism) */}
+      <div className="relative w-full mt-6 bg-black/40 backdrop-blur-2xl rounded-2xl p-6 md:p-8 shadow-[0_0_40px_rgba(0,0,0,0.6)] border border-white/20 overflow-hidden">
         
-        {/* GLOWING HUES */}
-        <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-20 pointer-events-none"></div>
-        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-20 pointer-events-none"></div>
+        {/* GLOWING HUES - Brightened to shine through the glass */}
+        <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-40 pointer-events-none"></div>
+        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-40 pointer-events-none"></div>
 
         <div className="relative z-10 flex flex-col items-center">
           <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-xs md:text-sm drop-shadow-[0_0_10px_rgba(0,255,135,0.4)]">
