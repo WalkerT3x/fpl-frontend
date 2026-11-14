@@ -37,18 +37,21 @@ export default function DashboardPage({
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 animate-fade-in-up">
         
         {/* LOGOS & HEADER */}
-        <div className="text-center mb-10 flex flex-col items-center">
+        <div className="text-center mb-8 flex flex-col items-center">
           
-          {/* The Premier League Lion - Loaded via CDN and filtered to white */}
+          {/* The Premier League Logo - Using referrerPolicy to bypass Wikipedia blocks */}
           <img 
             src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" 
-            alt="Premier League Lion" 
-            className="w-24 md:w-32 h-auto mb-4 drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+            alt="Premier League" 
+            referrerPolicy="no-referrer"
+            className="w-20 h-auto mb-4 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
             style={{ filter: 'brightness(0) invert(1)' }} 
+            onError={(e) => { e.target.style.display = 'none'; }}
           />
 
-          {/* Subtitle */}
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-1 italic">
+          {/* TITLE */}
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-2 italic flex flex-col items-center">
+            <span className="text-gray-300 text-xl tracking-widest uppercase not-italic mb-1 font-bold">Fantasy</span>
             FPL <span className="text-[#00ff87]">GENIUS</span>
           </h1>
           <p className="text-gray-400 font-medium tracking-wide text-sm md:text-base">
