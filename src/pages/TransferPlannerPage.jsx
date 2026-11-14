@@ -59,7 +59,7 @@ function SearchableSelect({ value, onChange, options, placeholder }) {
         onFocus={() => setIsOpen(true)}
       />
       {isOpen && filtered.length > 0 && (
-        <ul className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg max-h-48 overflow-y-auto">
+        <ul className="absolute top-full left-0 z-50 w-full mt-1 bg-white border border-gray-300 rounded shadow-xl max-h-48 overflow-y-auto">
           {filtered.slice(0, 50).map((opt, idx) => (
             <li
               key={idx}
@@ -189,7 +189,7 @@ export default function TransferPlannerPage({
         
         <div className="bg-[#37003c] p-4 rounded-lg border border-[#4a0050]">
           
-          <div className="flex flex-col md:flex-row gap-2 items-center mb-4">
+          <div className="flex flex-col md:flex-row gap-2 items-center mb-4 relative z-20">
             <SearchableSelect 
               value={formOut} 
               onChange={setFormOut} 
