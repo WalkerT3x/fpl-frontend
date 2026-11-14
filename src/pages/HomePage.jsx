@@ -4,9 +4,7 @@ export default function HomePage({
   fetchTeam, 
   loading, 
   error, 
-  starting11, 
-  bank, 
-  teamValue
+  starting11
 }) {
   return (
     <div className="flex flex-col items-center justify-center mt-32 animate-fade-in-up w-full max-w-md mx-auto">
@@ -30,21 +28,17 @@ export default function HomePage({
           {loading ? 'Waking Server & Fetching Data...' : 'Load Team'}
         </button>
         
-        {error && <div className="mt-4 text-red-400 font-bold bg-red-900/30 p-3 rounded border border-red-500">{error}</div>}
+        {error && (
+          <div className="mt-4 text-red-400 font-bold bg-red-900/30 p-3 rounded border border-red-500">
+            {error}
+          </div>
+        )}
         
         {starting11 && !loading && (
           <div className="mt-6 pt-6 border-t border-[#4a0050]">
-            <p className="text-[#00ff87] font-bold text-sm mb-3">✅ Data loaded! Check the tabs above.</p>
-            <div className="flex justify-center gap-6 text-sm">
-              <div className="bg-[#37003c] px-4 py-2 rounded border border-[#4a0050]">
-                <span className="text-gray-400 block text-xs uppercase">Bank</span>
-                <span className="font-black text-white text-lg">£{bank}m</span>
-              </div>
-              <div className="bg-[#37003c] px-4 py-2 rounded border border-[#4a0050]">
-                <span className="text-gray-400 block text-xs uppercase">Squad Value</span>
-                <span className="font-black text-white text-lg">£{teamValue}m</span>
-              </div>
-            </div>
+            <p className="text-[#00ff87] font-bold text-sm">
+              ✅ Team loaded! Check the tabs above.
+            </p>
           </div>
         )}
       </div>

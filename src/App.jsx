@@ -7,25 +7,27 @@ import TransfersPage from './pages/TransfersPage';
 function App() {
   const savedId = localStorage.getItem('fplTeamId') || '';
   const [teamId, setTeamId] = useState(savedId);
-  
+
   const [starting11, setStarting11] = useState(null);
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
   const [bank, setBank] = useState(null);
+  const [bankAfter, setBankAfter] = useState(null);
   const [teamValue, setTeamValue] = useState(null);
-  
+  const [captain, setCaptain] = useState('');
+  const [vice, setVice] = useState('');
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
-  const [activeTab, setActiveTab] = useState('Home'); 
+
+  const [activeTab, setActiveTab] = useState('Home');
   const [showPopup, setShowPopup] = useState(false);
-  
+
   const [chips, setChips] = useState(null);
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  // New States for Transfers
-  const [manualTransfers, setManualTransfers] = useState([]); 
+  const [manualTransfers, setManualTransfers] = useState([]);
   const [freeTransfers, setFreeTransfers] = useState(1);
   const [transferAdvice, setTransferAdvice] = useState(null);
 
@@ -35,33 +37,35 @@ function App() {
     setError('');
     setChips(null);
     setChipsError('');
-    
+
     localStorage.setItem('fplTeamId', teamId);
 
     try {
       const response = await fetch('https://fpl-backend-c25x.onrender.com/api/optimize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          team_id: parseInt(teamId), 
-          free_transfers: freeTransfers, 
-          manual_transfers: manualTransfers 
+        body: JSON.stringify({
+          team_id: parseInt(teamId),
+          free_transfers: freeTransfers,
+          manual_transfers: manualTransfers
         })
       });
-      
+
       const data = await response.json();
       if (data.error) throw new Error(data.error);
-      
+
       setStarting11(data.starting_11);
       setBench(data.bench);
       setCurrentGw(data.current_gw);
       setBank(data.bank);
+      setBankAfter(data.bank_after);
       setTeamValue(data.team_value);
+      setCaptain(data.captain || '');
+      setVice(data.vice || '');
       setTransferAdvice(data.transfer_advice);
-      
+
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 3000);
-      
     } catch (err) {
       setError(err.message);
     } finally {
@@ -75,19 +79,19 @@ function App() {
     setChipsError('');
 
     try {
-      const response = await fetch(`https://fpl-backend-c25x.onrender.com/api/chips`, {
+      const response = await fetch('https://fpl-backend-c25x.onrender.com/api/chips', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          team_id: parseInt(teamId), 
-          free_transfers: freeTransfers, 
-          manual_transfers: manualTransfers 
+        body: JSON.stringify({
+          team_id: parseInt(teamId),
+          free_transfers: freeTransfers,
+          manual_transfers: manualTransfers
         })
       });
-      
+
       const data = await response.json();
       if (data.error) throw new Error(data.error);
-      
+
       setChips(data);
     } catch (err) {
       setChipsError(err.message);
@@ -98,7 +102,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#37003c] text-white font-sans pb-10 relative">
-      
       {showPopup && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-[#00ff87] text-[#37003c] px-8 py-3 rounded-full font-black text-lg shadow-2xl z-[100] animate-bounce">
           ✅ Team Loaded Successfully!
@@ -115,7 +118,7 @@ function App() {
           </div>
           <div className="hidden md:flex gap-6 text-sm font-bold text-gray-300">
             {['Home', 'Pick Team', 'Transfers', 'Tokens'].map(tab => (
-              <span 
+              <span
                 key={tab}
                 onClick={() => {
                   setActiveTab(tab);
@@ -131,32 +134,33 @@ function App() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 flex flex-col items-center">
-        
         {activeTab === 'Home' && (
-          <HomePage 
-            teamId={teamId} 
-            setTeamId={setTeamId} 
-            fetchTeam={fetchTeam} 
-            loading={loading} 
-            error={error} 
-            starting11={starting11} 
+          <HomePage
+            teamId={teamId}
+            setTeamId={setTeamId}
+            fetchTeam={fetchTeam}
+            loading={loading}
+            error={error}
+            starting11={starting11}
             bank={bank}
             teamValue={teamValue}
           />
         )}
 
         {activeTab === 'Pick Team' && (
-          <PickTeamPage 
-            starting11={starting11} 
-            bench={bench} 
-            currentGw={currentGw} 
-            setActiveTab={setActiveTab} 
+          <PickTeamPage
+            starting11={starting11}
+            bench={bench}
+            currentGw={currentGw}
+            captain={captain}
+            vice={vice}
+            setActiveTab={setActiveTab}
           />
         )}
 
         {activeTab === 'Transfers' && (
-          <TransfersPage 
-            teamId={teamId} 
+          <TransfersPage
+            teamId={teamId}
             manualTransfers={manualTransfers}
             setManualTransfers={setManualTransfers}
             fetchTeam={fetchTeam}
@@ -165,14 +169,16 @@ function App() {
             freeTransfers={freeTransfers}
             setFreeTransfers={setFreeTransfers}
             transferAdvice={transferAdvice}
+            bank={bank}
+            bankAfter={bankAfter}
           />
         )}
 
         {activeTab === 'Tokens' && (
-          <TokensPage 
-            chips={chips} 
-            currentGw={currentGw} 
-            loadingChips={loadingChips} 
+          <TokensPage
+            chips={chips}
+            currentGw={currentGw}
+            loadingChips={loadingChips}
             chipsError={chipsError}
             retryFetch={() => fetchChips(true)}
           />

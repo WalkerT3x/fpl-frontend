@@ -1,6 +1,13 @@
 import PlayerCard from './PlayerCard';
 
-export default function PitchView({ squad, subs, currentGw }) {
+export default function PitchView({ 
+  squad, 
+  subs, 
+  currentGw, 
+  captain, 
+  vice, 
+  benchLabels 
+}) {
   const getPlayers = (arr, pos) => {
     if (!arr) return [];
     return arr.filter(p => p.position === pos);
@@ -17,25 +24,66 @@ export default function PitchView({ squad, subs, currentGw }) {
 
         <div className="relative z-10 flex flex-col gap-6 md:gap-10 py-12 px-2">
           <div className="flex justify-center gap-2 md:gap-10">
-            {getPlayers(squad, 'FWD').map((p, i) => <PlayerCard key={i} player={p} currentGw={currentGw} />)}
+            {getPlayers(squad, 'FWD').map((p, i) => (
+              <PlayerCard 
+                key={i} 
+                player={p} 
+                currentGw={currentGw}
+                isCaptain={p.name === captain}
+                isVice={p.name === vice}
+              />
+            ))}
           </div>
           <div className="flex justify-center gap-2 md:gap-8">
-            {getPlayers(squad, 'MID').map((p, i) => <PlayerCard key={i} player={p} currentGw={currentGw} />)}
+            {getPlayers(squad, 'MID').map((p, i) => (
+              <PlayerCard 
+                key={i} 
+                player={p} 
+                currentGw={currentGw}
+                isCaptain={p.name === captain}
+                isVice={p.name === vice}
+              />
+            ))}
           </div>
           <div className="flex justify-center gap-2 md:gap-8">
-            {getPlayers(squad, 'DEF').map((p, i) => <PlayerCard key={i} player={p} currentGw={currentGw} />)}
+            {getPlayers(squad, 'DEF').map((p, i) => (
+              <PlayerCard 
+                key={i} 
+                player={p} 
+                currentGw={currentGw}
+                isCaptain={p.name === captain}
+                isVice={p.name === vice}
+              />
+            ))}
           </div>
           <div className="flex justify-center">
-            {getPlayers(squad, 'GK').map((p, i) => <PlayerCard key={i} player={p} currentGw={currentGw} />)}
+            {getPlayers(squad, 'GK').map((p, i) => (
+              <PlayerCard 
+                key={i} 
+                player={p} 
+                currentGw={currentGw}
+                isCaptain={p.name === captain}
+                isVice={p.name === vice}
+              />
+            ))}
           </div>
         </div>
       </div>
 
       {/* THE BENCH */}
       <div className="bg-[#250028] rounded-xl p-4 pt-8 shadow-xl border border-[#4a0050]">
-        <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-sm">Substitutes</h3>
+        <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-sm">
+          Substitutes
+        </h3>
         <div className="flex justify-center gap-4 md:gap-12">
-          {subs && subs.map((p, i) => <PlayerCard key={i} player={p} currentGw={currentGw} />)}
+          {subs && subs.map((p, i) => (
+            <PlayerCard 
+              key={i} 
+              player={p} 
+              currentGw={currentGw}
+              benchLabel={benchLabels ? benchLabels[i] : undefined}
+            />
+          ))}
         </div>
       </div>
     </div>
