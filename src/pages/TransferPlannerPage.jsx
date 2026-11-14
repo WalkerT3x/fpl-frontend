@@ -214,18 +214,20 @@ export default function TransferPlannerPage({
               </button>
             </div>
 
-            {/* APPLIED LIST */}
+            {/* APPLIED LIST (Centered text, boxed names) */}
             {manualTransfers.length > 0 && (
-              <div className="flex flex-col mt-4 border-t border-white/10 pt-4 gap-3">
-                <span className="text-[#00ff87] font-black text-xs uppercase tracking-wider mb-1">Applied Transfers</span>
-                {manualTransfers.map((t, i) => (
-                  <div key={i} className="flex items-center justify-between w-full gap-2 text-xs md:text-sm">
-                    <span className="text-red-400 font-bold truncate flex-1 text-right">{t.out_player}</span>
-                    <span className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</span>
-                    <span className="text-green-400 font-bold truncate flex-1 text-left">{t.in_player}</span>
-                    <button onClick={() => handleRemove(i)} className="text-red-500 hover:text-red-400 font-bold px-2 shrink-0">✕</button>
-                  </div>
-                ))}
+              <div className="mt-4">
+                <h3 className="text-center text-[#00ff87] font-black text-xs uppercase tracking-widest mb-3">Applied Transfers</h3>
+                <div className="bg-[#120016]/60 border border-white/10 rounded-xl p-3 flex flex-col gap-3">
+                  {manualTransfers.map((t, i) => (
+                    <div key={i} className="flex items-center justify-between w-full gap-2 text-xs md:text-sm">
+                      <span className="text-red-400 font-bold truncate flex-1 text-right">{t.out_player}</span>
+                      <span className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</span>
+                      <span className="text-green-400 font-bold truncate flex-1 text-left">{t.in_player}</span>
+                      <button onClick={() => handleRemove(i)} className="text-red-500 hover:text-red-400 font-bold px-2 shrink-0">✕</button>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

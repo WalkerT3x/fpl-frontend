@@ -11,8 +11,14 @@ export default function PlayerCard({
     ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
     : '0.0';
     
+  // Format fixture to include "vs"
   const fixtureRaw = player.fixtures && player.fixtures[String(currentGw)] ? String(player.fixtures[String(currentGw)]) : "";
-  const fixtureText = fixtureRaw ? fixtureRaw.replace("H ", "").replace("A ", "") + (fixtureRaw.startsWith("H") ? " (H)" : " (A)") : "";
+  let fixtureText = "";
+  if (fixtureRaw) {
+    const isHome = fixtureRaw.startsWith("H");
+    const opp = fixtureRaw.replace("H ", "").replace("A ", "");
+    fixtureText = `vs ${opp} (${isHome ? 'H' : 'A'})`;
+  }
 
   return (
     <div className="flex flex-col items-center w-[60px] sm:w-[72px] md:w-[88px] group cursor-pointer relative">
@@ -52,11 +58,14 @@ export default function PlayerCard({
       </div>
 
       {/* WHITE BOTTOM BOX */}
-      <div className="bg-white text-black w-full rounded-b-md shadow-md flex flex-col items-center py-0.5 z-20 relative">
-        <div className="font-black text-[8px] md:text-[10px] truncate px-1 leading-tight text-center w-full mt-0.5">
+      <div className="bg-white text-black w-full rounded-b-md shadow-md flex flex-col items-center py-0.5 z-20 relative h-[34px] justify-center">
+        <div className="font-black text-[8px] md:text-[10px] truncate px-1 leading-none text-center w-full">
           {player.name}
         </div>
-        <div className="text-[6px] md:text-[8px] text-gray-500 font-bold text-center uppercase tracking-wide mb-0.5">
+        <div className="text-[7px] md:text-[8px] text-gray-500 font-bold text-center uppercase tracking-wide leading-none mt-0.5">
+          {player.position}
+        </div>
+        <div className="text-[6px] md:text-[7px] text-gray-400 font-bold text-center uppercase tracking-wide leading-none mt-0.5">
           {fixtureText}
         </div>
       </div>
