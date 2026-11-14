@@ -65,16 +65,18 @@ export default function DashboardPage({
 
             <div className="w-full h-px bg-white/10 mb-8"></div>
 
-            {/* MODERN INPUT SECTION */}
+            {/* UNIFIED INPUT SECTION */}
             <div className="mb-8">
               <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">
                 Add Team ID
               </label>
-              <div className="flex gap-3">
+              
+              {/* Single pill container for input + button */}
+              <div className="flex bg-[#120016]/80 border border-white/10 rounded-xl overflow-hidden focus-within:border-[#00ff87] focus-within:shadow-[0_0_15px_rgba(0,255,135,0.3)] transition-all">
                 <input 
                   type="number" 
                   placeholder="e.g. 1112720" 
-                  className="flex-1 p-4 rounded-xl text-white bg-[#120016]/80 border border-white/10 outline-none focus:border-[#00ff87] focus:shadow-[0_0_15px_rgba(0,255,135,0.3)] font-black text-lg placeholder-gray-600 transition-all shadow-inner"
+                  className="flex-1 bg-transparent text-white p-4 outline-none font-black text-lg placeholder-gray-600"
                   value={newTeamId}
                   onChange={(e) => setNewTeamId(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleSaveTeam(); }}
@@ -82,7 +84,7 @@ export default function DashboardPage({
                 <button 
                   onClick={handleSaveTeam}
                   disabled={!newTeamId}
-                  className="px-8 rounded-xl bg-[#00ff87]/10 border-2 border-[#00ff87] text-[#00ff87] font-black tracking-wider uppercase text-sm shadow-[0_0_15px_rgba(0,255,135,0.4),inset_0_0_10px_rgba(0,255,135,0.2)] hover:bg-[#00ff87]/20 hover:shadow-[0_0_25px_rgba(0,255,135,0.8),inset_0_0_15px_rgba(0,255,135,0.4)] active:scale-95 transition-all disabled:opacity-30 disabled:shadow-none disabled:hover:bg-[#00ff87]/10"
+                  className="bg-[#00ff87]/10 text-[#00ff87] font-black tracking-wider uppercase text-sm px-6 border-l border-white/10 hover:bg-[#00ff87]/20 active:bg-[#00ff87]/30 transition-colors disabled:opacity-30 disabled:hover:bg-[#00ff87]/10"
                 >
                   Save
                 </button>
@@ -108,12 +110,12 @@ export default function DashboardPage({
                         className={`flex items-center justify-between p-4 hover:bg-white/5 transition-colors ${index !== teamHistory.length - 1 ? 'border-b border-white/5' : ''}`}
                       >
                         
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-3">
                           {/* SMALLER NEON PURPLE ID BADGE */}
-                          <div className="w-9 h-9 rounded-xl bg-[#d946ef]/10 border border-[#d946ef] flex items-center justify-center shadow-[0_0_10px_rgba(217,70,239,0.3),inset_0_0_8px_rgba(217,70,239,0.2)]">
+                          <div className="w-8 h-8 rounded-lg bg-[#d946ef]/10 border border-[#d946ef] flex items-center justify-center shadow-[0_0_10px_rgba(217,70,239,0.3)]">
                             <span className="text-[#d946ef] text-[9px] font-black tracking-widest drop-shadow-[0_0_3px_rgba(217,70,239,0.8)]">ID</span>
                           </div>
-                          <span className="font-black text-xl text-white tracking-wide">{id}</span>
+                          <span className="font-black text-lg text-white tracking-wide">{id}</span>
                         </div>
                         
                         <div className="flex items-center gap-3">
@@ -127,7 +129,7 @@ export default function DashboardPage({
                           <button 
                             onClick={() => fetchTeam(id)}
                             disabled={loading}
-                            className="px-6 py-2.5 rounded-xl bg-[#00ff87]/10 border-2 border-[#00ff87] text-[#00ff87] font-black tracking-wider uppercase text-xs shadow-[0_0_15px_rgba(0,255,135,0.4),inset_0_0_10px_rgba(0,255,135,0.2)] hover:bg-[#00ff87]/20 hover:shadow-[0_0_25px_rgba(0,255,135,0.8),inset_0_0_15px_rgba(0,255,135,0.4)] active:scale-95 transition-all disabled:opacity-50 disabled:shadow-none"
+                            className="px-6 py-2 rounded-xl bg-[#00ff87]/10 border-2 border-[#00ff87] text-[#00ff87] font-black tracking-wider uppercase text-xs shadow-[0_0_15px_rgba(0,255,135,0.4),inset_0_0_10px_rgba(0,255,135,0.2)] hover:bg-[#00ff87]/20 hover:shadow-[0_0_25px_rgba(0,255,135,0.8),inset_0_0_15px_rgba(0,255,135,0.4)] active:scale-95 transition-all disabled:opacity-50 disabled:shadow-none"
                           >
                             {loading ? 'Loading...' : 'Load Team'}
                           </button>
