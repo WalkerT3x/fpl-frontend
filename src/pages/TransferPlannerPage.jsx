@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 
+// Helper to strip accents for search matching
+const unaccent = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
 function pairByPosition(outList = [], inList = []) {
   const pairs = [];
   const inByPos = {};
@@ -171,7 +174,7 @@ export default function TransferPlannerPage({
           
           <datalist id="playerNames">
             {allPlayers.map((name, index) => (
-              <option key={index} value={name} />
+              <option key={index} value={unaccent(name)}>{name}</option>
             ))}
           </datalist>
         </div>
