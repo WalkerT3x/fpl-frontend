@@ -216,10 +216,10 @@ export default function TransferPlannerPage({
 
             {/* APPLIED LIST */}
             {manualTransfers.length > 0 && (
-              <div className="flex flex-col mt-4 border-t border-white/10 pt-4 gap-2">
+              <div className="flex flex-col mt-4 border-t border-white/10 pt-4 gap-3">
                 <span className="text-[#00ff87] font-black text-xs uppercase tracking-wider mb-1">Applied Transfers</span>
                 {manualTransfers.map((t, i) => (
-                  <div key={i} className="flex items-center justify-between py-3 text-sm gap-2 w-full">
+                  <div key={i} className="flex items-center justify-between w-full gap-2 text-xs md:text-sm">
                     <span className="text-red-400 font-bold truncate flex-1 text-right">{t.out_player}</span>
                     <span className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</span>
                     <span className="text-green-400 font-bold truncate flex-1 text-left">{t.in_player}</span>
