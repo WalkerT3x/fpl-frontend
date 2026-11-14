@@ -254,16 +254,26 @@ export default function TransferPlannerPage({
               )}
             </div>
 
-            {/* 5-Week Dream Team */}
+            {/* 5-Week Dream Team (UPDATED UI) */}
             {dreamPairs.length > 0 && (
-              <div className="mt-4 bg-[#37003c] p-4 rounded-lg border border-[#4a0050]">
-                <h4 className="text-xs font-black text-[#00ff87] uppercase tracking-widest mb-3">5-Week Dream Target</h4>
-                <div className="flex flex-col gap-1.5">
+              <div className="bg-[#37003c] rounded-lg border border-[#4a0050] overflow-hidden mt-4">
+                <div className="bg-[#250028] px-3 py-1.5 border-b border-[#4a0050]">
+                  <span className="text-[#00ff87] font-black text-xs uppercase tracking-wider">
+                    5-Week Dream Target (Max 5 Moves)
+                  </span>
+                </div>
+                <div className="flex flex-col divide-y divide-[#4a0050]">
                   {dreamPairs.map((pair, i) => (
-                    <div key={i} className="flex items-center justify-between text-xs">
-                      <span className="text-red-400 font-bold truncate">{pair.out.name}</span>
-                      <span className="text-[#00ff87] mx-2">➡️</span>
-                      <span className="text-green-400 font-bold truncate">{pair.in.name}</span>
+                    <div key={i} className="flex items-center justify-between px-3 py-2 text-xs">
+                      <div className="flex items-center gap-2 w-1/3 justify-end">
+                        <span className="text-red-400 font-bold truncate">{pair.out.name}</span>
+                        <span className="text-gray-500 font-mono">£{pair.out.price10/10}m</span>
+                      </div>
+                      <div className="text-[#00ff87] font-bold px-2 text-[10px]">➡️</div>
+                      <div className="flex items-center gap-2 w-1/3 justify-start">
+                        <span className="text-green-400 font-bold truncate">{pair.in.name}</span>
+                        <span className="text-gray-500 font-mono">£{pair.in.price10/10}m</span>
+                      </div>
                     </div>
                   ))}
                 </div>
