@@ -38,20 +38,21 @@ export default function DashboardPage({
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 animate-fade-in-up">
         
         {/* LOGOS & HEADER */}
-        <div className="text-center mb-10 flex flex-col items-center">
+        <div className="text-center mb-8 flex flex-col items-center">
           
-          {/* The Official Logo */}
+          {/* The Official Logo - Filtered to be pure white */}
           <img 
             src={plLogo} 
             alt="Premier League" 
-            className="w-64 h-auto mb-2 drop-shadow-2xl"
+            className="w-48 h-auto mb-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+            style={{ filter: 'brightness(0) invert(1)' }} 
           />
 
           {/* Subtitle */}
-          <h1 className="text-3xl md:text-4xl font-black text-white tracking-widest mb-1 italic">
-            <span className="text-[#00ff87]">GENIUS</span>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-1 italic">
+            FPL <span className="text-[#00ff87]">GENIUS</span>
           </h1>
-          <p className="text-gray-300 font-medium tracking-wide text-sm md:text-base">
+          <p className="text-gray-400 font-medium tracking-wide text-sm md:text-base">
             The ultimate AI mathematical optimizer.
           </p>
         </div>
