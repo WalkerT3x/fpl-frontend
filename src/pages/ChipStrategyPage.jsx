@@ -82,6 +82,8 @@ export default function ChipStrategyPage({ chips, starting11, currentGw, loading
             squad={chips.wildcard_team.starting_11} 
             subs={chips.wildcard_team.bench} 
             currentGw={chips.chip_advice.wildcard.gw} 
+            captain={chips.wildcard_team.captain} // <-- ADDED
+            vice={chips.wildcard_team.vice} // <-- ADDED
           />
         </div>
       )}
@@ -97,6 +99,8 @@ export default function ChipStrategyPage({ chips, starting11, currentGw, loading
             squad={chips.free_hit_team.starting_11} 
             subs={chips.free_hit_team.bench} 
             currentGw={chips.chip_advice.free_hit.gw} 
+            captain={chips.free_hit_team.captain} // <-- ADDED
+            vice={chips.free_hit_team.vice} // <-- ADDED
           />
         </div>
       )}
