@@ -2,7 +2,7 @@ import { useState } from 'react';
 import HomePage from './pages/HomePage';
 import PickTeamPage from './pages/PickTeamPage';
 import TokensPage from './pages/TokensPage';
-import TransfersPage from './pages/TransfersPage'; // <-- Imported new page
+import TransfersPage from './pages/TransfersPage';
 
 function App() {
   const savedId = localStorage.getItem('fplTeamId') || '';
@@ -12,7 +12,6 @@ function App() {
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
   
-  // New Money States
   const [bank, setBank] = useState(null);
   const [teamValue, setTeamValue] = useState(null);
   
@@ -26,6 +25,7 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
+  // State moved here so it's accessible by TransfersPage
   const [manualTransfers, setManualTransfers] = useState([]); 
 
   const fetchTeam = async () => {
@@ -112,7 +112,6 @@ function App() {
             <span className="font-black text-xl tracking-wider">FPL GENIUS</span>
           </div>
           <div className="hidden md:flex gap-6 text-sm font-bold text-gray-300">
-            {/* Added Transfers back to the navigation array */}
             {['Home', 'Pick Team', 'Transfers', 'Tokens'].map(tab => (
               <span 
                 key={tab}
@@ -139,8 +138,6 @@ function App() {
             loading={loading} 
             error={error} 
             starting11={starting11} 
-            manualTransfers={manualTransfers}
-            setManualTransfers={setManualTransfers}
             bank={bank}
             teamValue={teamValue}
           />
@@ -156,7 +153,14 @@ function App() {
         )}
 
         {activeTab === 'Transfers' && (
-          <TransfersPage teamId={teamId} />
+          <TransfersPage 
+            teamId={teamId} 
+            manualTransfers={manualTransfers}
+            setManualTransfers={setManualTransfers}
+            fetchTeam={fetchTeam}
+            loading={loading}
+            error={error}
+          />
         )}
 
         {activeTab === 'Tokens' && (
