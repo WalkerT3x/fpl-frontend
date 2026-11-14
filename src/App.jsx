@@ -107,7 +107,11 @@ function App() {
       setBank(data.bank);
       setCaptain(data.captain || '');
       setVice(data.vice || '');
-      setManualTransfers([]); // Clear manual transfers after applying
+      
+      // Clear old transfer advice so they don't see outdated math
+      setTransferAdvice(null);
+      setBankAfter(null);
+      
       triggerPopup("✅ Squad Updated with Manual Transfers!");
     } catch (err) {
       setError(err.message);
