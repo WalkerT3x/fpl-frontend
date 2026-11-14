@@ -1,81 +1,82 @@
-export default function PlayerCard({ 
-  player, 
+import PlayerCard from './PlayerCard';
+
+export default function PitchView({ 
+  squad, 
+  subs, 
   currentGw, 
-  isCaptain = false, 
-  isVice = false, 
-  benchLabel = null,
-  isBench = false
+  captain, 
+  vice, 
+  benchLabels 
 }) {
-  if (!player) return null;
-
-  const points = player.proj && player.proj[String(currentGw)] !== undefined 
-    ? parseFloat(player.proj[String(currentGw)]).toFixed(1) 
-    : '0.0';
-    
-  const fixtureRaw = player.fixtures && player.fixtures[String(currentGw)] ? String(player.fixtures[String(currentGw)]) : "";
-  const fixtureText = fixtureRaw ? fixtureRaw.replace("H ", "").replace("A ", "") + (fixtureRaw.startsWith("H") ? " (H)" : " (A)") : "";
-
-  // Dynamic classes based on whether it's a bench player
-  const cardWidth = isBench ? "w-[55px] sm:w-[65px] md:w-[75px]" : "w-[70px] sm:w-[85px] md:w-[105px]";
-  const shirtSize = isBench ? "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 mt-2 mb-0.5" : "w-12 h-12 sm:w-14 sm:h-14 md:w-20 md:h-20 mt-3 md:mt-4 mb-1";
-  const pointSize = isBench ? "w-4 h-4 md:w-5 md:h-5" : "w-5 h-5 md:w-7 md:h-7";
-  const pointText = isBench ? "text-[7px] md:text-[9px]" : "text-[8px] md:text-[11px]";
-  const nameText = isBench ? "text-[8px] md:text-[10px]" : "text-[9px] md:text-xs";
-  const fixtureTextSize = isBench ? "text-[6px] md:text-[7px]" : "text-[7px] md:text-[9px]";
+  const getPlayers = (arr, pos) => {
+    if (!Array.isArray(arr)) return [];
+    return arr.filter(p => p && p.position === pos);
+  };
 
   return (
-    <div className={`flex flex-col items-center group cursor-pointer relative ${cardWidth}`}>
+    <div className="w-full max-w-4xl mx-auto flex flex-col items-center animate-fade-in-up mt-4">
       
-      {/* CARD CONTAINER */}
-      <div className="w-full bg-[#150f18]/95 rounded-t-md border border-white/10 border-b-0 relative flex flex-col items-center pt-1 pb-0 transition-transform group-hover:-translate-y-1 shadow-lg">
+      {/* PITCH CONTAINER */}
+      <div className="relative w-full rounded-t-2xl overflow-hidden shadow-2xl border border-white/20 border-b-0">
         
-        {/* TOP LEFT ICONS (C / VC) */}
-        <div className="absolute top-1 left-1 z-20 flex flex-col gap-1">
-          {isCaptain && (
-            <div className={`${isBench ? 'w-3 h-3 text-[6px]' : 'w-4 h-4 md:w-6 md:h-6 text-[8px] md:text-xs'} rounded-full bg-[#ffd700] text-black flex items-center justify-center font-black shadow-[0_0_8px_rgba(255,215,0,0.6)] border border-white`}>
-              C
-            </div>
-          )}
-          {isVice && !isCaptain && (
-            <div className={`${isBench ? 'w-3 h-3 text-[5px]' : 'w-4 h-4 md:w-6 md:h-6 text-[7px] md:text-[10px]'} rounded-full bg-gray-300 text-black flex items-center justify-center font-black shadow-[0_0_8px_rgba(209,213,219,0.6)] border border-white`}>
-              VC
-            </div>
-          )}
-        </div>
+        {/* THE CROPPED PITCH IMAGE */}
+        <img 
+          src="/pitch.png" 
+          alt="FPL Pitch" 
+          className="w-full h-auto block pointer-events-none"
+        />
 
-        {/* TOP RIGHT POINTS */}
-        <div className={`absolute top-1 right-1 z-20 bg-[#37003c] text-white ${pointSize} rounded-full flex items-center justify-center shadow-lg border border-white/50`}>
-          <span className={`font-bold ${pointText}`}>{points}</span>
-        </div>
+        {/* PLAYERS OVERLAY */}
+        <div className="absolute inset-0 z-20 pointer-events-none">
+          
+          {/* GK Row */}
+          <div className="absolute top-[8%] w-full flex justify-center gap-2 pointer-events-auto">
+            {getPlayers(squad, 'GK').map((p, i) => (
+              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
+            ))}
+          </div>
 
-        {/* Shirt */}
-        <div className={`${shirtSize} z-10`}>
-          <img 
-            src={player.shirt_url || 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'}
-            alt={player.team || 'Team'}
-            className="w-full h-full object-contain drop-shadow-xl"
-            onError={(e) => { e.target.src = 'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_0_1-110.png'; }} 
-          />
-        </div>
+          {/* DEF Row */}
+          <div className="absolute top-[28%] w-full flex justify-center gap-1 md:gap-4 pointer-events-auto">
+            {getPlayers(squad, 'DEF').map((p, i) => (
+              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
+            ))}
+          </div>
 
+          {/* MID Row */}
+          <div className="absolute top-[50%] w-full flex justify-center gap-1 md:gap-6 pointer-events-auto">
+            {getPlayers(squad, 'MID').map((p, i) => (
+              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
+            ))}
+          </div>
+
+          {/* FWD Row */}
+          <div className="absolute top-[72%] w-full flex justify-center gap-1 md:gap-8 pointer-events-auto">
+            {getPlayers(squad, 'FWD').map((p, i) => (
+              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
+            ))}
+          </div>
+
+        </div>
       </div>
 
-      {/* WHITE BOTTOM BOX */}
-      <div className="bg-white text-black w-full rounded-b-md shadow-md flex flex-col items-center py-0.5 z-20 relative">
-        <div className={`font-black ${nameText} truncate px-1 leading-tight text-center w-full mt-1`}>
-          {player.name || 'Player'}
-        </div>
-        <div className={`${fixtureTextSize} text-gray-500 font-bold text-center uppercase tracking-wide mb-1`}>
-          {fixtureText}
+      {/* THE BENCH - Custom Glass Box below the pitch */}
+      <div className="w-full bg-[#120016]/90 backdrop-blur-xl rounded-b-2xl border border-white/20 border-t-0 p-6 shadow-2xl flex flex-col items-center">
+        <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-xs md:text-sm drop-shadow-[0_0_10px_rgba(0,255,135,0.4)]">
+          Substitutes
+        </h3>
+        <div className="flex justify-center gap-2 md:gap-8">
+          {Array.isArray(subs) && subs.map((p, i) => (
+            <PlayerCard 
+              key={i} 
+              player={p} 
+              currentGw={currentGw}
+              benchLabel={benchLabels && benchLabels[i] ? benchLabels[i] : undefined}
+            />
+          ))}
         </div>
       </div>
-
-      {/* BENCH LABEL */}
-      {benchLabel && (
-        <div className={`absolute -bottom-2 -right-2 z-30 px-1 md:px-1.5 py-0.5 rounded bg-[#37003c] text-[#00ff87] font-black ${isBench ? 'text-[6px] md:text-[7px]' : 'text-[7px] md:text-[9px]'} shadow-lg border border-[#00ff87]`}>
-          {benchLabel}
-        </div>
-      )}
+      
     </div>
   );
 }
