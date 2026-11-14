@@ -36,30 +36,27 @@ export default function DashboardPage({
       {/* MAIN CONTENT */}
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 animate-fade-in-up">
         
-        {/* LOGOS & HEADER */}
-        <div className="text-center mb-8 flex flex-col items-center">
-          
-          {/* The Premier League Logo - Using referrerPolicy to bypass Wikipedia blocks */}
+        {/* NEW BRANDING CONTAINER */}
+        <div className="bg-black/40 backdrop-blur-md rounded-3xl p-6 md:p-8 text-center mb-6 border border-white/10 shadow-2xl">
+          {/* The Premier League Logo */}
           <img 
             src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" 
             alt="Premier League" 
             referrerPolicy="no-referrer"
-            className="w-20 h-auto mb-4 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-            style={{ filter: 'brightness(0) invert(1)' }} 
+            className="w-16 h-auto mx-auto mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]"
             onError={(e) => { e.target.style.display = 'none'; }}
           />
 
-          {/* TITLE */}
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-2 italic flex flex-col items-center">
-            <span className="text-gray-300 text-xl tracking-widest uppercase not-italic mb-1 font-bold">Fantasy</span>
-            FPL <span className="text-[#00ff87]">GENIUS</span>
+          {/* Your exact text */}
+          <h1 className="text-4xl font-black text-white tracking-tight mb-2">
+            FPL Assistant
           </h1>
-          <p className="text-gray-400 font-medium tracking-wide text-sm md:text-base">
-            The ultimate AI mathematical optimizer.
+          <p className="text-[#00ff87] font-bold tracking-wide text-sm md:text-base">
+            Take your team to the next level.
           </p>
         </div>
 
-        {/* THE GLASS CARD */}
+        {/* THE LOGIN GLASS CARD */}
         <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20">
           
           {/* INPUT SECTION */}
