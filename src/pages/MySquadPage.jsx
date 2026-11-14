@@ -8,7 +8,7 @@ export default function MySquadPage({
   deadline,
   captain, 
   vice, 
-  chips,
+  chipStatus,
   setActiveTab 
 }) {
   if (!starting11) {
@@ -57,13 +57,13 @@ export default function MySquadPage({
         </h1>
       </div>
 
-      {/* CHIP STATUS ROW (Grid layout ensures equal width) */}
-      {chips && chips.chip_advice && (
+      {/* INSTANT CHIP STATUS ROW */}
+      {chipStatus && (
         <div className="grid grid-cols-4 gap-2 md:gap-4 mb-6 w-full max-w-4xl">
-          {renderChip('Bench Boost', chips.chip_advice.bench_boost.used)}
-          {renderChip('Triple Capt', chips.chip_advice.triple_captain.used)}
-          {renderChip('Wildcard', chips.chip_advice.wildcard.used)}
-          {renderChip('Free Hit', chips.chip_advice.free_hit.used)}
+          {renderChip('Bench Boost', chipStatus.bench_boost)}
+          {renderChip('Triple Capt', chipStatus.triple_captain)}
+          {renderChip('Wildcard', chipStatus.wildcard)}
+          {renderChip('Free Hit', chipStatus.free_hit)}
         </div>
       )}
 

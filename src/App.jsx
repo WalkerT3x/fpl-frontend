@@ -33,6 +33,7 @@ function App() {
   const [teamValue, setTeamValue] = useState(null);
   const [captain, setCaptain] = useState('');
   const [vice, setVice] = useState('');
+  const [chipStatus, setChipStatus] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [loadingTransfers, setLoadingTransfers] = useState(false);
@@ -109,12 +110,16 @@ function App() {
       setTeamValue(data.team_value);
       setCaptain(data.captain || '');
       setVice(data.vice || '');
+      setChipStatus(data.chip_status);
       
       setTeamId(idToLoad);
       setHasLoaded(true);
       localStorage.setItem('fplHasLoaded', 'true');
       localStorage.setItem('fplTeamId', idToLoad);
       
+      // Still fire background fetch for full draft details
+      fetchChips(true, idToLoad); 
+
       if (!isRestore) {
         handleTabChange('My Squad');
         triggerPopup("✅ Team Loaded Successfully!");
@@ -204,8 +209,9 @@ function App() {
     }
   };
 
-  const fetchChips = async (force = false) => {
-    if (!teamId || (chips && !force)) return;
+  const fetchChips = async (force = false, overrideTeamId = null) => {
+    const idToUse = overrideTeamId || teamId;
+    if (!idToUse || (chips && !force)) return;
     setLoadingChips(true);
     setChipsError('');
 
@@ -214,7 +220,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          team_id: parseInt(teamId), 
+          team_id: parseInt(idToUse), 
           free_transfers: freeTransfers, 
           manual_transfers: manualTransfers 
         })
@@ -352,7 +358,7 @@ function App() {
             deadline={deadline}
             captain={captain} 
             vice={vice} 
-            chips={chips}
+            chipStatus={chipStatus}
             setActiveTab={handleTabChange} 
           />
         )}

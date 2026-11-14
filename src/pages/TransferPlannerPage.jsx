@@ -189,7 +189,7 @@ export default function TransferPlannerPage({
           <p className="text-xs text-gray-300 mb-6">If you made transfers this week that the FPL API hasn't updated yet, add them here and apply them.</p>
           
           <div className="flex flex-col gap-4">
-            {/* INPUTS (Flattened) */}
+            {/* INPUTS */}
             <div className="flex flex-col md:flex-row gap-3 items-center relative z-20">
               <SearchableSelect 
                 value={formOut} 
@@ -214,20 +214,16 @@ export default function TransferPlannerPage({
               </button>
             </div>
 
-            {/* APPLIED LIST (Flattened) */}
+            {/* APPLIED LIST */}
             {manualTransfers.length > 0 && (
               <div className="flex flex-col mt-4 border-t border-white/10 pt-4 gap-2">
                 <span className="text-[#00ff87] font-black text-xs uppercase tracking-wider mb-1">Applied Transfers</span>
                 {manualTransfers.map((t, i) => (
-                  <div key={i} className="flex items-center justify-between py-2 text-xs md:text-sm gap-2">
-                    <div className="flex items-center gap-2 w-5/12 justify-end">
-                      <span className="text-red-400 font-bold truncate">{t.out_player}</span>
-                    </div>
-                    <div className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</div>
-                    <div className="flex items-center justify-between w-5/12 gap-2">
-                      <span className="text-green-400 font-bold truncate">{t.in_player}</span>
-                      <button onClick={() => handleRemove(i)} className="text-red-500 hover:text-red-400 font-bold px-1 shrink-0">✕</button>
-                    </div>
+                  <div key={i} className="flex items-center justify-between py-3 text-sm gap-2 w-full">
+                    <span className="text-red-400 font-bold truncate flex-1 text-right">{t.out_player}</span>
+                    <span className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</span>
+                    <span className="text-green-400 font-bold truncate flex-1 text-left">{t.in_player}</span>
+                    <button onClick={() => handleRemove(i)} className="text-red-500 hover:text-red-400 font-bold px-2 shrink-0">✕</button>
                   </div>
                 ))}
               </div>
@@ -306,16 +302,10 @@ export default function TransferPlannerPage({
                 {!isRoll && thisWeekPairs.length > 0 && (
                   <div className="flex flex-col gap-2">
                     {thisWeekPairs.map((pair, i) => (
-                      <div key={i} className="flex items-center justify-between bg-black/30 p-3 rounded-lg text-sm">
-                        <div className="flex items-center gap-2 w-5/12 justify-end">
-                          <span className="text-red-400 font-bold truncate">{pair.out.name}</span>
-                          <span className="text-gray-500 text-xs shrink-0">£{pair.out.price10/10}m</span>
-                        </div>
-                        <span className="text-[#00ff87] font-bold mx-2 shrink-0">➡️</span>
-                        <div className="flex items-center gap-2 w-5/12 justify-start">
-                          <span className="text-green-400 font-bold truncate">{pair.in.name}</span>
-                          <span className="text-gray-500 text-xs shrink-0">£{pair.in.price10/10}m</span>
-                        </div>
+                      <div key={i} className="flex items-center justify-between bg-black/30 p-3 rounded-lg text-sm w-full gap-2">
+                        <span className="text-red-400 font-bold truncate flex-1 text-right">{pair.out.name}</span>
+                        <span className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</span>
+                        <span className="text-green-400 font-bold truncate flex-1 text-left">{pair.in.name}</span>
                       </div>
                     ))}
                   </div>
@@ -331,16 +321,10 @@ export default function TransferPlannerPage({
                   </div>
                   <div className="flex flex-col divide-y divide-white/5">
                     {dreamPairs.map((pair, i) => (
-                      <div key={i} className="flex items-center justify-between px-4 py-3 text-xs md:text-sm">
-                        <div className="flex items-center gap-2 w-5/12 justify-end">
-                          <span className="text-red-400 font-bold truncate">{pair.out.name}</span>
-                          <span className="text-gray-500 font-mono text-[10px] shrink-0">£{pair.out.price10/10}m</span>
-                        </div>
-                        <div className="text-[#00ff87] font-bold px-2 text-[10px] shrink-0">➡️</div>
-                        <div className="flex items-center gap-2 w-5/12 justify-start">
-                          <span className="text-green-400 font-bold truncate">{pair.in.name}</span>
-                          <span className="text-gray-500 font-mono text-[10px] shrink-0">£{pair.in.price10/10}m</span>
-                        </div>
+                      <div key={i} className="flex items-center justify-between px-4 py-3 text-sm w-full gap-2">
+                        <span className="text-red-400 font-bold truncate flex-1 text-right">{pair.out.name}</span>
+                        <span className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</span>
+                        <span className="text-green-400 font-bold truncate flex-1 text-left">{pair.in.name}</span>
                       </div>
                     ))}
                   </div>
@@ -376,16 +360,10 @@ export default function TransferPlannerPage({
                 </div>
                 <div className="flex flex-col divide-y divide-white/5">
                   {groupedHistory[gw].map((t, i) => (
-                    <div key={i} className="flex items-center justify-between px-4 py-3 text-xs md:text-sm">
-                      <div className="flex items-center gap-2 w-5/12 justify-end">
-                        <span className="text-red-400 font-bold truncate">{t.out_name}</span>
-                        <span className="text-gray-500 font-mono text-[10px] shrink-0">£{t.out_cost.toFixed(1)}</span>
-                      </div>
-                      <div className="text-[#00ff87] font-bold px-2 text-[10px] shrink-0">➡️</div>
-                      <div className="flex items-center gap-2 w-5/12 justify-start">
-                        <span className="text-green-400 font-bold truncate">{t.in_name}</span>
-                        <span className="text-gray-500 font-mono text-[10px] shrink-0">£{t.in_cost.toFixed(1)}</span>
-                      </div>
+                    <div key={i} className="flex items-center justify-between px-4 py-3 text-sm w-full gap-2">
+                      <span className="text-red-400 font-bold truncate flex-1 text-right">{t.out_name}</span>
+                      <span className="text-[#00ff87] font-bold text-[10px] shrink-0">➡️</span>
+                      <span className="text-green-400 font-bold truncate flex-1 text-left">{t.in_name}</span>
                     </div>
                   ))}
                 </div>
