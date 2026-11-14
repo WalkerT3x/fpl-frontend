@@ -29,7 +29,7 @@ export default function PitchView({
         {/* PLAYERS OVERLAY */}
         <div className="absolute inset-0 z-20 pointer-events-none">
           
-          {/* GK Row - Pushed right up to the goal line */}
+          {/* GK Row */}
           <div className="absolute top-[6%] w-full flex justify-center gap-2 pointer-events-auto">
             {getPlayers(squad, 'GK').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
@@ -57,8 +57,8 @@ export default function PitchView({
             ))}
           </div>
 
-          {/* THE BENCH - Pushed down into the box */}
-          <div className="absolute bottom-[2%] w-full flex justify-center gap-2 md:gap-8 pointer-events-auto">
+          {/* THE BENCH - Moved up to bottom-[8%] */}
+          <div className="absolute bottom-[8%] w-full flex justify-center gap-2 md:gap-8 pointer-events-auto">
             {Array.isArray(subs) && subs.map((p, i) => (
               <PlayerCard 
                 key={i} 
