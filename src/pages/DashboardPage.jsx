@@ -36,8 +36,8 @@ export default function DashboardPage({
       {/* MAIN CONTENT - SINGLE BOX */}
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 animate-fade-in-up">
         
-        {/* THE GLASS CARD WITH INNER GLOWS */}
-        <div className="relative bg-black/40 backdrop-blur-2xl rounded-3xl p-8 md:p-10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden">
+        {/* THE GLASS CARD WITH INNER GLOWS AND BOLDER BORDER */}
+        <div className="relative bg-black/40 backdrop-blur-2xl rounded-3xl p-8 md:p-10 shadow-[0_0_30px_rgba(0,0,0,0.6)] border-2 border-white/20 overflow-hidden">
           
           {/* INNER GLOWING HUES */}
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-30 pointer-events-none"></div>
@@ -48,17 +48,17 @@ export default function DashboardPage({
             
             {/* BRANDING HEADER */}
             <div className="text-center mb-8 flex flex-col items-center">
-              {/* Premier League Logo - MUCH BIGGER */}
+              {/* Premier League Logo - MASSIVE */}
               <img 
                 src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" 
                 alt="Premier League" 
                 referrerPolicy="no-referrer"
-                className="w-32 h-auto mb-4 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-                style={{ filter: 'brightness(0) invert(1)' }} // Turns the logo pure white
+                className="w-48 md:w-56 h-auto mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]"
+                style={{ filter: 'brightness(0) invert(1)' }} 
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
 
-              {/* Title: Bigger, FPL in White, Assistant in Green */}
+              {/* Title: FPL in White, Assistant in Green */}
               <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-3">
                 <span className="text-white">FPL</span> <span className="text-[#00ff87]">Assistant</span>
               </h1>
@@ -101,7 +101,7 @@ export default function DashboardPage({
               <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
                 Saved Teams
               </label>
-              <div className="bg-black/30 rounded-xl border border-white/5 overflow-hidden">
+              <div className="bg-black/30 rounded-xl border border-white/10 overflow-hidden">
                 {teamHistory.length === 0 ? (
                   <div className="text-center text-gray-400 py-6 text-sm italic">
                     No teams saved yet. Enter an ID above.
