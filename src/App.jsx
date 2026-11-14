@@ -4,25 +4,35 @@ import MySquadPage from './pages/MySquadPage';
 import TransferPlannerPage from './pages/TransferPlannerPage';
 import ChipStrategyPage from './pages/ChipStrategyPage';
 
-const APP_VERSION = "v1.0.10"; 
+const APP_VERSION = "v1.0.11"; 
 
 function App() {
+  // Version Control (still uses localStorage to clear everything on updates)
   if (localStorage.getItem('fplAppVersion') !== APP_VERSION) {
     localStorage.clear();
+    sessionStorage.clear();
     localStorage.setItem('fplAppVersion', APP_VERSION);
   }
 
-  const [teamId, setTeamId] = useState(() => localStorage.getItem('fplTeamId') || '');
-  const [hasLoaded, setHasLoaded] = useState(() => localStorage.getItem('fplHasLoaded') === 'true');
-  const [activeTab, setActiveTab] = useState(() => localStorage.getItem('fplActiveTab') || 'My Squad');
-  const [isRestoring, setIsRestoring] = useState(() => localStorage.getItem('fplHasLoaded') === 'true');
+  // --- SESSION STORAGE (Resets when app is fully closed) ---
+  const [teamId, setTeamId] = useState(() => sessionStorage.getItem('fplTeamId') || '');
+  const [hasLoaded, setHasLoaded] = useState(() => sessionStorage.getItem('fplHasLoaded') === 'true');
+  const [activeTab, setActiveTab] = useState(() => sessionStorage.getItem('fplActiveTab') || 'My Squad');
+  const [isRestoring, setIsRestoring] = useState(() => sessionStorage.getItem('fplHasLoaded') === 'true');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // --- LOCAL STORAGE (Persists forever) ---
   const [teamHistory, setTeamHistory] = useState(() => {
     const saved = localStorage.getItem('fplTeamHistory');
     return saved ? JSON.parse(saved) : [];
   });
 
+  const [manualTransfers, setManualTransfers] = useState(() => {
+    const saved = localStorage.getItem('fplManualTransfersV2');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Squad State
   const [starting11, setStarting11] = useState(null);
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
@@ -46,10 +56,6 @@ function App() {
   const [loadingChips, setLoadingChips] = useState(false);
   const [chipsError, setChipsError] = useState('');
 
-  const [manualTransfers, setManualTransfers] = useState(() => {
-    const saved = localStorage.getItem('fplManualTransfersV2');
-    return saved ? JSON.parse(saved) : [];
-  });
   const [freeTransfers, setFreeTransfers] = useState(1);
   const [transferAdvice, setTransferAdvice] = useState(null);
   const [bankAfter, setBankAfter] = useState(null);
@@ -66,7 +72,7 @@ function App() {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    localStorage.setItem('fplActiveTab', tab);
+    sessionStorage.setItem('fplActiveTab', tab);
     setIsMobileMenuOpen(false);
   };
 
@@ -114,8 +120,10 @@ function App() {
       
       setTeamId(idToLoad);
       setHasLoaded(true);
-      localStorage.setItem('fplHasLoaded', 'true');
-      localStorage.setItem('fplTeamId', idToLoad);
+      
+      // Save active session to sessionStorage
+      sessionStorage.setItem('fplHasLoaded', 'true');
+      sessionStorage.setItem('fplTeamId', idToLoad);
       
       // Still fire background fetch for full draft details
       fetchChips(true, idToLoad); 
@@ -129,7 +137,7 @@ function App() {
       setError(err.message);
       if (isRestore) {
         setHasLoaded(false);
-        localStorage.setItem('fplHasLoaded', 'false');
+        sessionStorage.setItem('fplHasLoaded', 'false');
       }
     } finally {
       setLoading(false);
@@ -141,7 +149,10 @@ function App() {
     setHasLoaded(false);
     setStarting11(null);
     handleTabChange('My Squad'); 
-    localStorage.setItem('fplHasLoaded', 'false');
+    
+    // Clear session
+    sessionStorage.setItem('fplHasLoaded', 'false');
+    sessionStorage.removeItem('fplTeamId');
   };
 
   const applyManualTransfers = async (transfersToApply) => {
