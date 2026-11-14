@@ -4,24 +4,21 @@ import MySquadPage from './pages/MySquadPage';
 import TransferPlannerPage from './pages/TransferPlannerPage';
 import ChipStrategyPage from './pages/ChipStrategyPage';
 
-const APP_VERSION = "v1.0.11"; 
+const APP_VERSION = "v1.0.12"; 
 
 function App() {
-  // Version Control (still uses localStorage to clear everything on updates)
   if (localStorage.getItem('fplAppVersion') !== APP_VERSION) {
     localStorage.clear();
     sessionStorage.clear();
     localStorage.setItem('fplAppVersion', APP_VERSION);
   }
 
-  // --- SESSION STORAGE (Resets when app is fully closed) ---
   const [teamId, setTeamId] = useState(() => sessionStorage.getItem('fplTeamId') || '');
   const [hasLoaded, setHasLoaded] = useState(() => sessionStorage.getItem('fplHasLoaded') === 'true');
   const [activeTab, setActiveTab] = useState(() => sessionStorage.getItem('fplActiveTab') || 'My Squad');
   const [isRestoring, setIsRestoring] = useState(() => sessionStorage.getItem('fplHasLoaded') === 'true');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // --- LOCAL STORAGE (Persists forever) ---
   const [teamHistory, setTeamHistory] = useState(() => {
     const saved = localStorage.getItem('fplTeamHistory');
     return saved ? JSON.parse(saved) : [];
@@ -32,7 +29,6 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Squad State
   const [starting11, setStarting11] = useState(null);
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
@@ -118,14 +114,17 @@ function App() {
       setVice(data.vice || '');
       setChipStatus(data.chip_status);
       
+      // Sync active manual transfers (removes ones the API has processed)
+      if (data.active_manual_transfers) {
+        setManualTransfers(data.active_manual_transfers);
+      }
+      
       setTeamId(idToLoad);
       setHasLoaded(true);
       
-      // Save active session to sessionStorage
       sessionStorage.setItem('fplHasLoaded', 'true');
       sessionStorage.setItem('fplTeamId', idToLoad);
       
-      // Still fire background fetch for full draft details
       fetchChips(true, idToLoad); 
 
       if (!isRestore) {
@@ -150,7 +149,6 @@ function App() {
     setStarting11(null);
     handleTabChange('My Squad'); 
     
-    // Clear session
     sessionStorage.setItem('fplHasLoaded', 'false');
     sessionStorage.removeItem('fplTeamId');
   };
@@ -179,6 +177,11 @@ function App() {
       setBank(data.bank);
       setCaptain(data.captain || '');
       setVice(data.vice || '');
+      
+      // Sync active manual transfers
+      if (data.active_manual_transfers) {
+        setManualTransfers(data.active_manual_transfers);
+      }
       
       setTransferAdvice(null);
       setBankAfter(null);
@@ -213,6 +216,11 @@ function App() {
       setTransferAdvice(data.transfer_advice);
       setBankAfter(data.bank_after);
       setBank(data.bank);
+      
+      // Sync active manual transfers
+      if (data.active_manual_transfers) {
+        setManualTransfers(data.active_manual_transfers);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
