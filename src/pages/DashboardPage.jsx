@@ -74,7 +74,7 @@ export default function DashboardPage({
                 <input 
                   type="number" 
                   placeholder="e.g. 1112720" 
-                  className="flex-1 p-4 rounded-xl text-white bg-white/5 border border-white/10 outline-none focus:ring-2 focus:ring-[#00ff87] focus:border-transparent font-black text-lg placeholder-gray-500 transition-all shadow-inner"
+                  className="flex-1 p-4 rounded-xl text-white bg-black/30 border border-white/10 outline-none focus:border-[#00ff87]/50 focus:ring-1 focus:ring-[#00ff87]/50 font-black text-lg placeholder-gray-500 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]"
                   value={newTeamId}
                   onChange={(e) => setNewTeamId(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleSaveTeam(); }}
@@ -82,7 +82,7 @@ export default function DashboardPage({
                 <button 
                   onClick={handleSaveTeam}
                   disabled={!newTeamId}
-                  className="bg-[#00ff87] text-[#37003c] font-black px-8 rounded-xl hover:bg-green-400 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_15px_rgba(0,255,135,0.4)]"
+                  className="bg-gradient-to-b from-[#00ff87] to-[#00cc6a] text-[#37003c] font-black px-8 rounded-xl border-b-4 border-[#00994f] hover:brightness-110 active:border-b-0 active:translate-y-1 transition-all disabled:opacity-50 disabled:hover:brightness-100 disabled:active:border-b-4 disabled:active:translate-y-0 shadow-[0_0_15px_rgba(0,255,135,0.3)] disabled:shadow-none"
                 >
                   Save
                 </button>
@@ -109,8 +109,9 @@ export default function DashboardPage({
                       >
                         
                         <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-xl bg-[#00ff87]/10 border border-[#00ff87]/20 flex items-center justify-center shadow-[0_0_10px_rgba(0,255,135,0.1)]">
-                            <span className="text-[#00ff87] text-xs font-black tracking-wider">ID</span>
+                          {/* GLOWING ID BADGE */}
+                          <div className="w-10 h-10 rounded-xl bg-transparent border-2 border-[#00ff87] flex items-center justify-center shadow-[0_0_12px_rgba(0,255,135,0.4)]">
+                            <span className="text-[#00ff87] text-xs font-black tracking-wider drop-shadow-[0_0_4px_rgba(0,255,135,0.8)]">ID</span>
                           </div>
                           <span className="font-black text-xl text-white tracking-wide">{id}</span>
                         </div>
@@ -118,14 +119,16 @@ export default function DashboardPage({
                         <div className="flex items-center gap-3">
                           <button 
                             onClick={() => handleRemoveTeam(id)}
-                            className="text-gray-400 hover:text-red-400 text-xs font-bold px-2 py-2 transition-colors"
+                            className="text-gray-400 hover:text-red-400 text-xs font-bold px-2 py-2 transition-colors hover:bg-red-500/10 rounded-lg"
                           >
                             Remove
                           </button>
+                          
+                          {/* 3D LOAD BUTTON */}
                           <button 
                             onClick={() => fetchTeam(id)}
                             disabled={loading}
-                            className="bg-[#00ff87] text-[#37003c] font-black text-sm px-5 py-2.5 rounded-lg hover:bg-green-400 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 shadow-[0_0_10px_rgba(0,255,135,0.3)]"
+                            className="bg-gradient-to-b from-[#00ff87] to-[#00cc6a] text-[#37003c] font-black text-sm px-6 py-2.5 rounded-xl border-b-4 border-[#00994f] hover:brightness-110 active:border-b-0 active:translate-y-1 transition-all disabled:opacity-50 disabled:hover:brightness-100 disabled:active:border-b-4 disabled:active:translate-y-0 shadow-[0_0_15px_rgba(0,255,135,0.3)] disabled:shadow-none"
                           >
                             {loading ? 'Loading...' : 'Load Team'}
                           </button>
