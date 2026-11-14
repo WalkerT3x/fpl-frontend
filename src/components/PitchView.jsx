@@ -16,8 +16,8 @@ export default function PitchView({
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center animate-fade-in-up mt-4">
       
-      {/* 1. THE PITCH CONTAINER */}
-      <div className="relative w-full rounded-t-2xl overflow-hidden shadow-2xl border border-white/20 border-b-0">
+      {/* PITCH CONTAINER (Border removed) */}
+      <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl">
         
         {/* THE CROPPED PITCH IMAGE */}
         <img 
@@ -26,32 +26,32 @@ export default function PitchView({
           className="w-full h-auto block pointer-events-none"
         />
 
-        {/* PLAYERS OVERLAY */}
+        {/* PLAYERS OVERLAY (Evenly spread using justify-evenly) */}
         <div className="absolute inset-0 z-20 pointer-events-none">
           
           {/* GK Row */}
-          <div className="absolute top-[8%] w-full flex justify-center gap-2 pointer-events-auto">
+          <div className="absolute top-[10%] w-full flex justify-evenly items-center px-4 md:px-12 pointer-events-auto">
             {getPlayers(squad, 'GK').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
           {/* DEF Row */}
-          <div className="absolute top-[30%] w-full flex justify-center gap-1 md:gap-4 pointer-events-auto">
+          <div className="absolute top-[30%] w-full flex justify-evenly items-center px-2 md:px-6 pointer-events-auto">
             {getPlayers(squad, 'DEF').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
           {/* MID Row */}
-          <div className="absolute top-[50%] w-full flex justify-center gap-1 md:gap-6 pointer-events-auto">
+          <div className="absolute top-[52%] w-full flex justify-evenly items-center px-2 md:px-6 pointer-events-auto">
             {getPlayers(squad, 'MID').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
-          {/* FWD Row - Moved up to 68% to clear the bottom box */}
-          <div className="absolute top-[68%] w-full flex justify-center gap-1 md:gap-8 pointer-events-auto">
+          {/* FWD Row (Moved closer to the bottom) */}
+          <div className="absolute top-[74%] w-full flex justify-evenly items-center px-4 md:px-10 pointer-events-auto">
             {getPlayers(squad, 'FWD').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
@@ -60,20 +60,29 @@ export default function PitchView({
         </div>
       </div>
 
-      {/* 2. THE BENCH CONTAINER (Completely separate, below the pitch) */}
-      <div className="w-full bg-[#120016]/90 backdrop-blur-xl rounded-b-2xl border border-white/20 p-6 shadow-2xl flex flex-col items-center">
-        <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-xs md:text-sm drop-shadow-[0_0_10px_rgba(0,255,135,0.4)]">
-          Substitutes
-        </h3>
-        <div className="flex justify-center gap-2 md:gap-8">
-          {Array.isArray(subs) && subs.map((p, i) => (
-            <PlayerCard 
-              key={i} 
-              player={p} 
-              currentGw={currentGw}
-              benchLabel={benchLabels && benchLabels[i] ? benchLabels[i] : undefined}
-            />
-          ))}
+      {/* THE BENCH CONTAINER (With Neon Hues and Rounded Corners) */}
+      <div className="relative w-full bg-[#120016]/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 shadow-[0_0_40px_rgba(0,0,0,0.8)] border border-white/10 overflow-hidden mt-4">
+        
+        {/* GLOWING HUES */}
+        <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-30 pointer-events-none"></div>
+        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-30 pointer-events-none"></div>
+
+        <div className="relative z-10 flex flex-col items-center">
+          <h3 className="text-center text-[#00ff87] font-black mb-6 uppercase tracking-widest text-xs md:text-sm drop-shadow-[0_0_10px_rgba(0,255,135,0.4)]">
+            Substitutes
+          </h3>
+          
+          {/* Subs Spread Evenly Left to Right */}
+          <div className="w-full flex justify-evenly items-center">
+            {Array.isArray(subs) && subs.map((p, i) => (
+              <PlayerCard 
+                key={i} 
+                player={p} 
+                currentGw={currentGw}
+                benchLabel={benchLabels && benchLabels[i] ? benchLabels[i] : undefined}
+              />
+            ))}
+          </div>
         </div>
       </div>
       
