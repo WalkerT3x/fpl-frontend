@@ -4,7 +4,7 @@ import MySquadPage from './pages/MySquadPage';
 import TransferPlannerPage from './pages/TransferPlannerPage';
 import ChipStrategyPage from './pages/ChipStrategyPage';
 
-const APP_VERSION = "v1.0.6"; 
+const APP_VERSION = "v1.0.7"; 
 
 function App() {
   if (localStorage.getItem('fplAppVersion') !== APP_VERSION) {
@@ -27,6 +27,7 @@ function App() {
   const [starting11, setStarting11] = useState(null);
   const [bench, setBench] = useState(null);
   const [currentGw, setCurrentGw] = useState(11);
+  const [deadline, setDeadline] = useState('');
   const [bank, setBank] = useState(null);
   const [teamValue, setTeamValue] = useState(null);
   const [captain, setCaptain] = useState('');
@@ -64,7 +65,7 @@ function App() {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     localStorage.setItem('fplActiveTab', tab);
-    setIsMobileMenuOpen(false); // Close mobile menu on selection
+    setIsMobileMenuOpen(false); 
   };
 
   const triggerPopup = (msg) => {
@@ -101,6 +102,7 @@ function App() {
       setStarting11(data.starting_11);
       setBench(data.bench);
       setCurrentGw(data.current_gw);
+      setDeadline(data.deadline || '');
       setBank(data.bank);
       setTeamValue(data.team_value);
       setCaptain(data.captain || '');
@@ -159,6 +161,7 @@ function App() {
       setBank(data.bank);
       setCaptain(data.captain || '');
       setVice(data.vice || '');
+      setDeadline(data.deadline || '');
       
       setTransferAdvice(null);
       setBankAfter(null);
@@ -347,6 +350,9 @@ function App() {
             starting11={starting11} 
             bench={bench} 
             currentGw={currentGw} 
+            deadline={deadline}
+            chips={chips}
+            fetchChips={fetchChips}
             captain={captain} 
             vice={vice} 
             setActiveTab={handleTabChange} 
