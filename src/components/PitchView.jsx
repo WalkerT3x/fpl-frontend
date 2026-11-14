@@ -17,7 +17,7 @@ export default function PitchView({
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center animate-fade-in-up mt-4">
       
       {/* PITCH CONTAINER */}
-      <div className="relative w-full rounded-t-xl overflow-hidden shadow-2xl border-2 border-b-0 border-[#008f2d] bg-[#189c3a]">
+      <div className="relative w-full rounded-t-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10">
         
         {/* THE PITCH IMAGE */}
         <img 
@@ -32,32 +32,32 @@ export default function PitchView({
           }}
         />
 
-        {/* PLAYERS OVERLAY (Absolute positioning on top of the image) */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-between py-[5%] pointer-events-none">
+        {/* PLAYERS OVERLAY (Absolute positioning mapped to the image) */}
+        <div className="absolute inset-0 z-20 pointer-events-none">
           
-          {/* GK Row (Top 10%) */}
-          <div className="w-full flex justify-center gap-2 md:gap-4 scale-[0.8] md:scale-90 pointer-events-auto origin-top">
+          {/* GK Row */}
+          <div className="absolute top-[18%] w-full flex justify-center gap-2 md:gap-4 pointer-events-auto">
             {getPlayers(squad, 'GK').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
-          {/* DEF Row (Top 30%) */}
-          <div className="w-full flex justify-center gap-2 md:gap-6 scale-[0.85] md:scale-95 pointer-events-auto origin-top mt-[5%]">
+          {/* DEF Row */}
+          <div className="absolute top-[36%] w-full flex justify-center gap-1 md:gap-6 pointer-events-auto">
             {getPlayers(squad, 'DEF').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
-          {/* MID Row (Top 55%) */}
-          <div className="w-full flex justify-center gap-2 md:gap-8 scale-90 md:scale-100 pointer-events-auto origin-top mt-[5%]">
+          {/* MID Row */}
+          <div className="absolute top-[56%] w-full flex justify-center gap-1 md:gap-8 pointer-events-auto">
             {getPlayers(squad, 'MID').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
-          {/* FWD Row (Top 80%) */}
-          <div className="w-full flex justify-center gap-2 md:gap-10 scale-95 md:scale-105 pointer-events-auto origin-top mt-[5%] mb-[5%]">
+          {/* FWD Row */}
+          <div className="absolute top-[76%] w-full flex justify-center gap-1 md:gap-10 pointer-events-auto">
             {getPlayers(squad, 'FWD').map((p, i) => (
               <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
@@ -66,12 +66,12 @@ export default function PitchView({
         </div>
       </div>
 
-      {/* THE BENCH (Overlapping the bottom of the image) */}
-      <div className="relative z-30 w-[95%] -mt-12 md:-mt-16 bg-[#120016]/95 backdrop-blur-xl rounded-xl border border-white/20 p-4 pb-6 shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
-        <h3 className="text-center text-white font-black mb-4 uppercase tracking-widest text-xs md:text-sm drop-shadow-md">
+      {/* THE BENCH (Clean layout below the pitch) */}
+      <div className="w-full bg-[#120016]/80 backdrop-blur-md rounded-b-2xl border border-white/10 border-t-0 p-4 md:p-6 shadow-xl">
+        <h3 className="text-center text-white font-black mb-4 uppercase tracking-widest text-xs md:text-sm">
           Substitutes
         </h3>
-        <div className="flex justify-center gap-2 md:gap-6">
+        <div className="flex justify-center gap-2 md:gap-8">
           {subs && subs.map((p, i) => (
             <PlayerCard 
               key={i} 
