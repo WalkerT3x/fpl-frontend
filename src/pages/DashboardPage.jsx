@@ -29,19 +29,17 @@ export default function DashboardPage({
       {/* OUTER BACKGROUND GRAPHICS */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#37003c] via-[#2a0030] to-[#004d2a] opacity-90"></div>
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#00ff87] rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#04f5ff] rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
       </div>
 
       {/* MAIN CONTENT - SINGLE BOX */}
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 animate-fade-in-up">
         
-        {/* THE SOLID DARK CARD */}
-        <div className="relative bg-[#0f0012]/95 backdrop-blur-xl rounded-3xl p-8 md:p-10 shadow-[0_0_40px_rgba(0,0,0,0.8)] border-2 border-white/20 overflow-hidden">
+        {/* THE GLASS CARD WITH BRIGHT INNER GLOWS */}
+        <div className="relative bg-black/40 backdrop-blur-xl rounded-3xl p-8 md:p-10 shadow-[0_0_40px_rgba(0,0,0,0.8)] border-2 border-white/20 overflow-hidden">
           
-          {/* VERY SUBTLE INNER GLOWS */}
-          <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-10 pointer-events-none"></div>
-          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-15 pointer-events-none"></div>
+          {/* BRIGHT INNER GLOWING HUES (Brought back) */}
+          <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
+          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[80px] opacity-50 pointer-events-none"></div>
 
           {/* CONTENT WRAPPER (Keeps content above the glows) */}
           <div className="relative z-10">
@@ -101,7 +99,7 @@ export default function DashboardPage({
               <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
                 Saved Teams
               </label>
-              <div className="bg-black/50 rounded-xl border border-white/10 overflow-hidden">
+              <div className="bg-black/30 rounded-xl border border-white/10 overflow-hidden">
                 {teamHistory.length === 0 ? (
                   <div className="text-center text-gray-400 py-6 text-sm italic">
                     No teams saved yet. Enter an ID above.
