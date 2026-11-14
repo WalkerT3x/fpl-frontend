@@ -16,100 +16,79 @@ export default function PitchView({
   return (
     <div className="w-full flex flex-col gap-10 animate-fade-in-up mt-4">
       
-      {/* THE PITCH */}
-      <div className="relative w-full max-w-4xl mx-auto rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-2 border-[#008f2d] bg-[#189c3a] overflow-hidden py-8 px-2 min-h-[700px] flex flex-col justify-between">
+      {/* 
+        THE 3D PITCH WRAPPER 
+        We add perspective to the wrapper, and tilt the pitch itself.
+      */}
+      <div className="relative w-full max-w-4xl mx-auto h-[750px] md:h-[850px] [perspective:1200px] overflow-hidden rounded-2xl border-2 border-[#008f2d] bg-[#37003c]">
         
-        {/* Grass Stripes */}
-        <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_60px,rgba(0,0,0,0.08)_60px,rgba(0,0,0,0.08)_120px)] pointer-events-none"></div>
-        
-        {/* Vignette / Shadow */}
-        <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)] pointer-events-none"></div>
+        {/* THE PITCH (Tilted back) */}
+        <div className="absolute inset-0 w-full h-full bg-[#189c3a] [transform:rotateX(25deg)_scale(1.1)] origin-bottom shadow-[inset_0_0_100px_rgba(0,0,0,0.6)]">
+          
+          {/* Grass Stripes */}
+          <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_60px,rgba(0,0,0,0.08)_60px,rgba(0,0,0,0.08)_120px)] pointer-events-none"></div>
 
-        {/* --- PITCH MARKINGS --- */}
-        {/* Outer boundary */}
-        <div className="absolute inset-3 border-2 border-white/30 pointer-events-none rounded-sm"></div>
-        
-        {/* Top Goal Net */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-10 md:w-64 md:h-12 border-b-2 border-l-2 border-r-2 border-white/50 bg-[linear-gradient(90deg,transparent_49%,rgba(255,255,255,0.2)_49%,rgba(255,255,255,0.2)_51%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(255,255,255,0.2)_49%,rgba(255,255,255,0.2)_51%,transparent_51%)] bg-[length:10px_10px] pointer-events-none"></div>
+          {/* --- PITCH MARKINGS --- */}
+          {/* Outer boundary */}
+          <div className="absolute inset-4 border-2 border-white/30 pointer-events-none"></div>
+          
+          {/* Top Goal Net */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-12 md:w-80 md:h-16 border-b-2 border-l-2 border-r-2 border-white/50 bg-[linear-gradient(90deg,transparent_49%,rgba(255,255,255,0.2)_49%,rgba(255,255,255,0.2)_51%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(255,255,255,0.2)_49%,rgba(255,255,255,0.2)_51%,transparent_51%)] bg-[length:10px_10px] pointer-events-none"></div>
 
-        {/* Top Penalty Box */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-3/4 md:w-1/2 h-36 md:h-44 border-b-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
-        {/* Top 6-Yard Box */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-1/2 md:w-1/3 h-16 md:h-20 border-b-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
-        {/* Top D-Arc */}
-        <div className="absolute top-[150px] md:top-[182px] left-1/2 -translate-x-1/2 w-32 md:w-40 h-10 md:h-12 border-b-2 border-l-2 border-r-2 border-white/30 rounded-b-full pointer-events-none"></div>
+          {/* Top Penalty Box */}
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 w-3/4 md:w-1/2 h-40 md:h-52 border-b-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 w-1/2 md:w-1/3 h-16 md:h-24 border-b-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+          <div className="absolute top-[180px] md:top-[224px] left-1/2 -translate-x-1/2 w-32 md:w-48 h-12 md:h-16 border-b-2 border-l-2 border-r-2 border-white/30 rounded-b-full pointer-events-none"></div>
 
-        {/* Halfway Line */}
-        <div className="absolute top-1/2 left-3 right-3 h-0.5 bg-white/30 pointer-events-none -translate-y-1/2"></div>
-        
-        {/* Center Circle */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 md:w-52 md:h-52 border-2 border-white/30 rounded-full pointer-events-none flex items-center justify-center">
-          <div className="w-2 h-2 bg-white/50 rounded-full"></div>
+          {/* Halfway Line */}
+          <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-white/30 pointer-events-none"></div>
+          
+          {/* Center Circle */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64 border-2 border-white/30 rounded-full pointer-events-none flex items-center justify-center">
+            <div className="w-2 h-2 bg-white/50 rounded-full"></div>
+          </div>
+
+          {/* Bottom Penalty Box */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-3/4 md:w-1/2 h-40 md:h-52 border-t-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-1/2 md:w-1/3 h-16 md:h-24 border-t-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
+          <div className="absolute bottom-[180px] md:bottom-[224px] left-1/2 -translate-x-1/2 w-32 md:w-48 h-12 md:h-16 border-t-2 border-l-2 border-r-2 border-white/30 rounded-t-full pointer-events-none"></div>
         </div>
 
-        {/* Bottom Penalty Box */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-3/4 md:w-1/2 h-36 md:h-44 border-t-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
-        {/* Bottom 6-Yard Box */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-1/2 md:w-1/3 h-16 md:h-20 border-t-2 border-l-2 border-r-2 border-white/30 pointer-events-none"></div>
-        {/* Bottom D-Arc */}
-        <div className="absolute bottom-[150px] md:bottom-[182px] left-1/2 -translate-x-1/2 w-32 md:w-40 h-10 md:h-12 border-t-2 border-l-2 border-r-2 border-white/30 rounded-t-full pointer-events-none"></div>
-
-
-        {/* --- PLAYERS (Using Flex spacing) --- */}
-        <div className="relative z-10 flex flex-col justify-between h-full w-full">
+        {/* 
+          PLAYERS OVERLAY 
+          We place players absolutely over the tilted pitch, and counter-rotate them 
+          so they stand straight up facing the camera perfectly.
+        */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
           
           {/* GK Row */}
-          <div className="flex justify-center gap-4 relative z-10 mb-2 mt-2">
+          <div className="absolute top-[5%] w-full flex justify-center gap-4 [transform:rotateX(-25deg)] scale-75 md:scale-90 pointer-events-auto origin-top">
             {getPlayers(squad, 'GK').map((p, i) => (
-              <PlayerCard 
-                key={i} 
-                player={p} 
-                currentGw={currentGw}
-                isCaptain={p.name === captain}
-                isVice={p.name === vice}
-              />
+              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
           {/* DEF Row */}
-          <div className="flex justify-center gap-2 md:gap-8 relative z-10 mb-2">
+          <div className="absolute top-[28%] w-full flex justify-center gap-2 md:gap-8 [transform:rotateX(-25deg)] scale-90 md:scale-100 pointer-events-auto origin-top">
             {getPlayers(squad, 'DEF').map((p, i) => (
-              <PlayerCard 
-                key={i} 
-                player={p} 
-                currentGw={currentGw}
-                isCaptain={p.name === captain}
-                isVice={p.name === vice}
-              />
+              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
           {/* MID Row */}
-          <div className="flex justify-center gap-2 md:gap-8 relative z-10 mb-2">
+          <div className="absolute top-[52%] w-full flex justify-center gap-2 md:gap-10 [transform:rotateX(-25deg)] scale-100 md:scale-110 pointer-events-auto origin-top">
             {getPlayers(squad, 'MID').map((p, i) => (
-              <PlayerCard 
-                key={i} 
-                player={p} 
-                currentGw={currentGw}
-                isCaptain={p.name === captain}
-                isVice={p.name === vice}
-              />
+              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
 
           {/* FWD Row */}
-          <div className="flex justify-center gap-2 md:gap-10 relative z-10 mb-2">
+          <div className="absolute top-[76%] w-full flex justify-center gap-2 md:gap-12 [transform:rotateX(-25deg)] scale-110 md:scale-125 pointer-events-auto origin-top">
             {getPlayers(squad, 'FWD').map((p, i) => (
-              <PlayerCard 
-                key={i} 
-                player={p} 
-                currentGw={currentGw}
-                isCaptain={p.name === captain}
-                isVice={p.name === vice}
-              />
+              <PlayerCard key={i} player={p} currentGw={currentGw} isCaptain={p.name === captain} isVice={p.name === vice} />
             ))}
           </div>
-          
+
         </div>
       </div>
 

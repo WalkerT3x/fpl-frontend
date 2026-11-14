@@ -13,12 +13,12 @@ export default function PlayerCard({
   const fixtureText = fixtureRaw ? fixtureRaw.replace("H ", "").replace("A ", "") + (fixtureRaw.startsWith("H") ? " (H)" : " (A)") : "";
 
   return (
-    <div className="flex flex-col items-center w-[74px] md:w-[92px] group cursor-pointer relative mt-2">
+    <div className="flex flex-col items-center w-[76px] md:w-[94px] group cursor-pointer relative mt-2">
       
       {/* CARD CONTAINER */}
-      <div className="w-full bg-[#120016]/90 rounded-t-lg border border-white/20 border-b-0 relative flex flex-col items-center pt-1.5 pb-0 transition-transform group-hover:-translate-y-1 shadow-xl">
+      <div className="w-full bg-[#150f18]/95 rounded-t-lg border border-white/20 border-b-0 relative flex flex-col items-center pt-1 pb-0 transition-transform group-hover:-translate-y-1 shadow-2xl">
         
-        {/* TOP LEFT ICONS (C / VC) - Tiny */}
+        {/* TOP LEFT ICONS (C / VC) - Small */}
         <div className="absolute top-1 left-1 z-20 flex flex-col gap-1">
           {isCaptain && (
             <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-[#ffd700] text-black flex items-center justify-center font-black text-[8px] md:text-[10px] shadow-[0_0_8px_rgba(255,215,0,0.6)] border border-white">
@@ -32,13 +32,13 @@ export default function PlayerCard({
           )}
         </div>
 
-        {/* TOP RIGHT POINTS - Tiny */}
+        {/* TOP RIGHT POINTS - Small */}
         <div className="absolute top-1 right-1 z-20 bg-[#37003c] text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg border border-white">
           <span className="font-bold text-[8px] md:text-[9px]">{points}</span>
         </div>
 
         {/* Shirt - Massive */}
-        <div className="w-16 h-16 md:w-20 md:h-20 z-10 mt-3 mb-1">
+        <div className="w-16 h-16 md:w-20 md:h-20 z-10 mt-4 mb-0.5">
           <img 
             src={player.shirt_url}
             alt={player.team}
