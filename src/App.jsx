@@ -2,6 +2,7 @@ import { useState } from 'react';
 import HomePage from './pages/HomePage';
 import PickTeamPage from './pages/PickTeamPage';
 import TokensPage from './pages/TokensPage';
+import TransfersPage from './pages/TransfersPage'; // <-- Imported new page
 
 function App() {
   const savedId = localStorage.getItem('fplTeamId') || '';
@@ -111,7 +112,8 @@ function App() {
             <span className="font-black text-xl tracking-wider">FPL GENIUS</span>
           </div>
           <div className="hidden md:flex gap-6 text-sm font-bold text-gray-300">
-            {['Home', 'Pick Team', 'Tokens'].map(tab => (
+            {/* Added Transfers back to the navigation array */}
+            {['Home', 'Pick Team', 'Transfers', 'Tokens'].map(tab => (
               <span 
                 key={tab}
                 onClick={() => {
@@ -151,6 +153,10 @@ function App() {
             currentGw={currentGw} 
             setActiveTab={setActiveTab} 
           />
+        )}
+
+        {activeTab === 'Transfers' && (
+          <TransfersPage teamId={teamId} />
         )}
 
         {activeTab === 'Tokens' && (
