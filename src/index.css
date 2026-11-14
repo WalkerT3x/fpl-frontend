@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
+@theme {
+  /* This overrides Tailwind's default font-sans to use Outfit */
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
 html, body {
+  font-family: var(--font-sans);
   background-color: #37003c;
-  overscroll-behavior-y: none; /* Prevents pull-to-refresh white flash */
+  overscroll-behavior-y: none;
 }
