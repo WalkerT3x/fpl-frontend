@@ -59,7 +59,7 @@ function SearchableSelect({ value, onChange, options, placeholder }) {
         onFocus={() => setIsOpen(true)}
       />
       {isOpen && filtered.length > 0 && (
-        <ul className="absolute top-full left-0 z-50 w-full mt-1 bg-white border border-gray-300 rounded shadow-xl max-h-48 overflow-y-auto">
+        <ul className="absolute top-full left-0 z-[100] w-full mt-1 bg-white border border-gray-300 rounded shadow-2xl max-h-48 overflow-y-auto">
           {filtered.slice(0, 50).map((opt, idx) => (
             <li
               key={idx}
@@ -181,8 +181,11 @@ export default function TransferPlannerPage({
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-6 animate-fade-in-up mt-4 px-2 md:px-0">
 
       {/* SECTION 1: MID-WEEK TRANSFERS */}
-      <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20 overflow-hidden">
-        <div className="absolute -top-10 -left-10 w-32 h-32 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[40px] opacity-20 pointer-events-none"></div>
+      <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20">
+        {/* Glow wrapper to prevent clipping */}
+        <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+          <div className="absolute -top-10 -left-10 w-32 h-32 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[40px] opacity-20"></div>
+        </div>
         
         <div className="relative z-10">
           <h2 className="text-lg font-black text-[#00ff87] mb-2 uppercase tracking-widest">1. Mid-Week Transfers</h2>
@@ -214,7 +217,7 @@ export default function TransferPlannerPage({
               </button>
             </div>
 
-            {/* APPLIED LIST (Centered text, boxed names) */}
+            {/* APPLIED LIST */}
             {manualTransfers.length > 0 && (
               <div className="mt-4">
                 <h3 className="text-center text-[#00ff87] font-black text-xs uppercase tracking-widest mb-3">Applied Transfers</h3>
@@ -235,8 +238,11 @@ export default function TransferPlannerPage({
       </div>
 
       {/* SECTION 2: TRANSFER PLANNER */}
-      <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20 overflow-hidden">
-        <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[40px] opacity-20 pointer-events-none"></div>
+      <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20">
+        {/* Glow wrapper to prevent clipping */}
+        <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+          <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[40px] opacity-20"></div>
+        </div>
 
         <div className="relative z-10">
           <h2 className="text-lg font-black text-[#00ff87] mb-6 uppercase tracking-widest">2. Transfer Planner</h2>
