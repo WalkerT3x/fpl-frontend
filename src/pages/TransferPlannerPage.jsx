@@ -181,8 +181,8 @@ export default function TransferPlannerPage({
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-6 animate-fade-in-up mt-4 px-2 md:px-0">
 
       {/* SECTION 1: MID-WEEK TRANSFERS */}
-      <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20">
-        {/* Glow wrapper to prevent clipping */}
+      {/* Added z-30 here so it stacks above the second card */}
+      <div className="relative z-30 bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20">
         <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
           <div className="absolute -top-10 -left-10 w-32 h-32 bg-[#00ff87] rounded-full mix-blend-screen filter blur-[40px] opacity-20"></div>
         </div>
@@ -238,8 +238,8 @@ export default function TransferPlannerPage({
       </div>
 
       {/* SECTION 2: TRANSFER PLANNER */}
-      <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20">
-        {/* Glow wrapper to prevent clipping */}
+      {/* Added z-20 here so it sits above the history card, but below the first card */}
+      <div className="relative z-20 bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20">
         <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
           <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-[#9d00ff] rounded-full mix-blend-screen filter blur-[40px] opacity-20"></div>
         </div>
@@ -348,7 +348,7 @@ export default function TransferPlannerPage({
       </div>
 
       {/* SECTION 3: TRANSFER HISTORY */}
-      <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20">
+      <div className="relative z-10 bg-black/40 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/20">
         <h2 className="text-lg font-black text-[#00ff87] mb-6 uppercase tracking-widest">3. Transfer History</h2>
 
         {historyLoading ? (
